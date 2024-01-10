@@ -1,8 +1,7 @@
 import AuthProvider from "./provider/AuthProvider.tsx";
 import Routes from "./routes";
 
-
-function App() {
+const App = () => {
 	//const [logged, setLogged] = useState(false)
 
 	return (

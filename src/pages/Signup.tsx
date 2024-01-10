@@ -2,20 +2,19 @@ import React, {useState} from "react";
 import styles from "./Pages.module.css";
 import authService from "../services/auth.service.ts";
 
-function Signup() {
+const Signup = () => {
 	const [admin, setAdmin] = useState(false)
 	const [credentials, setCredentials] = useState({
 		email: '',
 		password: '',
 		fullName: '',
-		institutionName: null,
+		institutionName: '',
 		role: '',
 	})
 
 	const OnSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setCredentials({...credentials, role: e.target.value})
+		setCredentials(prev=> ({...prev, role: e.target.value}))
 
-		console.log(e.target.value)
 		if (e.target.value == "admin") {
 			setAdmin(true)
 		} else {
@@ -62,7 +61,7 @@ function Signup() {
 							<select id="countries"
 									className={styles.select}
 									onChange={OnSelect}
-									value={credentials.role}>
+									defaultValue={credentials.role || 'teacher'}>
 								<option value="teacher">Учитель</option>
 								<option value="admin">Администратор учебного заведения</option>
 							</select>
@@ -70,7 +69,7 @@ function Signup() {
 								<div className="space-y-4">
 									<label className="block">Название учебного заведения</label>
 									<input type="text" name="institutionName" placeholder="Название"
-										   className={styles.input} value={credentials.institutionName!}
+										   className={styles.input} value={credentials.institutionName}
 										   onChange={handleChange}/>
 									<label className="block">ФИО</label>
 									<input type="text" name="fullName" placeholder="ФИО" className={styles.input}

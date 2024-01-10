@@ -4,7 +4,8 @@ import Login from "../pages/Login.tsx";
 import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
 import Signup from "../pages/Signup.tsx";
 import SidebarLayout from "../components/sidebar/SidebarLayout.tsx";
-import Home from "../pages/Home.tsx";
+import Auth from "./Auth.tsx";
+import {Roles} from "../types/roles.ts";
 
 const Routes = () => {
 	const { token } = useAuth();
@@ -20,8 +21,42 @@ const Routes = () => {
 					children: [
 						{
 							path: "/",
-							element: <Home/>
-						}
+							element: <Auth allowedRoles={[Roles.Admin, Roles.Teacher, Roles.Student]}/>,
+							children: [
+								{
+									path: "/profile",
+									element: <h1>Profile</h1>
+								},
+								{
+									path: "/classrooms",
+									element: <h1>Classrooms</h1>
+								},
+							]
+						},
+						{
+							path: "/",
+							element: <Auth allowedRoles={[Roles.Admin, Roles.Teacher]}/>,
+							children: [
+								{
+									path: "/students",
+									element: <h1>Students</h1>
+								},
+							]
+						},
+						{
+							path: "/",
+							element: <Auth allowedRoles={[Roles.Admin]}/>,
+							children: [
+								{
+									path: "/institution",
+									element: <h1>Institution</h1>
+								},
+								{
+									path: "/teachers",
+									element: <h1>Teachers</h1>
+								},
+							]
+						},
 					]
 				},
 			]

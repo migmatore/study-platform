@@ -1,8 +1,8 @@
-import {ChevronFirst, ChevronLast, MoreVertical} from "lucide-react";
+import {ChevronFirst, ChevronLast, LogOut} from "lucide-react";
 import {PropsWithChildren, useState} from "react";
 import {SidebarContext} from "./SidebarContext.ts";
 
-function Sidebar({children}: PropsWithChildren) {
+const Sidebar = ({children}: PropsWithChildren) => {
 	const [expanded, setExpanded] = useState(true)
 
 	return (
@@ -31,7 +31,7 @@ function Sidebar({children}: PropsWithChildren) {
 							<h4 className="font-semibold">John Doe</h4>
 							<span className="text-xs text-gray-600">johndoe@gmail.com</span>
 						</div>
-						<MoreVertical size={20}/>
+						<LogOut size={20}/>
 					</div>
 				</div>
 			</nav>

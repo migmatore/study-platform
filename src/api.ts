@@ -1,5 +1,6 @@
 import axios, {AxiosInstance} from "axios";
 import {camelizeKeys, decamelizeKeys} from "humps";
+import {IAuthResp} from "./types/auth.ts";
 
 const baseURL = "http://localhost:8081/api/v1";
 
@@ -11,7 +12,7 @@ export const authApiClient: AxiosInstance = axios.create({
 });
 
 authApiClient.interceptors.request.use((config) => {
-	const newConfig = { ...config };
+	const newConfig = {...config};
 
 	if (config.params) {
 		newConfig.params = decamelizeKeys(config.params);
@@ -41,7 +42,7 @@ const apiClient: AxiosInstance = axios.create({
 
 apiClient.interceptors.request.use(
 	(config) => {
-		const newConfig = { ...config };
+		const newConfig = {...config};
 
 		const token = localStorage.getItem('token');
 		if (token) {
@@ -79,8 +80,11 @@ apiClient.interceptors.response.use(
 
 			try {
 				const refreshToken = localStorage.getItem('refreshToken');
-				const response = await apiClient.post('/auth/refresh', { refreshToken });
-				const { token } = response.data;
+				const response = await apiClient.post<IAuthResp>(
+					'/auth/refresh',
+					{refreshToken}
+				);
+				const {token} = response.data;
 
 				localStorage.setItem('token', token);
 

@@ -1,5 +1,5 @@
 import {createContext, PropsWithChildren, SetStateAction, useContext, useEffect, useMemo, useState} from "react";
-import {Roles} from "../types/roles.ts";
+import {enumFromValue, Roles} from "../types/roles.ts";
 
 interface IAuthContext {
 	token: string | null;
@@ -18,7 +18,7 @@ const AuthContext = createContext<IAuthContext>(defaultState);
 const AuthProvider = ({children}: PropsWithChildren) => {
 	const [token, setToken_] = useState(localStorage.getItem('token'));
 	const [role, setRole_] = useState<Roles>(
-		Roles[localStorage.getItem('role') as keyof typeof Roles || Roles.Student]
+		enumFromValue(localStorage.getItem('role') || "student", Roles)
 	);
 
 	const setToken = (newToken: SetStateAction<string | null>) => {

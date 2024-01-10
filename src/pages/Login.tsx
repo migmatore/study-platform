@@ -3,9 +3,9 @@ import React, {useState} from "react";
 import styles from "./Pages.module.css"
 import authService from "../services/auth.service.ts";
 import {useAuth} from "../provider/AuthProvider.tsx";
-import {Roles} from "../types/roles.ts";
+import {enumFromValue, Roles} from "../types/roles.ts";
 
-function Login() {
+const Login = () => {
 	const {setToken, setRole} = useAuth()
 	const navigate = useNavigate()
 	const [credentials, setCredentials] = useState({
@@ -38,7 +38,7 @@ function Login() {
 			}
 
 			if (setRole) {
-				setRole(Roles[role as keyof typeof Roles])
+				setRole(enumFromValue(role, Roles))
 			}
 
 			localStorage.setItem('refreshToken', refreshToken)
