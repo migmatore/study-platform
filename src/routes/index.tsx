@@ -6,6 +6,7 @@ import Signup from "../pages/Signup.tsx";
 import SidebarLayout from "../components/sidebar/SidebarLayout.tsx";
 import Auth from "./Auth.tsx";
 import {Roles} from "../types/roles.ts";
+import Logout from "../pages/Logout.tsx";
 
 const Routes = () => {
 	const { token } = useAuth();
@@ -30,6 +31,10 @@ const Routes = () => {
 								{
 									path: "/classrooms",
 									element: <h1>Classrooms</h1>
+								},
+								{
+									path: "/logout",
+									element: <Logout/>
 								},
 							]
 						},

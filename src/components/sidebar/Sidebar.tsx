@@ -1,9 +1,16 @@
 import {ChevronFirst, ChevronLast, LogOut} from "lucide-react";
 import {PropsWithChildren, useState} from "react";
 import {SidebarContext} from "./SidebarContext.ts";
+import styles from './Sidebar.module.css';
+import {useNavigate} from "react-router-dom";
 
 const Sidebar = ({children}: PropsWithChildren) => {
+	const navigate = useNavigate()
 	const [expanded, setExpanded] = useState(true)
+
+	const handleLogout = () => {
+		navigate("/logout", {replace: true})
+	}
 
 	return (
 		<aside className="h-screen">
@@ -31,7 +38,10 @@ const Sidebar = ({children}: PropsWithChildren) => {
 							<h4 className="font-semibold">John Doe</h4>
 							<span className="text-xs text-gray-600">johndoe@gmail.com</span>
 						</div>
-						<LogOut size={20}/>
+						<div  className={styles.logout} onClick={handleLogout}>
+							<LogOut size={20}/>
+						</div>
+
 					</div>
 				</div>
 			</nav>
