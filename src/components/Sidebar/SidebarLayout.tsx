@@ -7,7 +7,7 @@ import {PiUsersThreeBold} from "react-icons/pi";
 import {FaUsersRectangle} from "react-icons/fa6";
 import {IconContext} from "react-icons";
 import {Roles} from "../../types/roles.ts";
-import SidebarItem from "../sidebarItem/SidebarItem.tsx";
+import SidebarItem from "../SidebarItem/SidebarItem.tsx";
 
 interface ISidebarItemProp {
 	to: string;
@@ -109,13 +109,16 @@ const SidebarLayout = () => {
 				{/*<hr className="my-3"/>*/}
 				{/*<SidebarItem to="/7" icon={<Settings size={22}/>} text="Settings"/>*/}
 				{/*<SidebarItem to="/8" icon={<LifeBuoy size={22}/>} text="Help"/>*/}
-				{sidebarItems.map((item) =>
-					item.role == role && item.items.map((roleItems) =>
-						<SidebarItem key={roleItems.to}
-									 to={roleItems.to}
-									 icon={roleItems.icon}
-									 text={roleItems.text}/>
-					))}
+				{sidebarItems.filter((item) => item.role == role).map((item) =>
+					item.items.map((roleItem, i) =>
+						<SidebarItem key={i} to={roleItem.to} icon={roleItem.icon} text={roleItem.text}/>))}
+				{/*{sidebarItems.map((item) =>*/}
+				{/*	item.role == role && item.items.map((roleItems) =>*/}
+				{/*		<SidebarItem key={roleItems.to}*/}
+				{/*					 to={roleItems.to}*/}
+				{/*					 icon={roleItems.icon}*/}
+				{/*					 text={roleItems.text}/>*/}
+				{/*	))}*/}
 			</Sidebar>
 			<Outlet/>
 		</>

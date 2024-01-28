@@ -1,5 +1,5 @@
 import {JSX, useContext} from "react";
-import {SidebarContext} from "../sidebar/SidebarContext.ts";
+import {SidebarContext} from "../Sidebar/SidebarContext.ts";
 import {NavLink} from "react-router-dom";
 import styles from "./SidebarItem.module.css"
 

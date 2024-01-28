@@ -50,7 +50,7 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 			localStorage.removeItem('refreshToken');
 			localStorage.removeItem('role')
 		}
-	}, [token, role])
+	}, [token, refreshToken, role])
 
 	const contextValue = useMemo(
 		() => ({
@@ -58,7 +58,7 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 			refreshToken, setRefreshToken,
 			role, setRole,
 		}),
-		[token, role]
+		[token, refreshToken, role]
 	);
 
 	return (

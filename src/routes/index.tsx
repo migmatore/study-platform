@@ -3,10 +3,13 @@ import {ProtectedRoute} from "./ProtectedRoute.tsx";
 import Login from "../pages/Login.tsx";
 import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
 import Signup from "../pages/Signup.tsx";
-import SidebarLayout from "../components/sidebar/SidebarLayout.tsx";
+import SidebarLayout from "../components/Sidebar/SidebarLayout.tsx";
 import Auth from "./Auth.tsx";
 import {Roles} from "../types/roles.ts";
 import Logout from "../pages/Logout.tsx";
+import Home from "../pages/Home.tsx";
+import Classrooms from "../pages/Classrooms.tsx";
+import Lessons from "../pages/Lessons.tsx";
 
 const Routes = () => {
 	const { token } = useAuth();
@@ -26,11 +29,17 @@ const Routes = () => {
 							children: [
 								{
 									path: "/profile",
-									element: <h1>Profile</h1>
+									element: <Home/>
 								},
 								{
 									path: "/classrooms",
-									element: <h1>Classrooms</h1>
+									element: <Classrooms/>,
+									children: [
+										{
+											path: ":id",
+											element: <div>Classroom inside</div>
+										}
+									]
 								},
 								{
 									path: "/logout",
@@ -46,6 +55,10 @@ const Routes = () => {
 									path: "/students",
 									element: <h1>Students</h1>
 								},
+								{
+									path: "/classrooms/:id/lessons",
+									element: <Lessons/>,
+								}
 							]
 						},
 						{
