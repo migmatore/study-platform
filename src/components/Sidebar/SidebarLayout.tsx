@@ -100,15 +100,6 @@ const SidebarLayout = () => {
 	return (
 		<>
 			<Sidebar>
-				{/*<SidebarItem to="/home" icon={<LayoutDashboardIcon size={22}/>} text="Dasboard" />*/}
-				{/*<SidebarItem to="/home1" icon={<IconContext.Provider value={{size: "22px"}}><FaUsersRectangle /></IconContext.Provider>} text="Statistics" />*/}
-				{/*<SidebarItem to="/3" icon={<UserCircle size={22}/>} text="Users"/>*/}
-				{/*<SidebarItem to="/4" icon={<Boxes size={22}/>} text="Inventory"/>*/}
-				{/*<SidebarItem to="/5" icon={<Package size={22}/>} text="Orders" />*/}
-				{/*<SidebarItem to="/6" icon={<Receipt size={22}/>} text="Billings"/>*/}
-				{/*<hr className="my-3"/>*/}
-				{/*<SidebarItem to="/7" icon={<Settings size={22}/>} text="Settings"/>*/}
-				{/*<SidebarItem to="/8" icon={<LifeBuoy size={22}/>} text="Help"/>*/}
 				{sidebarItems.filter((item) => item.role == role).map((item) =>
 					item.items.map((roleItem, i) =>
 						<SidebarItem key={i} to={roleItem.to} icon={roleItem.icon} text={roleItem.text}/>))}
