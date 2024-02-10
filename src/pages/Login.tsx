@@ -2,8 +2,8 @@ import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import styles from "./Pages.module.css"
 import authService from "../services/auth.service.ts";
-import {useAuth} from "../provider/AuthProvider.tsx";
 import {enumFromValue, Roles} from "../types/roles.ts";
+import useAuth from "../hooks/useAuth.tsx";
 
 const Login = () => {
 	const {

@@ -1,4 +1,3 @@
-import {useAuth} from "../provider/AuthProvider.tsx";
 import {ProtectedRoute} from "./ProtectedRoute.tsx";
 import Login from "../pages/Login.tsx";
 import {createBrowserRouter, Navigate, RouteObject, RouterProvider} from "react-router-dom";
@@ -11,6 +10,7 @@ import Home from "../pages/Home.tsx";
 import Classrooms from "../pages/Classrooms.tsx";
 import Lessons from "../pages/Lessons.tsx";
 import EditLesson from "../pages/EditLesson.tsx";
+import useAuth from "../hooks/useAuth.tsx";
 
 const Routes = () => {
 	const { token } = useAuth();

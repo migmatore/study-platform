@@ -1,12 +1,12 @@
 import React, {JSX} from "react";
 
-interface IButtonProps {
+interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	children: JSX.Element | JSX.Element[] | React.ReactNode;
 	className?: string,
 	onClick?:
 		| ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
 		| undefined;
-	ref?: React.LegacyRef<HTMLButtonElement> | undefined;
+	//ref?: React.LegacyRef<HTMLButtonElement> | undefined;
 }
 
 const Button = ({children, className, ...attributes}: IButtonProps) => {

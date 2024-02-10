@@ -1,6 +1,7 @@
 import Designer from "../components/Designer/Designer.tsx";
 import {useParams} from "react-router-dom";
 import {DndContext} from "@dnd-kit/core";
+import DragOverlayWrapper from "../components/DragOverlayWrapper/DragOverlayWrapper.tsx";
 
 type Params = {
 	lessonId: string;
@@ -22,6 +23,7 @@ const EditLesson = () => {
 					<Designer/>
 				</div>
 			</div>
+			<DragOverlayWrapper/>
 		</DndContext>
 	)
 }

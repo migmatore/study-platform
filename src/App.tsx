@@ -1,5 +1,6 @@
 import AuthProvider from "./provider/AuthProvider.tsx";
 import Routes from "./routes";
+import DesignerProvider from "./provider/DesignerProvider.tsx";
 
 const App = () => {
 	//const [logged, setLogged] = useState(false)
@@ -27,7 +28,9 @@ const App = () => {
 		// </div>
 		<main className="flex">
 			<AuthProvider>
-				<Routes/>
+				<DesignerProvider>
+					<Routes/>
+				</DesignerProvider>
 			</AuthProvider>
 		</main>
 	)

@@ -1,4 +1,4 @@
-import {createContext, PropsWithChildren, SetStateAction, useContext, useEffect, useMemo, useState} from "react";
+import {createContext, PropsWithChildren, SetStateAction, useEffect, useMemo, useState} from "react";
 import {enumFromValue, Roles} from "../types/roles.ts";
 
 interface IAuthContext {
@@ -16,7 +16,7 @@ const defaultState: IAuthContext = {
 	role: Roles.Student,
 }
 
-const AuthContext = createContext<IAuthContext>(defaultState);
+export const AuthContext = createContext<IAuthContext>(defaultState);
 
 const AuthProvider = ({children}: PropsWithChildren) => {
 	const [token, setToken_] = useState(localStorage.getItem('token'));
@@ -66,10 +66,6 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 			{children}
 		</AuthContext.Provider>
 	)
-}
-
-export const useAuth = () => {
-	return useContext(AuthContext);
 }
 
 export default AuthProvider;

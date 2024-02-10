@@ -16,7 +16,7 @@ const LessonItem = ({id, title, active}: Props) => {
 	const handleEditLesson = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
-		navigate(`${id}/edit`, {replace: true});
+		navigate(`${id}/edit`);
 	}
 
 	return (

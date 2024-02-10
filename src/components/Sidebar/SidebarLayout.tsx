@@ -2,12 +2,12 @@ import Sidebar from "./Sidebar.tsx";
 import {Outlet} from "react-router-dom";
 import {Hotel, UserCircle, Users} from "lucide-react";
 import {JSX} from "react";
-import {useAuth} from "../../provider/AuthProvider.tsx";
 import {PiUsersThreeBold} from "react-icons/pi";
 import {FaUsersRectangle} from "react-icons/fa6";
 import {IconContext} from "react-icons";
 import {Roles} from "../../types/roles.ts";
 import SidebarItem from "../SidebarItem/SidebarItem.tsx";
+import useAuth from "../../hooks/useAuth.tsx";
 
 interface ISidebarItemProp {
 	to: string;

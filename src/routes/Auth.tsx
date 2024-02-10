@@ -1,6 +1,6 @@
-import {useAuth} from "../provider/AuthProvider.tsx";
 import {Roles} from "../types/roles.ts";
 import {Navigate, Outlet} from "react-router-dom";
+import useAuth from "../hooks/useAuth.tsx";
 
 interface IAuthProps {
 	allowedRoles: Roles[]
