@@ -34,7 +34,7 @@ const Classrooms = () => {
 		<div className="w-full h-full m-4">
 			<div className="flex mb-4 text-2xl justify-between">
 				<h1>Список классов</h1>
-				<Button className="text-white bg-emerald-400 hover:bg-emerald-400"><Plus size={20}/></Button>
+				<Button className="text-white bg-teal-400 hover:bg-teal-500 mr-6"><Plus size={20}/></Button>
 			</div>
 			<div className="flex flex-col space-y-4">
 				{classrooms?.map(classroom =>

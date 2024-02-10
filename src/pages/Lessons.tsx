@@ -3,20 +3,22 @@ import {useEffect, useState} from "react";
 import classroomService from "../services/classroom.service.ts";
 import {ILessonsResp} from "../types/lesson.ts";
 import LessonItem from "../components/LessonItem/LessonItem.tsx";
+import {Plus} from "lucide-react";
+import Button from "../components/Button/Button.tsx";
 
 type Params = {
-	id: string;
+	classroomId: string;
 }
 
 const Lessons = () => {
-	const { id } = useParams<Params>()
+	const { classroomId } = useParams<Params>()
 
 	const [lessons, setLessons] = useState<ILessonsResp[]>()
 
 	useEffect(() => {
 		const getLessons = async () => {
 			try {
-				const resp = await classroomService.getLessons(id!.toString());
+				const resp = await classroomService.getLessons(classroomId!.toString());
 				console.log(resp.data)
 				if (!ignore) {
 					setLessons(resp.data);
@@ -33,12 +35,13 @@ const Lessons = () => {
 		return () => {
 			ignore = true;
 		}
-	}, [id]);
+	}, [classroomId]);
 
 	return (
 		<div className="w-full h-full m-4">
-			<div className="mb-4 text-2xl">
+			<div className="flex mb-4 text-2xl justify-between">
 				<h1>Список уроков</h1>
+				<Button className="text-white bg-teal-400 hover:bg-teal-500"><Plus size={20}/></Button>
 			</div>
 			<div className="grid grid-cols-1 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
 				{lessons?.map(lesson =>

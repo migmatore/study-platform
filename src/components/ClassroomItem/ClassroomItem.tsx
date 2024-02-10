@@ -15,7 +15,7 @@ const ClassroomItem = ({id, title, description}: Props) => {
 	const handleInside = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault()
 
-		navigate(`/classrooms/${id}/lessons`)
+		navigate(`${id}/lessons`)
 	}
 
 	return (
@@ -25,12 +25,14 @@ const ClassroomItem = ({id, title, description}: Props) => {
 				{description && <p className="mt-2.5">{description}</p>}
 			</div>
 			<div className="flex justify-center items-center gap-3">
-				<Button onClick={handleInside} className="text-white">
+				<Button onClick={handleInside} className="bg-blue-400 hover:bg-blue-500 text-white">
 					<div className="flex gap-2">
 						<LogIn size={20}/><p className="text-white">Перейти</p>
 					</div>
 				</Button>
-				<Button className="bg-white border border-red-400 text-red-400 hover:text-white hover:bg-red-500"><Trash2 size={20}/></Button>
+				<Button className="bg-white border border-red-400 text-red-400 hover:text-white hover:bg-red-500">
+					<Trash2 size={20}/>
+				</Button>
 			</div>
 		</div>
 	);

@@ -10,6 +10,7 @@ import Logout from "../pages/Logout.tsx";
 import Home from "../pages/Home.tsx";
 import Classrooms from "../pages/Classrooms.tsx";
 import Lessons from "../pages/Lessons.tsx";
+import EditLesson from "../pages/EditLesson.tsx";
 
 const Routes = () => {
 	const { token } = useAuth();
@@ -36,7 +37,7 @@ const Routes = () => {
 									element: <Classrooms/>,
 									children: [
 										{
-											path: ":id",
+											path: ":classroomId",
 											element: <div>Classroom inside</div>
 										}
 									]
@@ -56,9 +57,18 @@ const Routes = () => {
 									element: <h1>Students</h1>
 								},
 								{
-									path: "/classrooms/:id/lessons",
-									element: <Lessons/>,
-								}
+									path: "/classrooms/:classroomId",
+									children: [
+										{
+											path: "lessons",
+											element: <Lessons/>,
+										},
+										{
+											path: "lessons/:lessonId/edit",
+											element: <EditLesson/>,
+										}
+									]
+								},
 							]
 						},
 						{

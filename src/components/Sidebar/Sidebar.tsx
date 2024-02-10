@@ -17,7 +17,7 @@ const Sidebar = ({children}: PropsWithChildren) => {
 			<aside className="h-screen sticky left-0 top-0">
 				<nav className="h-full flex flex-col bg-white border-r shadow-sm sticky">
 					<div className="p-4 pb-2 flex justify-between items-center">
-						<img src="https://img.logoipsum.com/262.svg"
+						<img src="https://img.logoipsum.com/297.svg"
 							 className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`} alt=""/>
 						<button onClick={() => setExpanded(curr => !curr)}
 								className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600">
@@ -30,7 +30,7 @@ const Sidebar = ({children}: PropsWithChildren) => {
 					</SidebarContext.Provider>
 
 					<div className="border-t flex p-3">
-						<img src="https://ui-avatars.com/api/?background=c7d2fe&color3730a3&bold=true"
+						<img src="https://ui-avatars.com/api/?background=60a5fa&color=eff6ff&bold=true"
 							 className="w-10 h-10 rounded-md" alt=""/>
 						<div
 							className={`flex justify-between items-center overflow-hidden transition-all 
