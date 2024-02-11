@@ -4,7 +4,7 @@ import classroomService from "../services/classroom.service.ts";
 import {ILessonsResp} from "../types/lesson.ts";
 import LessonItem from "../components/LessonItem/LessonItem.tsx";
 import {Plus} from "lucide-react";
-import Button from "../components/Button/Button.tsx";
+import Button from "../components/ui/Button/Button.tsx";
 
 type Params = {
 	classroomId: string;

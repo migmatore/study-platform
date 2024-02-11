@@ -1,6 +1,6 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import Button from "../Button/Button.tsx";
+import Button from "../ui/Button/Button.tsx";
 import {LogIn, Trash2} from "lucide-react";
 
 interface Props {

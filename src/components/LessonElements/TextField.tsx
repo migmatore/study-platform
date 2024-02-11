@@ -11,6 +11,9 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect} from "react";
 import useDesigner from "../../hooks/useDesigner.tsx";
+import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "../ui/Form/Form.tsx";
+import {Input} from "../ui/Input/Input.tsx";
+import {Switch} from "../ui/Switch/Switch.tsx";
 
 const type: ElementsType = "TextField";
 
@@ -22,7 +25,7 @@ const extraAttributes = {
 }
 
 const propertiesSchema = z.object({
-	label: z.string().min(2).max(50),
+	label: z.string().min(2, {message: "Должно быть минимум 2 символа"}).max(50),
 	helperText: z.string().max(200),
 	required: z.boolean().default(false),
 	placeHolder: z.string().max(50),
@@ -82,7 +85,56 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 		});
 	}
 
-	return <div>properties for {element.extraAttributes.label}</div>
+	return <Form {...form}>
+		<form onBlur={form.handleSubmit(applyChanges)}
+			  onSubmit={(e) => e.preventDefault()}
+			  className="space-y-3">
+			<FormField control={form.control} name="label" render={({field}) => (
+				<FormItem>
+					<FormLabel>Label</FormLabel>
+					<FormControl>
+						<Input {...field}
+							   onKeyDown={(e) => {
+								   if (e.key === "Enter") e.currentTarget.blur();
+							   }}/>
+					</FormControl>
+					<FormDescription>
+						The label of the field. <br/> It will be displayed above the field.
+					</FormDescription>
+					<FormMessage/>
+				</FormItem>
+			)}/>
+			<FormField control={form.control} name="placeHolder" render={({field}) => (
+				<FormItem>
+					<FormLabel>Placeholder</FormLabel>
+					<FormControl>
+						<Input {...field}
+							   onKeyDown={(e) => {
+								   if (e.key === "Enter") e.currentTarget.blur();
+							   }}/>
+					</FormControl>
+					<FormDescription>
+						The placeholder of the field.
+					</FormDescription>
+					<FormMessage/>
+				</FormItem>
+			)}/>
+			<FormField control={form.control} name="required" render={({field}) => (
+				<FormItem className="flex items-center justify-between rounded-lg border p-3">
+					<div className="space-y-0.5">
+						<FormLabel>Placeholder</FormLabel>
+						<FormDescription>
+							The placeholder of the field.
+						</FormDescription>
+					</div>
+					<FormControl>
+						<Switch checked={field.value} onCheckedChange={field.onChange}/>
+					</FormControl>
+					<FormMessage/>
+				</FormItem>
+			)}/>
+		</form>
+	</Form>
 }
 
 function DesignerComponent({elementInstance}: IDesignerComponentProps) {

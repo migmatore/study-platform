@@ -18,27 +18,27 @@ interface ISidebarItemProp {
 const adminItems: ISidebarItemProp[] = [
 	{
 		to: "/profile",
-		icon: <UserCircle size={22}/>,
+		icon: <UserCircle size={20}/>,
 		text: "Профиль",
 	},
 	{
 		to: "/institution",
-		icon: <Hotel size={22}/>,
+		icon: <Hotel size={20}/>,
 		text: "Учебное заведение",
 	},
 	{
 		to: "/teachers",
-		icon: <Users size={22}/>,
+		icon: <Users size={20}/>,
 		text: "Учителя",
 	},
 	{
 		to: "/classrooms",
-		icon: <IconContext.Provider value={{size: "22px"}}><FaUsersRectangle/></IconContext.Provider>,
+		icon: <IconContext.Provider value={{size: "20px"}}><FaUsersRectangle/></IconContext.Provider>,
 		text: "Классы",
 	},
 	{
 		to: "/students",
-		icon: <IconContext.Provider value={{size: "22px"}}><PiUsersThreeBold/></IconContext.Provider>,
+		icon: <IconContext.Provider value={{size: "20px"}}><PiUsersThreeBold/></IconContext.Provider>,
 		text: "Ученики",
 	},
 ]
@@ -46,17 +46,17 @@ const adminItems: ISidebarItemProp[] = [
 const teacherItems: ISidebarItemProp[] = [
 	{
 		to: "/profile",
-		icon: <UserCircle size={22}/>,
+		icon: <UserCircle size={20}/>,
 		text: "Профиль",
 	},
 	{
 		to: "/classrooms",
-		icon: <IconContext.Provider value={{size: "22px"}}><FaUsersRectangle/></IconContext.Provider>,
+		icon: <IconContext.Provider value={{size: "20px"}}><FaUsersRectangle/></IconContext.Provider>,
 		text: "Классы",
 	},
 	{
 		to: "/students",
-		icon: <IconContext.Provider value={{size: "22px"}}><PiUsersThreeBold/></IconContext.Provider>,
+		icon: <IconContext.Provider value={{size: "20px"}}><PiUsersThreeBold/></IconContext.Provider>,
 		text: "Ученики",
 	},
 ]
@@ -64,12 +64,12 @@ const teacherItems: ISidebarItemProp[] = [
 const studentItems: ISidebarItemProp[] = [
 	{
 		to: "/profile",
-		icon: <UserCircle size={22}/>,
+		icon: <UserCircle size={20}/>,
 		text: "Профиль",
 	},
 	{
 		to: "/classrooms",
-		icon: <IconContext.Provider value={{size: "22px"}}><FaUsersRectangle/></IconContext.Provider>,
+		icon: <IconContext.Provider value={{size: "20px"}}><FaUsersRectangle/></IconContext.Provider>,
 		text: "Классы",
 	},
 ]
@@ -103,13 +103,6 @@ const SidebarLayout = () => {
 				{sidebarItems.filter((item) => item.role == role).map((item) =>
 					item.items.map((roleItem, i) =>
 						<SidebarItem key={i} to={roleItem.to} icon={roleItem.icon} text={roleItem.text}/>))}
-				{/*{sidebarItems.map((item) =>*/}
-				{/*	item.role == role && item.items.map((roleItems) =>*/}
-				{/*		<SidebarItem key={roleItems.to}*/}
-				{/*					 to={roleItems.to}*/}
-				{/*					 icon={roleItems.icon}*/}
-				{/*					 text={roleItems.text}/>*/}
-				{/*	))}*/}
 			</Sidebar>
 			<Outlet/>
 		</>

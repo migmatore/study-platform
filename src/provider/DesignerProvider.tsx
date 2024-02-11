@@ -1,4 +1,4 @@
-import {LessonElement, LessonElementInstance} from "../components/LessonElements/LessonElements.tsx";
+import {LessonElementInstance} from "../components/LessonElements/LessonElements.tsx";
 import {createContext, Dispatch, PropsWithChildren, SetStateAction, useState} from "react";
 
 type DesignerContextType = {

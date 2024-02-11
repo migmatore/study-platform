@@ -1,4 +1,4 @@
-import Button from "../Button/Button.tsx";
+import Button from "../ui/Button/Button.tsx";
 import {cn} from "../../utils"
 import {LogIn, Pencil, Pin, PinOff, Trash2} from "lucide-react";
 import React from "react";

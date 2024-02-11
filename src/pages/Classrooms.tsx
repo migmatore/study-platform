@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {IClassroomResp} from "../types/classroom.ts";
 import ClassroomItem from "../components/ClassroomItem/ClassroomItem.tsx";
 import {Plus} from "lucide-react";
-import Button from "../components/Button/Button.tsx";
+import Button from "../components/ui/Button/Button.tsx";
 
 const Classrooms = () => {
 	const [classrooms, setClassrooms] = useState<IClassroomResp[]>()

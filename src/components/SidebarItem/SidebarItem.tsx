@@ -36,4 +36,4 @@ const SidebarItem = ({icon, text, to}: SidebarItemProps) => {
 	)
 }
 
-export default SidebarItem
+export default SidebarItem;
