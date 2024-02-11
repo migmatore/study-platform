@@ -7,7 +7,7 @@ import {v4 as uuidv4} from "uuid"
 import DesignerElementWrapper from "./DesignerElementWrapper.tsx";
 
 const Designer = () => {
-	const {elements, addElement} = useDesigner();
+	const {elements, addElement, selectedElement, setSelectedElement} = useDesigner();
 
 	const droppable = useDroppable({
 		id: "designer-drop-area",
@@ -32,21 +32,26 @@ const Designer = () => {
 				console.log(newElement);
 			}
 		}
-	})
+	});
 
 	return (
 		<div className="flex w-full h-full gap-3">
-			<div className="p-4 w-full">
+			<div className="p-4 w-full"
+				 onClick={() => {
+					 if (selectedElement) setSelectedElement(null);
+				 }}
+			>
 				<div ref={droppable.setNodeRef}
 					className={cn("bg-white border max-w-[920px] h-full m-auto rounded-lg flex flex-col " +
 						"flex-grow items-center justify-start flex-1 overflow-y-auto",
-						droppable.isOver && "ring-1 ring-blue-500")}>
+						droppable.isOver && "ring-1 ring-blue-500"
+					)}>
 					{!droppable.isOver && elements.length === 0 && (
 						<p className="text-3xl flex flex-grow items-center font-bold">
 							Перетащить сюда
 						</p>
 					)}
-					{droppable.isOver && (
+					{droppable.isOver && elements.length === 0 && (
 						<div className="p-4 w-full">
 							<div className="h-[120px] rounded-lg bg-gray-100"></div>
 						</div>

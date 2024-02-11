@@ -1,14 +1,17 @@
-import {LessonElements} from "../LessonElements/LessonElements.tsx";
-import SidebarBtnElement from "../SidebarBtnElement/SidebarBtnElement.tsx";
+import useDesigner from "../../hooks/useDesigner.tsx";
+import LessonElementsSidebar from "../LessonElementsSidebar/LessonElementsSidebar.tsx";
+import PropertiesFormSidebar from "../PropertiesDesignerSIdebar/PropertiesFormSidebar.tsx";
 
 const DesignerSidebar = () => {
+	const {selectedElement} = useDesigner();
+
 	return (
 		<aside className="h-full w-[400px] bg-white max-w-[400px] flex flex-col flex-grow gap-2 border-l p-4
 			overflow-y-auto">
-			Элементы
-			<SidebarBtnElement lessonElement={LessonElements.TextField}/>
+			{!selectedElement && <LessonElementsSidebar/>}
+			{selectedElement && <PropertiesFormSidebar/>}
 		</aside>
-	)
+	);
 }
 
 export default DesignerSidebar;

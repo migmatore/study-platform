@@ -6,6 +6,10 @@ export interface IDesignerComponentProps {
 	elementInstance: LessonElementInstance;
 }
 
+export interface IPropertiesComponentProps {
+	elementInstance: LessonElementInstance;
+}
+
 export type LessonElement = {
 	type: ElementsType;
 
@@ -18,7 +22,7 @@ export type LessonElement = {
 
 	designerComponent: React.FC<IDesignerComponentProps>;
 	lessonComponent: React.FC;
-	propertiesComponent: React.FC;
+	propertiesComponent: React.FC<IPropertiesComponentProps>;
 };
 
 export type LessonElementInstance = {

@@ -1,6 +1,6 @@
 import Designer from "../components/Designer/Designer.tsx";
 import {useParams} from "react-router-dom";
-import {DndContext} from "@dnd-kit/core";
+import {DndContext, MouseSensor, useSensor, useSensors} from "@dnd-kit/core";
 import DragOverlayWrapper from "../components/DragOverlayWrapper/DragOverlayWrapper.tsx";
 
 type Params = {
@@ -10,8 +10,15 @@ type Params = {
 const EditLesson = () => {
 	const {lessonId} = useParams<Params>()
 
+	const mouseSensor = useSensor(MouseSensor, {
+		activationConstraint: {
+			distance: 10,
+		},
+	})
+	const sensors = useSensors(mouseSensor)
+
 	return (
-		<DndContext>
+		<DndContext sensors={sensors}>
 			<div className="w-full flex flex-col">
 				<div className="flex p-4 flex-col border-b">
 					<h1 className="text-2xl">Конструктор уроков</h1>
