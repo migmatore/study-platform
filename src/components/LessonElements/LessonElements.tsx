@@ -1,8 +1,13 @@
 import {TextFieldLessonElement} from "./TextField.tsx";
+import {TitleFieldLessonElement} from "./TitleField.tsx";
 
-export type ElementsType = "TextField";
+export type ElementsType = "TextField" | "TitleField";
 
 export interface IDesignerComponentProps {
+	elementInstance: LessonElementInstance;
+}
+
+export interface ILessonComponentProps {
 	elementInstance: LessonElementInstance;
 }
 
@@ -21,7 +26,7 @@ export type LessonElement = {
 	}
 
 	designerComponent: React.FC<IDesignerComponentProps>;
-	lessonComponent: React.FC;
+	lessonComponent: React.FC<ILessonComponentProps>;
 	propertiesComponent: React.FC<IPropertiesComponentProps>;
 };
 
@@ -36,5 +41,6 @@ type LessonElementsType = {
 }
 
 export const LessonElements: LessonElementsType = {
-	TextField: TextFieldLessonElement
+	TextField: TextFieldLessonElement,
+	TitleField: TitleFieldLessonElement,
 }

@@ -43,7 +43,7 @@ export const TextFieldLessonElement: LessonElement = {
 		label: "Text field",
 	},
 	designerComponent: DesignerComponent,
-	lessonComponent: () => <div>Lesson component</div>,
+	lessonComponent: LessonComponent,
 	propertiesComponent: PropertiesComponent,
 }
 
@@ -52,6 +52,41 @@ type CustomInstance = LessonElementInstance & {
 }
 
 type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
+
+function DesignerComponent({elementInstance}: IDesignerComponentProps) {
+	const element = elementInstance as CustomInstance;
+	const {label, required, placeHolder, helperText} = element.extraAttributes;
+
+	return (
+		<div className="flex flex-col gap-2 w-full">
+			<p>
+				{label}
+				{required && "*"}
+			</p>
+			<input readOnly disabled placeholder={placeHolder}
+				   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"/>
+		</div>
+	);
+}
+
+function LessonComponent({elementInstance}: IDesignerComponentProps) {
+	const element = elementInstance as CustomInstance;
+	const {label, required, placeHolder, helperText} = element.extraAttributes;
+
+	return (
+		<div className="flex flex-col gap-2 w-full">
+			<p>
+				{label}
+				{required && "*"}
+			</p>
+			<input placeholder={placeHolder}
+				   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm
+				   transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium
+				   placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1
+				   focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"/>
+		</div>
+	);
+}
 
 function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 	const element = elementInstance as CustomInstance;
@@ -135,20 +170,4 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 			)}/>
 		</form>
 	</Form>
-}
-
-function DesignerComponent({elementInstance}: IDesignerComponentProps) {
-	const element = elementInstance as CustomInstance;
-	const {label, required, placeHolder, helperText} = element.extraAttributes;
-
-	return (
-		<div className="flex flex-col gap-2 w-full">
-			<p>
-				{label}
-				{required && "*"}
-			</p>
-			<input readOnly disabled placeholder={placeHolder}
-				   className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"/>
-		</div>
-	);
 }

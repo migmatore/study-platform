@@ -113,7 +113,7 @@ const Designer = () => {
 				 }}
 			>
 				<div ref={droppable.setNodeRef}
-					 className={cn("bg-white border max-w-[920px] h-full m-auto rounded-lg flex flex-col " +
+					 className={cn("bg-background border max-w-[920px] h-full m-auto rounded-lg flex flex-col " +
 						 "flex-grow items-center justify-start flex-1 overflow-y-auto",
 						 droppable.isOver && "ring-1 ring-blue-500"
 					 )}>

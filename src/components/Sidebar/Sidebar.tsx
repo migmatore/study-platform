@@ -30,37 +30,37 @@ const Sidebar = ({children}: PropsWithChildren) => {
 					<ul className="flex-1 px-3">{children}</ul>
 				</SidebarContext.Provider>
 
-				{/*<div className="px-3">*/}
-				{/*	<div className="w-full relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer*/}
-				{/*			transition-all hover:bg-blue-50 group">*/}
-				{/*		{theme === 'light' ? (*/}
-				{/*			<div className="flex flex-row justify-center items-center"*/}
-				{/*					onClick={() => setTheme('dark')}>*/}
-				{/*				<Moon size={20}/>*/}
-				{/*				<p*/}
-				{/*					className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>*/}
-				{/*					Темная тема*/}
-				{/*				</p>*/}
-				{/*			</div>*/}
-				{/*		) : (*/}
-				{/*			<div className="flex flex-row justify-center items-center"*/}
-				{/*					onClick={() => setTheme('light')}>*/}
-				{/*				<Sun size={20}/>*/}
-				{/*				<p*/}
-				{/*					className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>*/}
-				{/*					Светлая тема*/}
-				{/*				</p>*/}
-				{/*			</div>*/}
-				{/*		)}*/}
-				{/*		{!expanded &&*/}
-                {/*            <div className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-blue-100 text-blue-800 */}
-				{/*				text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible */}
-				{/*				group-hover:opacity-100 group-hover:translate-x-0`}>*/}
-                {/*                Тема*/}
-                {/*            </div>*/}
-				{/*		}*/}
-				{/*	</div>*/}
-				{/*</div>*/}
+				<div className="px-3">
+					<div className="w-full relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer
+							transition-all hover:bg-blue-50 group">
+						{theme === 'light' ? (
+							<div className="flex flex-row justify-center items-center"
+									onClick={() => setTheme('dark')}>
+								<Moon size={20}/>
+								<p
+									className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
+									Темная тема
+								</p>
+							</div>
+						) : (
+							<div className="flex flex-row justify-center items-center"
+									onClick={() => setTheme('light')}>
+								<Sun size={20}/>
+								<p
+									className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
+									Светлая тема
+								</p>
+							</div>
+						)}
+						{!expanded &&
+                            <div className={`absolute left-full rounded-md px-2 py-1 ml-6 bg-blue-100 text-blue-800 
+								text-sm invisible opacity-20 -translate-x-3 transition-all group-hover:visible 
+								group-hover:opacity-100 group-hover:translate-x-0`}>
+                                Тема
+                            </div>
+						}
+					</div>
+				</div>
 
 				<div className="border-t flex p-3 mt-2">
 					<img src="https://ui-avatars.com/api/?background=60a5fa&color=eff6ff&bold=true"

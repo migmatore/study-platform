@@ -1,7 +1,7 @@
 import useDesigner from "../../hooks/useDesigner.tsx";
 import {LessonElements} from "../LessonElements/LessonElements.tsx";
 import {X} from "lucide-react";
-import {Separator} from "../ui/Separator.tsx";
+import {Separator} from "../ui/Separator/Separator.tsx";
 
 const PropertiesFormSidebar = () => {
 	const {selectedElement, setSelectedElement} = useDesigner();
