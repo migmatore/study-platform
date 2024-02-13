@@ -3,7 +3,7 @@ import {Navigate, Outlet} from "react-router-dom";
 import useAuth from "../hooks/useAuth.tsx";
 
 interface IAuthProps {
-	allowedRoles: Roles[]
+	allowedRoles: Roles[];
 }
 
 const Auth = ({allowedRoles}: IAuthProps) => {
@@ -12,8 +12,8 @@ const Auth = ({allowedRoles}: IAuthProps) => {
 	return allowedRoles.find((r) => role.includes(r)) ? (
 		<Outlet/>
 	) : (
-		<Navigate to="/" replace/>
-	);
-}
+			   <Navigate to="/" replace/>
+		   );
+};
 
 export default Auth;

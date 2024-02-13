@@ -26,11 +26,11 @@ authApiClient.interceptors.request.use((config) => {
 });
 
 authApiClient.interceptors.response.use((response) => {
-	if (response.data && response.headers['content-type'] === 'application/json') {
+	if (response.data && response.headers["content-type"] === "application/json") {
 		response.data = camelizeKeys(response.data);
 	}
 
-	return response
+	return response;
 });
 
 const apiClient: AxiosInstance = axios.create({
@@ -44,7 +44,7 @@ apiClient.interceptors.request.use(
 	(config) => {
 		const newConfig = {...config};
 
-		const token = localStorage.getItem('token');
+		const token = localStorage.getItem("token");
 		if (token) {
 			newConfig.headers.Authorization = `Bearer ${token}`;
 		}
@@ -59,16 +59,16 @@ apiClient.interceptors.request.use(
 
 		return newConfig;
 	},
-	(error) => Promise.reject(error)
+	(error) => Promise.reject(error),
 );
 
 apiClient.interceptors.response.use(
 	(response) => {
-		if (response.data && response.headers['content-type'] === 'application/json') {
+		if (response.data && response.headers["content-type"] === "application/json") {
 			response.data = camelizeKeys(response.data);
 		}
 
-		return response
+		return response;
 	},
 	async (error) => {
 		const originalRequest = error.config;
@@ -79,14 +79,14 @@ apiClient.interceptors.response.use(
 			originalRequest._retry = true;
 
 			try {
-				const refreshToken = localStorage.getItem('refreshToken');
+				const refreshToken = localStorage.getItem("refreshToken");
 				const response = await apiClient.post<IAuthResp>(
-					'/auth/refresh',
-					{refreshToken}
+					"/auth/refresh",
+					{refreshToken},
 				);
 				const {token} = response.data;
 
-				localStorage.setItem('token', token);
+				localStorage.setItem("token", token);
 
 				// Retry the original request with the new token
 				originalRequest.headers.Authorization = `Bearer ${token}`;
@@ -97,7 +97,7 @@ apiClient.interceptors.response.use(
 		}
 
 		return Promise.reject(error);
-	}
+	},
 );
 
 export default apiClient;

@@ -11,9 +11,9 @@ const Logout = () => {
 			setToken(null);
 		}
 		navigate("/", {replace: true});
-	})
+	});
 
 	return <></>;
-}
+};
 
 export default Logout;

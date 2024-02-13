@@ -1,7 +1,14 @@
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import {Slot} from "@radix-ui/react-slot";
-import {Controller, ControllerProps, FieldPath, FieldValues, FormProvider, useFormContext} from "react-hook-form";
+import {
+	Controller,
+	ControllerProps,
+	FieldPath,
+	FieldValues,
+	FormProvider,
+	useFormContext,
+} from "react-hook-form";
 
 import {cn} from "../../../utils";
 import {Label} from "../Label/Label.tsx";
@@ -78,7 +85,9 @@ const FormLabel = React.forwardRef<
 >(({className, ...props}, ref) => {
 	const {error, formItemId} = useFormField();
 
-	return <Label ref={ref} className={cn(error && "text-destructive", className)} htmlFor={formItemId} {...props} />;
+	return <Label ref={ref}
+				  className={cn(error && "text-destructive", className)}
+				  htmlFor={formItemId} {...props} />;
 });
 FormLabel.displayName = "FormLabel";
 
@@ -90,7 +99,8 @@ const FormControl = React.forwardRef<React.ElementRef<typeof Slot>, React.Compon
 			<Slot
 				ref={ref}
 				id={formItemId}
-				aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
+				aria-describedby={!error ? `${formDescriptionId}`
+										 : `${formDescriptionId} ${formMessageId}`}
 				aria-invalid={!!error}
 				{...props}
 			/>
@@ -134,4 +144,13 @@ const FormMessage = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<
 );
 FormMessage.displayName = "FormMessage";
 
-export {useFormField, Form, FormItem, FormLabel, FormControl, FormDescription, FormMessage, FormField};
+export {
+	useFormField,
+	Form,
+	FormItem,
+	FormLabel,
+	FormControl,
+	FormDescription,
+	FormMessage,
+	FormField
+};

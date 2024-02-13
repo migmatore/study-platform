@@ -3,48 +3,48 @@ import styles from "./Pages.module.css";
 import authService from "../services/auth.service.ts";
 
 const Signup = () => {
-	const [admin, setAdmin] = useState(false)
+	const [admin, setAdmin] = useState(false);
 	const [credentials, setCredentials] = useState({
-		email: '',
-		password: '',
-		fullName: '',
-		institutionName: '',
-		role: '',
-	})
+		email: "",
+		password: "",
+		fullName: "",
+		institutionName: "",
+		role: "",
+	});
 
 	const OnSelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
-		setCredentials(prev=> ({...prev, role: e.target.value}))
+		setCredentials(prev => ({...prev, role: e.target.value}));
 
 		if (e.target.value == "admin") {
-			setAdmin(true)
+			setAdmin(true);
 		} else {
-			setAdmin(false)
+			setAdmin(false);
 		}
-	}
+	};
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
 			...credentials,
-			[e.target.name]: e.target.value
+			[e.target.name]: e.target.value,
 		});
-	}
+	};
 
 	const handleSignup = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
 		try {
-			const resp = await authService.signup(credentials)
+			const resp = await authService.signup(credentials);
 			const {token, refreshToken, role} = resp.data;
 
-			console.log(resp.data)
+			console.log(resp.data);
 
-			localStorage.setItem('token', token)
-			localStorage.setItem('refreshToken', refreshToken)
-			localStorage.setItem('role', role)
+			localStorage.setItem("token", token);
+			localStorage.setItem("refreshToken", refreshToken);
+			localStorage.setItem("role", role);
 		} catch (error) {
-			console.log(error)
+			console.log(error);
 		}
-	}
+	};
 
 	return (
 		<div className="h-screen w-full flex justify-center items-center">
@@ -61,7 +61,7 @@ const Signup = () => {
 							<select id="countries"
 									className={styles.select}
 									onChange={OnSelect}
-									defaultValue={credentials.role || 'teacher'}>
+									defaultValue={credentials.role || "teacher"}>
 								<option value="teacher">Учитель</option>
 								<option value="admin">Администратор учебного заведения</option>
 							</select>
@@ -72,28 +72,52 @@ const Signup = () => {
 										   className={styles.input} value={credentials.institutionName}
 										   onChange={handleChange}/>
 									<label className="block">ФИО</label>
-									<input type="text" name="fullName" placeholder="ФИО" className={styles.input}
-										   value={credentials.fullName} onChange={handleChange}/>
+									<input type="text"
+										   name="fullName"
+										   placeholder="ФИО"
+										   className={styles.input}
+										   value={credentials.fullName}
+										   onChange={handleChange}/>
 									<label className="block">Email</label>
-									<input type="text" name="email" placeholder="Email" className={styles.input}
-										   value={credentials.email} onChange={handleChange}/>
+									<input type="text"
+										   name="email"
+										   placeholder="Email"
+										   className={styles.input}
+										   value={credentials.email}
+										   onChange={handleChange}/>
 									<label className="block">Пароль</label>
-									<input type="text" name="password" placeholder="Пароль" className={styles.input}
-										   value={credentials.password} onChange={handleChange}/>
+									<input type="text"
+										   name="password"
+										   placeholder="Пароль"
+										   className={styles.input}
+										   value={credentials.password}
+										   onChange={handleChange}/>
 								</div>
 							) : (
-								<div className="space-y-4">
-									<label className="block">ФИО</label>
-									<input type="text" name="fullName" placeholder="ФИО" className={styles.input}
-										   value={credentials.fullName} onChange={handleChange}/>
-									<label className="block">Email</label>
-									<input type="text" name="email" placeholder="Email" className={styles.input}
-										   value={credentials.email} onChange={handleChange}/>
-									<label className="block">Пароль</label>
-									<input type="text" name="password" placeholder="Пароль" className={styles.input}
-										   value={credentials.password} onChange={handleChange}/>
-								</div>
-							)}
+								 <div className="space-y-4">
+									 <label className="block">ФИО</label>
+									 <input type="text"
+											name="fullName"
+											placeholder="ФИО"
+											className={styles.input}
+											value={credentials.fullName}
+											onChange={handleChange}/>
+									 <label className="block">Email</label>
+									 <input type="text"
+											name="email"
+											placeholder="Email"
+											className={styles.input}
+											value={credentials.email}
+											onChange={handleChange}/>
+									 <label className="block">Пароль</label>
+									 <input type="text"
+											name="password"
+											placeholder="Пароль"
+											className={styles.input}
+											value={credentials.password}
+											onChange={handleChange}/>
+								 </div>
+							 )}
 						</div>
 						<div className="space-y-4 flex flex-col px-7">
 							<button className={styles.btn} onClick={handleSignup}>
@@ -104,7 +128,7 @@ const Signup = () => {
 				</div>
 			</div>
 		</div>
-	)
-}
+	);
+};
 
-export default Signup
+export default Signup;

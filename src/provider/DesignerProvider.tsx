@@ -15,21 +15,21 @@ type DesignerContextType = {
 export const DesignerContext = createContext<DesignerContextType | null>(null);
 
 const DesignerProvider = ({children}: PropsWithChildren) => {
-	const [elements, setElements] = useState<LessonElementInstance[]>([])
-	const [selectedElement, setSelectedElement] = useState<LessonElementInstance | null>(null)
+	const [elements, setElements] = useState<LessonElementInstance[]>([]);
+	const [selectedElement, setSelectedElement] = useState<LessonElementInstance | null>(null);
 
 	const addElement = (index: number, element: LessonElementInstance) => {
 		setElements(prev => {
 			const newElements = [...prev];
-			newElements.splice(index, 0, element)
+			newElements.splice(index, 0, element);
 
-			return newElements
-		})
-	}
+			return newElements;
+		});
+	};
 
 	const removeElement = (id: string) => {
 		setElements(prev => prev.filter(element => element.id !== id));
-	}
+	};
 
 	const updateElement = (id: string, element: LessonElementInstance) => {
 		setElements(prev => {
@@ -38,8 +38,8 @@ const DesignerProvider = ({children}: PropsWithChildren) => {
 			newElements[index] = element;
 
 			return newElements;
-		})
-	}
+		});
+	};
 
 	return <DesignerContext.Provider value={{
 		elements,
@@ -48,7 +48,7 @@ const DesignerProvider = ({children}: PropsWithChildren) => {
 		selectedElement,
 		setSelectedElement,
 		updateElement,
-	}}>{children}</DesignerContext.Provider>
-}
+	}}>{children}</DesignerContext.Provider>;
+};
 
 export default DesignerProvider;

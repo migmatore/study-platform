@@ -11,7 +11,7 @@ interface SidebarItemProps {
 }
 
 const SidebarItem = ({icon, text, to}: SidebarItemProps) => {
-	const {expanded} = useContext(SidebarContext)
+	const {expanded} = useContext(SidebarContext);
 
 	return (
 		<NavLink to={to}

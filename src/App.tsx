@@ -14,7 +14,7 @@ const App = () => {
 				</AuthProvider>
 			</ThemeProvider>
 		</main>
-	)
-}
+	);
+};
 
 export default App;

@@ -13,7 +13,7 @@ import EditLesson from "../pages/EditLesson.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 
 const Routes = () => {
-	const { token } = useAuth();
+	const {token} = useAuth();
 
 	const authOnlyRoutes: RouteObject[] = [
 		{
@@ -30,7 +30,7 @@ const Routes = () => {
 							children: [
 								{
 									path: "/profile",
-									element: <Home/>
+									element: <Home/>,
 								},
 								{
 									path: "/classrooms",
@@ -38,15 +38,15 @@ const Routes = () => {
 									children: [
 										{
 											path: ":classroomId",
-											element: <div>Classroom inside</div>
-										}
-									]
+											element: <div>Classroom inside</div>,
+										},
+									],
 								},
 								{
 									path: "/logout",
-									element: <Logout/>
+									element: <Logout/>,
 								},
-							]
+							],
 						},
 						{
 							path: "/",
@@ -54,7 +54,7 @@ const Routes = () => {
 							children: [
 								{
 									path: "/students",
-									element: <h1>Students</h1>
+									element: <h1>Students</h1>,
 								},
 								{
 									path: "/classrooms/:classroomId",
@@ -66,10 +66,10 @@ const Routes = () => {
 										{
 											path: "lessons/:lessonId/edit",
 											element: <EditLesson/>,
-										}
-									]
+										},
+									],
 								},
-							]
+							],
 						},
 						{
 							path: "/",
@@ -77,38 +77,38 @@ const Routes = () => {
 							children: [
 								{
 									path: "/institution",
-									element: <h1>Institution</h1>
+									element: <h1>Institution</h1>,
 								},
 								{
 									path: "/teachers",
-									element: <h1>Teachers</h1>
+									element: <h1>Teachers</h1>,
 								},
-							]
+							],
 						},
-					]
+					],
 				},
-			]
+			],
 		},
 		{
 			path: "*",
-			element: <Navigate to="/"/>
-		}
-	]
+			element: <Navigate to="/"/>,
+		},
+	];
 
 	const notAuthOnlyRoutes: RouteObject[] = [
 		{
 			path: "/login",
-			element: <Login/>
+			element: <Login/>,
 		},
 		{
 			path: "/signup",
-			element: <Signup/>
+			element: <Signup/>,
 		},
 		{
 			path: "*",
 			element: <Navigate to="/login"/>,
-		}
-	]
+		},
+	];
 
 	const router = createBrowserRouter([
 		...(!token ? notAuthOnlyRoutes : []),
@@ -116,6 +116,6 @@ const Routes = () => {
 	]);
 
 	return <RouterProvider router={router}/>;
-}
+};
 
 export default Routes;

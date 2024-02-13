@@ -26,6 +26,6 @@ const PropertiesFormSidebar = () => {
 			<PropertiesForm elementInstance={selectedElement}/>
 		</div>
 	);
-}
+};
 
 export default PropertiesFormSidebar;

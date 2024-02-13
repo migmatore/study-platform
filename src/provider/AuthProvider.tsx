@@ -14,18 +14,18 @@ const defaultState: IAuthContext = {
 	token: null,
 	refreshToken: null,
 	role: Roles.Student,
-}
+};
 
 export const AuthContext = createContext<IAuthContext>(defaultState);
 
 const AuthProvider = ({children}: PropsWithChildren) => {
-	const [token, setToken_] = useState(localStorage.getItem('token'));
+	const [token, setToken_] = useState(localStorage.getItem("token"));
 	const [
 		refreshToken,
-		setRefreshToken_
-	] = useState(localStorage.getItem('refreshToken'))
+		setRefreshToken_,
+	] = useState(localStorage.getItem("refreshToken"));
 	const [role, setRole_] = useState<Roles>(
-		enumFromValue(localStorage.getItem('role') || "student", Roles)
+		enumFromValue(localStorage.getItem("role") || "student", Roles),
 	);
 
 	const setToken = (newToken: SetStateAction<string | null>) => {
@@ -33,24 +33,24 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 	};
 
 	const setRefreshToken = (newToken: SetStateAction<string | null>) => {
-		setRefreshToken_(newToken)
-	}
+		setRefreshToken_(newToken);
+	};
 
 	const setRole = (role: SetStateAction<Roles>) => {
-		setRole_(role)
-	}
+		setRole_(role);
+	};
 
 	useEffect(() => {
 		if (token && refreshToken && role) {
-			localStorage.setItem('token', token);
-			localStorage.setItem('refreshToken', refreshToken)
-			localStorage.setItem('role', role.toString())
+			localStorage.setItem("token", token);
+			localStorage.setItem("refreshToken", refreshToken);
+			localStorage.setItem("role", role.toString());
 		} else {
-			localStorage.removeItem('token');
-			localStorage.removeItem('refreshToken');
-			localStorage.removeItem('role')
+			localStorage.removeItem("token");
+			localStorage.removeItem("refreshToken");
+			localStorage.removeItem("role");
 		}
-	}, [token, refreshToken, role])
+	}, [token, refreshToken, role]);
 
 	const contextValue = useMemo(
 		() => ({
@@ -58,14 +58,14 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 			refreshToken, setRefreshToken,
 			role, setRole,
 		}),
-		[token, refreshToken, role]
+		[token, refreshToken, role],
 	);
 
 	return (
 		<AuthContext.Provider value={contextValue}>
 			{children}
 		</AuthContext.Provider>
-	)
-}
+	);
+};
 
 export default AuthProvider;

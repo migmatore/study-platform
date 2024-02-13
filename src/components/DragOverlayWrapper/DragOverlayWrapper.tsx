@@ -23,14 +23,14 @@ const DragOverlayWrapper = () => {
 	if (!draggedItem) return null;
 
 	let node = <div>Overlay</div>;
-	const isSidebarBtnElement = draggedItem.data?.current?.isDesignerBtnElement as boolean | null;
+	const isSidebarBtnElement = draggedItem.data?.current?.isDesignerBtnElement as boolean | undefined;
 
 	if (isSidebarBtnElement) {
 		const type = draggedItem.data?.current?.type as ElementsType;
 		node = <SidebarBtnElementDragOverlay lessonElement={LessonElements[type]}/>;
 	}
 
-	const isDesignerElement = draggedItem.data?.current?.isDesignerElement  as boolean | null;
+	const isDesignerElement = draggedItem.data?.current?.isDesignerElement  as boolean | undefined;
 
 	if (isDesignerElement) {
 		const elementId = draggedItem.data?.current?.elementId as string;

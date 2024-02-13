@@ -10,14 +10,14 @@ type Params = {
 }
 
 const EditLesson = () => {
-	const {lessonId} = useParams<Params>()
+	const {lessonId} = useParams<Params>();
 
 	const mouseSensor = useSensor(MouseSensor, {
 		activationConstraint: {
-			distance: 10,
+			distance: 5,
 		},
-	})
-	const sensors = useSensors(mouseSensor)
+	});
+	const sensors = useSensors(mouseSensor);
 
 	return (
 		<DndContext sensors={sensors}>
@@ -25,7 +25,7 @@ const EditLesson = () => {
 				<div className="flex p-4 flex-col border-b">
 					<h1 className="text-2xl dark:text-muted-foreground">Конструктор уроков</h1>
 					<div className="flex justify-between items-center">
-						<p>Урок: {lessonId}</p>
+						<p className="text-muted-foreground">Урок: {lessonId}</p>
 						<div className="flex gap-2">
 							<PreviewDialogBtn/>
 							<SaveLessonBtn/>
@@ -40,7 +40,7 @@ const EditLesson = () => {
 			</div>
 			<DragOverlayWrapper/>
 		</DndContext>
-	)
-}
+	);
+};
 
 export default EditLesson;

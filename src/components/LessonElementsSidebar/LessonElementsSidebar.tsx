@@ -16,6 +16,6 @@ const LessonElementsSidebar = () => {
 			</div>
 		</div>
 	);
-}
+};
 
 export default LessonElementsSidebar;

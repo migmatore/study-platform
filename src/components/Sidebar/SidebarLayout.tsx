@@ -41,7 +41,7 @@ const adminItems: ISidebarItemProp[] = [
 		icon: <IconContext.Provider value={{size: "20px"}}><PiUsersThreeBold/></IconContext.Provider>,
 		text: "Ученики",
 	},
-]
+];
 
 const teacherItems: ISidebarItemProp[] = [
 	{
@@ -59,7 +59,7 @@ const teacherItems: ISidebarItemProp[] = [
 		icon: <IconContext.Provider value={{size: "20px"}}><PiUsersThreeBold/></IconContext.Provider>,
 		text: "Ученики",
 	},
-]
+];
 
 const studentItems: ISidebarItemProp[] = [
 	{
@@ -72,7 +72,7 @@ const studentItems: ISidebarItemProp[] = [
 		icon: <IconContext.Provider value={{size: "20px"}}><FaUsersRectangle/></IconContext.Provider>,
 		text: "Классы",
 	},
-]
+];
 
 interface ISidebarItems {
 	role: Roles;
@@ -92,7 +92,7 @@ const sidebarItems: ISidebarItems[] = [
 		role: Roles.Student,
 		items: studentItems,
 	},
-]
+];
 
 const SidebarLayout = () => {
 	const {role} = useAuth();
@@ -102,11 +102,14 @@ const SidebarLayout = () => {
 			<Sidebar>
 				{sidebarItems.filter((item) => item.role == role).map((item) =>
 					item.items.map((roleItem, i) =>
-						<SidebarItem key={i} to={roleItem.to} icon={roleItem.icon} text={roleItem.text}/>))}
+						<SidebarItem key={i}
+									 to={roleItem.to}
+									 icon={roleItem.icon}
+									 text={roleItem.text}/>))}
 			</Sidebar>
 			<Outlet/>
 		</>
-	)
-}
+	);
+};
 
-export default SidebarLayout
+export default SidebarLayout;

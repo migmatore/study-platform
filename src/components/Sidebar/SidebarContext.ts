@@ -6,6 +6,6 @@ interface ISidebarContext {
 
 const defaultState: ISidebarContext = {
 	expanded: false,
-}
+};
 
-export const SidebarContext = createContext<ISidebarContext>(defaultState)
+export const SidebarContext = createContext<ISidebarContext>(defaultState);

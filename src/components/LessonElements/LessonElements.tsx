@@ -43,4 +43,4 @@ type LessonElementsType = {
 export const LessonElements: LessonElementsType = {
 	TextField: TextFieldLessonElement,
 	TitleField: TitleFieldLessonElement,
-}
+};

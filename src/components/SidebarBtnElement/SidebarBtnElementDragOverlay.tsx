@@ -1,9 +1,8 @@
 import {LessonElement} from "../LessonElements/LessonElements.tsx";
 
 interface Props {
-	lessonElement: LessonElement
+	lessonElement: LessonElement;
 }
-
 
 const SidebarBtnElementDragOverlay = ({lessonElement}: Props) => {
 	const {label, icon: Icon} = lessonElement.designerBtnElement;
@@ -14,7 +13,7 @@ const SidebarBtnElementDragOverlay = ({lessonElement}: Props) => {
 			<Icon className="h-8 w-8 cursor-grab"/>
 			<p className="text-xs">{label}</p>
 		</button>
-	)
-}
+	);
+};
 
 export default SidebarBtnElementDragOverlay;

@@ -3,7 +3,7 @@ import {
 	IDesignerComponentProps,
 	IPropertiesComponentProps,
 	LessonElement,
-	LessonElementInstance
+	LessonElementInstance,
 } from "./LessonElements.tsx";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
@@ -19,7 +19,7 @@ const type: ElementsType = "TitleField";
 
 const extraAttributes = {
 	title: "Title field",
-}
+};
 
 const propertiesSchema = z.object({
 	title: z.string().min(2, {message: "Должно быть минимум 2 символа"}).max(50),
@@ -39,7 +39,7 @@ export const TitleFieldLessonElement: LessonElement = {
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
 	propertiesComponent: PropertiesComponent,
-}
+};
 
 type CustomInstance = LessonElementInstance & {
 	extraAttributes: typeof extraAttributes,
@@ -78,12 +78,12 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 		mode: "onBlur",
 		defaultValues: {
 			title: element.extraAttributes.title,
-		}
-	})
+		},
+	});
 
 	useEffect(() => {
 		form.reset(element.extraAttributes);
-	}, [element, form])
+	}, [element, form]);
 
 	const applyChanges = (values: propertiesFormSchemaType) => {
 		const {title} = values;
@@ -92,9 +92,9 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 			...element,
 			extraAttributes: {
 				title,
-			}
+			},
 		});
-	}
+	};
 
 	return <Form {...form}>
 		<form onBlur={form.handleSubmit(applyChanges)}
@@ -106,12 +106,14 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 					<FormControl>
 						<Input {...field}
 							   onKeyDown={(e) => {
-								   if (e.key === "Enter") e.currentTarget.blur();
+								   if (e.key === "Enter") {
+									   e.currentTarget.blur();
+								   }
 							   }}/>
 					</FormControl>
 					<FormMessage/>
 				</FormItem>
 			)}/>
 		</form>
-	</Form>
+	</Form>;
 }

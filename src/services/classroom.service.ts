@@ -8,7 +8,7 @@ class ClassroomService {
 	}
 
 	async getLessons(classroomId: string) {
-		return await apiClient.get<ILessonsResp[]> (`/classrooms/${classroomId}/lessons`)
+		return await apiClient.get<ILessonsResp[]>(`/classrooms/${classroomId}/lessons`);
 	}
 }
 

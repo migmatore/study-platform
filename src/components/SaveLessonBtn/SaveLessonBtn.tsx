@@ -10,6 +10,6 @@ const SaveLessonBtn = () => {
 			</Button>
 		</div>
 	);
-}
+};
 
 export default SaveLessonBtn;

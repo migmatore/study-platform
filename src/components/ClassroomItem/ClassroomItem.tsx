@@ -13,10 +13,10 @@ const ClassroomItem = ({id, title, description}: Props) => {
 	const navigate = useNavigate();
 
 	const handleInside = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		e.preventDefault()
+		e.preventDefault();
 
-		navigate(`${id}/lessons`)
-	}
+		navigate(`${id}/lessons`);
+	};
 
 	return (
 		<div className="flex justify-between border p-5 rounded-lg">
@@ -36,6 +36,6 @@ const ClassroomItem = ({id, title, description}: Props) => {
 			</div>
 		</div>
 	);
-}
+};
 
 export default ClassroomItem;

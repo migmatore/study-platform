@@ -11,22 +11,22 @@ type Params = {
 }
 
 const Lessons = () => {
-	const { classroomId } = useParams<Params>()
+	const {classroomId} = useParams<Params>();
 
-	const [lessons, setLessons] = useState<ILessonsResp[]>()
+	const [lessons, setLessons] = useState<ILessonsResp[]>();
 
 	useEffect(() => {
 		const getLessons = async () => {
 			try {
 				const resp = await classroomService.getLessons(classroomId!.toString());
-				console.log(resp.data)
+				console.log(resp.data);
 				if (!ignore) {
 					setLessons(resp.data);
 				}
 			} catch (error) {
-				console.log(error)
+				console.log(error);
 			}
-		}
+		};
 
 		let ignore = false;
 
@@ -34,7 +34,7 @@ const Lessons = () => {
 
 		return () => {
 			ignore = true;
-		}
+		};
 	}, [classroomId]);
 
 	return (
@@ -52,6 +52,6 @@ const Lessons = () => {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Lessons;

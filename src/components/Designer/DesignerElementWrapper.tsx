@@ -10,7 +10,7 @@ interface Props {
 }
 
 const DesignerElementWrapper = ({element}: Props) => {
-	const {removeElement, selectedElement, setSelectedElement} = useDesigner();
+	const {removeElement, setSelectedElement} = useDesigner();
 
 	const [mouseIsOver, setMouseIsOver] = useState<boolean>(false);
 
@@ -39,7 +39,7 @@ const DesignerElementWrapper = ({element}: Props) => {
 			elementId: element.id,
 			isDesignerElement: true,
 		},
-	})
+	});
 
 	if (draggable.isDragging) return null;
 
@@ -64,8 +64,8 @@ const DesignerElementWrapper = ({element}: Props) => {
 			)}
 			<div className={cn(
 				"flex w-full h-[120px] items-center bg-white/40 rounded-lg px-4 py-2 pointer-events-none opacity-100",
-					mouseIsOver && "opacity-30",
-				)}>
+				mouseIsOver && "opacity-30",
+			)}>
 				<DesignerElement elementInstance={element}/>
 			</div>
 			{bottomHalf.isOver && (
@@ -93,6 +93,6 @@ const DesignerElementWrapper = ({element}: Props) => {
 			)}
 		</div>
 	);
-}
+};
 
 export default DesignerElementWrapper;

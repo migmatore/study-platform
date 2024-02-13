@@ -6,20 +6,20 @@ import {Plus} from "lucide-react";
 import Button from "../components/ui/Button/Button.tsx";
 
 const Classrooms = () => {
-	const [classrooms, setClassrooms] = useState<IClassroomResp[]>()
+	const [classrooms, setClassrooms] = useState<IClassroomResp[]>();
 
 	useEffect(() => {
 		const getClassrooms = async () => {
 			try {
 				const resp = await classroomService.getClassrooms();
-				console.log(resp.data)
+				console.log(resp.data);
 				if (!ignore) {
 					setClassrooms(resp.data);
 				}
 			} catch (error) {
-				console.log(error)
+				console.log(error);
 			}
-		}
+		};
 
 		let ignore = false;
 
@@ -27,7 +27,7 @@ const Classrooms = () => {
 
 		return () => {
 			ignore = true;
-		}
+		};
 	}, []);
 
 	return (
@@ -45,6 +45,6 @@ const Classrooms = () => {
 			</div>
 		</div>
 	);
-}
+};
 
 export default Classrooms;

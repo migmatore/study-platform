@@ -12,6 +12,6 @@ const DesignerSidebar = () => {
 			{selectedElement && <PropertiesFormSidebar/>}
 		</aside>
 	);
-}
+};
 
 export default DesignerSidebar;
