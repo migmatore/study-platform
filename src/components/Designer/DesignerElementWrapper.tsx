@@ -49,7 +49,7 @@ const DesignerElementWrapper = ({element}: Props) => {
 		<div ref={draggable.setNodeRef}
 			 {...draggable.listeners}
 			 {...draggable.attributes}
-			 className="relative h-[120px] flex flex-col hover:cursor-pointer rounded-lg ring-1 ring-gray-100"
+			 className="relative h-[120px] flex flex-col hover:cursor-pointer rounded-lg ring-1 ring-gray-200/80 dark:ring-accent"
 			 onMouseEnter={() => setMouseIsOver(true)}
 			 onMouseLeave={() => setMouseIsOver(false)}
 			 onClick={(e) => {
@@ -63,7 +63,7 @@ const DesignerElementWrapper = ({element}: Props) => {
 				<div className="absolute top-0 w-full rounded-lg h-[7px] bg-blue-300 rounded-b-none"/>
 			)}
 			<div className={cn(
-				"flex w-full h-[120px] items-center bg-white/40 rounded-lg px-4 py-2 pointer-events-none opacity-100",
+				"flex w-full h-[120px] items-center bg-white/40 dark:bg-accent rounded-lg px-4 py-2 pointer-events-none opacity-100",
 				mouseIsOver && "opacity-30",
 			)}>
 				<DesignerElement elementInstance={element}/>
@@ -85,7 +85,7 @@ const DesignerElementWrapper = ({element}: Props) => {
 						</button>
 					</div>
 					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-pulse">
-						<p className="text-gray-600 text-sm">
+						<p className="text-muted-foreground text-sm">
 							Нажмите чтобы увидеть настройки элемента или перетяните его
 						</p>
 					</div>

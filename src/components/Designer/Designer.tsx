@@ -124,13 +124,13 @@ const Designer = () => {
 						 droppable.isOver && "ring-1 ring-blue-500",
 					 )}>
 					{!droppable.isOver && elements.length === 0 && (
-						<p className="text-3xl flex flex-grow items-center font-bold">
+						<p className="text-3xl flex flex-grow items-center font-bold text-muted-foreground">
 							Перетащить сюда
 						</p>
 					)}
 					{droppable.isOver && elements.length === 0 && (
 						<div className="p-4 w-full">
-							<div className="h-[120px] rounded-lg bg-gray-100"></div>
+							<div className="h-[120px] rounded-lg bg-gray-100 dark:bg-gray-800"></div>
 						</div>
 					)}
 					{elements.length > 0 && (

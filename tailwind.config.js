@@ -10,28 +10,36 @@ export default {
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
-                ring: "hsl(var(--ring))",
-                background: "hsl(var(--background))",
-                foreground: "hsl(var(--foreground))",
+                //ring: "hsl(var(--ring))",
+                background: "var(--background)",
+                foreground: "var(--foreground)",
                 primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
+                    DEFAULT: "var(--primary)",
+                    foreground: "var(--primary-foreground)",
+                    hover: "var(--primary-hover)",
                 },
                 secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
+                    DEFAULT: "var(--secondary)",
+                    foreground: "var(--secondary-foreground)",
+                    hover: "var(--secondary-hover)",
+                },
+                error: {
+                    DEFAULT: "var(--error)",
+                    foreground: "var(--error-foreground)",
+                    hover: "var(--error-hover)",
                 },
                 destructive: {
                     DEFAULT: "hsl(var(--destructive))",
                     foreground: "hsl(var(--destructive-foreground))",
                 },
                 muted: {
-                    DEFAULT: "hsl(var(--muted))",
-                    foreground: "hsl(var(--muted-foreground))",
+                    DEFAULT: "var(--muted)",
+                    foreground: "var(--muted-foreground)",
                 },
                 accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
+                    DEFAULT: "var(--accent)",
+                    foreground: "var(--accent-foreground)",
+                    hover: "var(--accent-hover)",
                 },
                 popover: {
                     DEFAULT: "hsl(var(--popover))",
@@ -42,11 +50,11 @@ export default {
                     foreground: "hsl(var(--card-foreground))",
                 },
             },
-            borderRadius: {
-                lg: "var(--radius)",
-                md: "calc(var(--radius) - 2px)",
-                sm: "calc(var(--radius) - 4px)",
-            },
+            // borderRadius: {
+            //     lg: "var(--radius)",
+            //     md: "calc(var(--radius) - 2px)",
+            //     sm: "calc(var(--radius) - 4px)",
+            // },
             keyframes: {
                 "accordion-down": {
                     from: {height: 0},

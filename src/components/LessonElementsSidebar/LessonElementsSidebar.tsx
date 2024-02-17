@@ -11,8 +11,16 @@ const LessonElementsSidebar = () => {
 				<p className="text-sm col-span-1 md:col-span-2 my-2 place-self-start">
 					Layout elements
 				</p>
-				<SidebarBtnElement lessonElement={LessonElements.TextField}/>
 				<SidebarBtnElement lessonElement={LessonElements.TitleField}/>
+				<SidebarBtnElement lessonElement={LessonElements.SubtitleField}/>
+				<SidebarBtnElement lessonElement={LessonElements.ParagraphField}/>
+				<SidebarBtnElement lessonElement={LessonElements.SeparatorField}/>
+				<SidebarBtnElement lessonElement={LessonElements.SpacerField}/>
+
+				<p className="text-sm col-span-1 md:col-span-2 my-2 place-self-start">
+					Lesson elements
+				</p>
+				<SidebarBtnElement lessonElement={LessonElements.TextField}/>
 			</div>
 		</div>
 	);

@@ -1,8 +1,8 @@
 import {Dialog, DialogContent, DialogTrigger} from "../ui/Dialog/Dialog.tsx";
-import Button from "../ui/Button/Button.tsx";
 import {ScanEye} from "lucide-react";
 import useDesigner from "../../hooks/useDesigner.tsx";
 import {LessonElements} from "../LessonElements/LessonElements.tsx";
+import {Button} from "../ui/Button/Button.tsx";
 
 const PreviewDialogBtn = () => {
 	const {elements} = useDesigner();
@@ -10,7 +10,8 @@ const PreviewDialogBtn = () => {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button className="flex gap-2 border bg-background hover:bg-secondary text-foreground hover:text-background">
+				<Button variant="outline"
+						className="flex gap-2 border">
 					<ScanEye size={20}/>
 					Предварительный просмотр
 				</Button>
@@ -20,13 +21,13 @@ const PreviewDialogBtn = () => {
 					<p className="text-lg font-bold text-gray-600">
 						Предварительный просмотр урока
 					</p>
-					<p className="text-sm text-gray-600">
+					<p className="text-sm text-muted-foreground">
 						Это то, как Ваш урок будет выглядеть для учеников
 					</p>
 				</div>
-				<div className="bg-accent flex flex-col flex-grow items-center justify-center
-					p-4 bg-[url(/graph-paper.svg)] overflow-y-auto">
-					<div className="max-w-[920px] flex flex-col gap-4 flex-grow bg-background w-full rounded-lg p-8
+				<div className="bg-background flex flex-col flex-grow items-center justify-center
+					p-4 bg-[url(/graph-paper.svg)] dark:bg-[url(/graph-paper-dark.svg)] overflow-y-auto">
+					<div className="max-w-[920px] flex flex-col gap-4 flex-grow bg-background border w-full rounded-lg p-8
 						overflow-y-auto">
 						{elements.map(element => {
 							const LessonComponent = LessonElements[element.type].lessonComponent;
@@ -38,6 +39,6 @@ const PreviewDialogBtn = () => {
 			</DialogContent>
 		</Dialog>
 	);
-}
+};
 
 export default PreviewDialogBtn;

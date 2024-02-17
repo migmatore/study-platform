@@ -1,7 +1,17 @@
 import {TextFieldLessonElement} from "./TextField.tsx";
 import {TitleFieldLessonElement} from "./TitleField.tsx";
+import {SubtitleFieldLessonElement} from "./SubtitleField.tsx";
+import {ParagraphFieldLessonElement} from "./ParahraphField.tsx";
+import {SeparatorFieldLessonElement} from "./SeparatorField.tsx";
+import {SpacerFieldLessonElement} from "./SpacerField.tsx";
 
-export type ElementsType = "TextField" | "TitleField";
+export type ElementsType =
+	"TextField"
+	| "TitleField"
+	| "SubtitleField"
+	| "ParagraphField"
+	| "SeparatorField"
+	| "SpacerField";
 
 export interface IDesignerComponentProps {
 	elementInstance: LessonElementInstance;
@@ -43,4 +53,8 @@ type LessonElementsType = {
 export const LessonElements: LessonElementsType = {
 	TextField: TextFieldLessonElement,
 	TitleField: TitleFieldLessonElement,
+	SubtitleField: SubtitleFieldLessonElement,
+	ParagraphField: ParagraphFieldLessonElement,
+	SeparatorField: SeparatorFieldLessonElement,
+	SpacerField: SpacerFieldLessonElement,
 };

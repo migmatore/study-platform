@@ -91,6 +91,7 @@ function LessonComponent({elementInstance}: IDesignerComponentProps) {
 				   transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium
 				   placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1
 				   focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"/>
+			<p className="text-muted-foreground text-sm">{helperText}</p>
 		</div>
 	);
 }
@@ -192,9 +193,9 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 			<FormField control={form.control} name="required" render={({field}) => (
 				<FormItem className="flex items-center justify-between rounded-lg border p-3">
 					<div className="space-y-0.5">
-						<FormLabel>Placeholder</FormLabel>
+						<FormLabel>Required</FormLabel>
 						<FormDescription>
-							The placeholder of the field.
+							Is field required.
 						</FormDescription>
 					</div>
 					<FormControl>

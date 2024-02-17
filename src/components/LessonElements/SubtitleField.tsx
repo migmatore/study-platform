@@ -12,20 +12,20 @@ import {useEffect} from "react";
 import useDesigner from "../../hooks/useDesigner.tsx";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "../ui/Form/Form.tsx";
 import {Input} from "../ui/Input/Input.tsx";
-import {LuHeading1} from "react-icons/lu";
+import {LuHeading2} from "react-icons/lu";
 import {Label} from "../ui/Label/Label.tsx";
 
-const type: ElementsType = "TitleField";
+const type: ElementsType = "SubtitleField";
 
 const extraAttributes = {
-	title: "Title field",
+	subtitle: "Subtitle field",
 };
 
 const propertiesSchema = z.object({
-	title: z.string().min(2, {message: "Должно быть минимум 2 символа"}).max(50),
+	subtitle: z.string().min(2, {message: "Должно быть минимум 2 символа"}).max(50),
 });
 
-export const TitleFieldLessonElement: LessonElement = {
+export const SubtitleFieldLessonElement: LessonElement = {
 	type,
 	construct: (id: string) => ({
 		id,
@@ -33,8 +33,8 @@ export const TitleFieldLessonElement: LessonElement = {
 		extraAttributes,
 	}),
 	designerBtnElement: {
-		icon: LuHeading1,
-		label: "Title field",
+		icon: LuHeading2,
+		label: "Subtitle field",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
@@ -49,23 +49,23 @@ type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
 function DesignerComponent({elementInstance}: IDesignerComponentProps) {
 	const element = elementInstance as CustomInstance;
-	const {title} = element.extraAttributes;
+	const {subtitle} = element.extraAttributes;
 
 	return (
 		<div className="flex flex-col gap-2 w-full">
 			<Label className="text-muted-foreground">
-				Title field
+				Subtitle field
 			</Label>
-			<p className="text-2xl">{title}</p>
+			<p className="text-lg">{subtitle}</p>
 		</div>
 	);
 }
 
 function LessonComponent({elementInstance}: IDesignerComponentProps) {
 	const element = elementInstance as CustomInstance;
-	const {title} = element.extraAttributes;
+	const {subtitle} = element.extraAttributes;
 
-	return <p className="text-2xl">{title}</p>;
+	return <p className="text-lg">{subtitle}</p>;
 }
 
 function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
@@ -75,7 +75,7 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 		resolver: zodResolver(propertiesSchema),
 		mode: "onBlur",
 		defaultValues: {
-			title: element.extraAttributes.title,
+			subtitle: element.extraAttributes.subtitle,
 		},
 	});
 
@@ -84,12 +84,12 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 	}, [element, form]);
 
 	const applyChanges = (values: propertiesFormSchemaType) => {
-		const {title} = values;
+		const {subtitle} = values;
 
 		updateElement(element.id, {
 			...element,
 			extraAttributes: {
-				title,
+				subtitle,
 			},
 		});
 	};
@@ -98,9 +98,9 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 		<form onBlur={form.handleSubmit(applyChanges)}
 			  onSubmit={(e) => e.preventDefault()}
 			  className="space-y-3">
-			<FormField control={form.control} name="title" render={({field}) => (
+			<FormField control={form.control} name="subtitle" render={({field}) => (
 				<FormItem>
-					<FormLabel>Title</FormLabel>
+					<FormLabel>Subitle</FormLabel>
 					<FormControl>
 						<Input {...field}
 							   onKeyDown={(e) => {

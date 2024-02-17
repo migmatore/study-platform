@@ -23,7 +23,7 @@ const EditLesson = () => {
 		<DndContext sensors={sensors}>
 			<div className="w-full flex flex-col">
 				<div className="flex p-4 flex-col border-b">
-					<h1 className="text-2xl dark:text-muted-foreground">Конструктор уроков</h1>
+					<h1 className="text-2xl">Конструктор уроков</h1>
 					<div className="flex justify-between items-center">
 						<p className="text-muted-foreground">Урок: {lessonId}</p>
 						<div className="flex gap-2">
@@ -34,7 +34,7 @@ const EditLesson = () => {
 				</div>
 				<div
 					className="w-full h-[200px] flex flex-col flex-grow items-center justify-center bg-background
-					overflow-y-auto bg-[url(/graph-paper.svg)]">
+					overflow-y-auto bg-[url(/graph-paper.svg)] dark:bg-[url(/graph-paper-dark.svg)]">
 					<Designer/>
 				</div>
 			</div>

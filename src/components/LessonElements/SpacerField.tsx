@@ -12,20 +12,21 @@ import {useEffect} from "react";
 import useDesigner from "../../hooks/useDesigner.tsx";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "../ui/Form/Form.tsx";
 import {Input} from "../ui/Input/Input.tsx";
-import {LuHeading1} from "react-icons/lu";
+import {LuSeparatorHorizontal} from "react-icons/lu";
 import {Label} from "../ui/Label/Label.tsx";
+import {Slider} from "../ui/Slider/Slider.tsx";
 
-const type: ElementsType = "TitleField";
+const type: ElementsType = "SpacerField";
 
 const extraAttributes = {
-	title: "Title field",
+	height: 20, // px
 };
 
 const propertiesSchema = z.object({
-	title: z.string().min(2, {message: "Должно быть минимум 2 символа"}).max(50),
+	height: z.number().min(5).max(200),
 });
 
-export const TitleFieldLessonElement: LessonElement = {
+export const SpacerFieldLessonElement: LessonElement = {
 	type,
 	construct: (id: string) => ({
 		id,
@@ -33,8 +34,8 @@ export const TitleFieldLessonElement: LessonElement = {
 		extraAttributes,
 	}),
 	designerBtnElement: {
-		icon: LuHeading1,
-		label: "Title field",
+		icon: LuSeparatorHorizontal,
+		label: "Spacer field",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
@@ -49,23 +50,23 @@ type propertiesFormSchemaType = z.infer<typeof propertiesSchema>;
 
 function DesignerComponent({elementInstance}: IDesignerComponentProps) {
 	const element = elementInstance as CustomInstance;
-	const {title} = element.extraAttributes;
+	const {height} = element.extraAttributes;
 
 	return (
-		<div className="flex flex-col gap-2 w-full">
+		<div className="flex flex-col gap-2 w-full items-center">
 			<Label className="text-muted-foreground">
-				Title field
+				Spacer field: {height} px
 			</Label>
-			<p className="text-2xl">{title}</p>
+			<LuSeparatorHorizontal className="h-8 w-8"/>
 		</div>
 	);
 }
 
 function LessonComponent({elementInstance}: IDesignerComponentProps) {
 	const element = elementInstance as CustomInstance;
-	const {title} = element.extraAttributes;
+	const {height} = element.extraAttributes;
 
-	return <p className="text-2xl">{title}</p>;
+	return <div style={{height, width: "100%"}}></div>;
 }
 
 function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
@@ -75,7 +76,7 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 		resolver: zodResolver(propertiesSchema),
 		mode: "onBlur",
 		defaultValues: {
-			title: element.extraAttributes.title,
+			height: element.extraAttributes.height,
 		},
 	});
 
@@ -84,12 +85,12 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 	}, [element, form]);
 
 	const applyChanges = (values: propertiesFormSchemaType) => {
-		const {title} = values;
+		const {height} = values;
 
 		updateElement(element.id, {
 			...element,
 			extraAttributes: {
-				title,
+				height,
 			},
 		});
 	};
@@ -98,16 +99,13 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 		<form onBlur={form.handleSubmit(applyChanges)}
 			  onSubmit={(e) => e.preventDefault()}
 			  className="space-y-3">
-			<FormField control={form.control} name="title" render={({field}) => (
+			<FormField control={form.control} name="height" render={({field}) => (
 				<FormItem>
-					<FormLabel>Title</FormLabel>
+					<FormLabel>Height (px): {form.watch("height")}</FormLabel>
 					<FormControl>
-						<Input {...field}
-							   onKeyDown={(e) => {
-								   if (e.key === "Enter") {
-									   e.currentTarget.blur();
-								   }
-							   }}/>
+						<Slider defaultValue={[field.value]} min={5} max={200} step={1} onValueChange={value => {
+							field.onChange(value[0]);
+						}}/>
 					</FormControl>
 					<FormMessage/>
 				</FormItem>
