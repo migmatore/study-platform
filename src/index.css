@@ -22,7 +22,7 @@
 @layer base {
     :root {
         --background: #ffffff;
-        --foreground: #030712;
+        --foreground: #374151;
         --card: 0 0% 100%;
         --card-foreground: 224 71.4% 4.1%;
         --popover: 0 0% 100%;
@@ -33,9 +33,9 @@
         --secondary: #2dd4bf;
         --secondary-hover: #14b8a6;
         --secondary-foreground:  #fafafa;
-        --error: #f87171;
-        --error-hover: #ef4444;
-        --error-foreground: #fafafa;
+        --danger: #f87171;
+        --danger-hover: #ef4444;
+        --danger-foreground: #fafafa;
         --accent: #f3f4f6;
         --accent-foreground: #9aa1ac;
         --muted: #f0f2f4;
@@ -51,21 +51,22 @@
     }
 
     .dark {
-        --background: #0F172A;
-        --foreground: #e7e7e7;
+        /*--background: #0F172A;*/
+        --background: #030711;
+        --foreground: #e5e7eb;
         --card: 224 71.4% 4.1%;
         --card-foreground: 210 20% 98%;
         --popover: 224 71.4% 4.1%;
         --popover-foreground: 210 20% 98%;
-        --primary: #60a5fa;
-        --primary-hover: #3b82f6;
-        --primary-foreground: #fafafa;
+        --primary: #1e3a8a;
+        --primary-hover: #172554;
+        --primary-foreground: #e5e7eb;
         --secondary: #2dd4bf;
         --secondary-hover: #14b8a6;
         --secondary-foreground:  #fafafa;
-        --error: #f87171;
-        --error-hover: #ef4444;
-        --error-foreground: #fafafa;
+        --danger: #991b1b;
+        --danger-hover: #7f1d1d;
+        --danger-foreground: #e5e7eb;
         --accent: #040C1A;
         --accent-foreground: #9aa1ac;
         --muted: #1e2734;

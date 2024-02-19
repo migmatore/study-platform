@@ -2,8 +2,7 @@ import classroomService from "../services/classroom.service.ts";
 import {useEffect, useState} from "react";
 import {IClassroomResp} from "../types/classroom.ts";
 import ClassroomItem from "../components/ClassroomItem/ClassroomItem.tsx";
-import {Plus} from "lucide-react";
-import {Button} from "../components/ui/Button/Button.tsx";
+import CreateClassroomDialogBtn from "../components/CreateClassroomDialogBtn/CreateClassroomDialogBtn.tsx";
 
 const Classrooms = () => {
 	const [classrooms, setClassrooms] = useState<IClassroomResp[]>();
@@ -34,11 +33,9 @@ const Classrooms = () => {
 		<div className="w-full h-full m-4">
 			<div className="flex mb-4 justify-between">
 				<h1 className="text-2xl text-foreground">Список классов</h1>
-				<Button variant="secondary">
-					<Plus size={20}/>
-				</Button>
 			</div>
 			<div className="flex flex-col space-y-4">
+				<CreateClassroomDialogBtn/>
 				{classrooms?.map(classroom =>
 					<ClassroomItem key={classroom.id}
 								   id={classroom.id}

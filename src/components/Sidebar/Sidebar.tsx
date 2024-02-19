@@ -1,7 +1,6 @@
 import {ArrowLeft, ArrowRight, LogOut, Moon, Sun} from "lucide-react";
 import {PropsWithChildren, useState} from "react";
 import {SidebarContext} from "./SidebarContext.ts";
-import styles from "./Sidebar.module.css";
 import {useNavigate} from "react-router-dom";
 import {useTheme} from "../../provider/ThemeProvider.tsx";
 
@@ -22,7 +21,8 @@ const Sidebar = ({children}: PropsWithChildren) => {
 						 className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`}
 						 alt=""/>
 					<button onClick={() => setExpanded(curr => !curr)}
-							className="p-1.5 rounded-lg bg-gray-50 hover:bg-gray-100 text-gray-600">
+							className="p-1.5 rounded-lg transition-all bg-gray-100 hover:bg-gray-200 text-foreground
+								dark:bg-gray-800 dark:hover:bg-gray-900">
 						{expanded ? <ArrowLeft size={20}/> : <ArrowRight size={20}/>}
 					</button>
 				</div>
@@ -33,27 +33,27 @@ const Sidebar = ({children}: PropsWithChildren) => {
 
 				<div className="px-3">
 					<div className="w-full relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer
-							transition-all hover:bg-blue-50 group">
+							transition-all hover:bg-blue-50 group dark:text-neutral-300 dark:hover:bg-blue-900">
 						{theme === "light" ? (
 							<div className="flex flex-row justify-center items-center"
 								 onClick={() => setTheme("dark")}>
 								<Moon size={20}/>
-								<p
+								<span
 									className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3"
 																						  : "w-0"}`}>
 									Темная тема
-								</p>
+								</span>
 							</div>
 						) : (
 							 <div className="flex flex-row justify-center items-center"
 								  onClick={() => setTheme("light")}>
 								 <Sun size={20}/>
-								 <p
+								 <span
 									 className={`overflow-hidden transition-all ${expanded
 																				  ? "w-52 ml-3"
 																				  : "w-0"}`}>
 									 Светлая тема
-								 </p>
+								 </span>
 							 </div>
 						 )}
 						{!expanded &&
@@ -76,7 +76,10 @@ const Sidebar = ({children}: PropsWithChildren) => {
 							<h4 className="font-semibold">John Doe</h4>
 							<span className="text-xs text-gray-600">johndoe@gmail.com</span>
 						</div>
-						<div className={styles.logout} onClick={handleLogout}>
+						<div className="cursor-pointer relative flex items-center p-2 my-1 font-medium rounded-md
+							transition-colors bg-gray-50 hover:bg-gray-100 text-foreground dark:bg-gray-800
+							dark:hover:bg-gray-900"
+							 onClick={handleLogout}>
 							<LogOut size={20}/>
 						</div>
 					</div>

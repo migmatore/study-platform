@@ -1,7 +1,7 @@
 import {JSX, useContext} from "react";
 import {SidebarContext} from "../Sidebar/SidebarContext.ts";
 import {NavLink} from "react-router-dom";
-import styles from "./SidebarItem.module.css"
+import {cn} from "../../utils";
 
 interface SidebarItemProps {
 	icon: JSX.Element;
@@ -15,10 +15,12 @@ const SidebarItem = ({icon, text, to}: SidebarItemProps) => {
 
 	return (
 		<NavLink to={to}
-				 className={({isActive}) =>
+				 className={({isActive}) => cn(
+					 "relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors",
 					 isActive
-					 ? `${styles.active} group`
-					 : `${styles.default} group`}>
+					 ? "bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200"
+					 : "hover:bg-blue-100 dark:text-neutral-300 dark:hover:bg-blue-800",
+				 )}>
 			{icon}
 			<span className={`overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}`}>
 				{text}
@@ -33,7 +35,7 @@ const SidebarItem = ({icon, text, to}: SidebarItemProps) => {
 				{text}
             </div>}
 		</NavLink>
-	)
-}
+	);
+};
 
 export default SidebarItem;

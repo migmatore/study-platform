@@ -1,14 +1,7 @@
 import * as React from "react";
 import * as LabelPrimitive from "@radix-ui/react-label";
 import {Slot} from "@radix-ui/react-slot";
-import {
-	Controller,
-	ControllerProps,
-	FieldPath,
-	FieldValues,
-	FormProvider,
-	useFormContext,
-} from "react-hook-form";
+import {Controller, ControllerProps, FieldPath, FieldValues, FormProvider, useFormContext} from "react-hook-form";
 
 import {cn} from "../../../utils";
 import {Label} from "../Label/Label.tsx";
@@ -22,14 +15,16 @@ type FormFieldContextValue<
 	name: TName;
 };
 
-const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue);
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+	{} as FormFieldContextValue
+);
 
 const FormField = <
 	TFieldValues extends FieldValues = FieldValues,
 	TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
-	  ...props
-  }: ControllerProps<TFieldValues, TName>) => {
+	...props
+}: ControllerProps<TFieldValues, TName>) => {
 	return (
 		<FormFieldContext.Provider value={{name: props.name}}>
 			<Controller {...props} />
@@ -64,7 +59,9 @@ type FormItemContextValue = {
 	id: string;
 };
 
-const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
+const FormItemContext = React.createContext<FormItemContextValue>(
+	{} as FormItemContextValue
+);
 
 const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
 	({className, ...props}, ref) => {
@@ -152,5 +149,5 @@ export {
 	FormControl,
 	FormDescription,
 	FormMessage,
-	FormField
+	FormField,
 };

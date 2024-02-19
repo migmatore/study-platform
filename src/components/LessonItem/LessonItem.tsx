@@ -49,7 +49,7 @@ const LessonItem = ({id, title, active}: Props) => {
 								variant="primary_outline">
 							<Pencil size={20}/>
 						</Button>
-						<Button variant="attention_outline">
+						<Button variant="danger_outline">
 							<Trash2 size={20}/>
 						</Button>
 					</div>

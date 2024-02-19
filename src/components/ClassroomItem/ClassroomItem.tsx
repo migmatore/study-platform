@@ -31,7 +31,7 @@ const ClassroomItem = ({id, title, description}: Props) => {
 						<p>Перейти</p>
 					</div>
 				</Button>
-				<Button variant="attention_outline">
+				<Button variant="danger_outline">
 					<Trash2 size={20}/>
 				</Button>
 			</div>

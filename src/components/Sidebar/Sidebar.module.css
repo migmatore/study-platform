@@ -1,4 +1,0 @@
-.logout {
-    @apply cursor-pointer relative flex items-center p-2 my-1 font-medium rounded-md transition-colors
-    hover:bg-blue-50 text-gray-600
-}

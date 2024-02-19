@@ -5,6 +5,7 @@ import {ILessonsResp} from "../types/lesson.ts";
 import LessonItem from "../components/LessonItem/LessonItem.tsx";
 import {Plus} from "lucide-react";
 import {Button} from "../components/ui/Button/Button.tsx";
+import CreateLessonDialogBtn from "../components/CreateLessonDialogBtn/CreateLessonDialogBtn.tsx";
 
 type Params = {
 	classroomId: string;
@@ -41,11 +42,9 @@ const Lessons = () => {
 		<div className="w-full h-full m-4">
 			<div className="flex mb-4 justify-between">
 				<h1 className="text-2xl text-foreground">Список уроков</h1>
-				<Button variant="secondary">
-					<Plus size={20}/>
-				</Button>
 			</div>
 			<div className="grid grid-cols-1 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-4">
+				<CreateLessonDialogBtn/>
 				{lessons?.map(lesson =>
 					<LessonItem key={lesson.id}
 								id={lesson.id}

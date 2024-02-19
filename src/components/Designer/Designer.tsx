@@ -130,7 +130,7 @@ const Designer = () => {
 					)}
 					{droppable.isOver && elements.length === 0 && (
 						<div className="p-4 w-full">
-							<div className="h-[120px] rounded-lg bg-gray-100 dark:bg-gray-800"></div>
+							<div className="h-[120px] rounded-lg bg-gray-100 dark:bg-gray-900"></div>
 						</div>
 					)}
 					{elements.length > 0 && (

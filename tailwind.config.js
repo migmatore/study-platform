@@ -23,10 +23,10 @@ export default {
                     foreground: "var(--secondary-foreground)",
                     hover: "var(--secondary-hover)",
                 },
-                error: {
-                    DEFAULT: "var(--error)",
-                    foreground: "var(--error-foreground)",
-                    hover: "var(--error-hover)",
+                danger: {
+                    DEFAULT: "var(--danger)",
+                    foreground: "var(--danger-foreground)",
+                    hover: "var(--danger-hover)",
                 },
                 destructive: {
                     DEFAULT: "hsl(var(--destructive))",
