@@ -54,7 +54,13 @@ apiClient.interceptors.request.use(
 		}
 
 		if (config.data) {
-			newConfig.data = decamelizeKeys(config.data);
+			Object.keys(config.data).map(key => {
+				if (config.data[key]) {
+					newConfig.data[key] = config.data[key]
+				}
+			})
+
+			newConfig.data = decamelizeKeys(newConfig.data);
 		}
 
 		return newConfig;

@@ -48,7 +48,9 @@ const DesignerProvider = ({children}: PropsWithChildren) => {
 		selectedElement,
 		setSelectedElement,
 		updateElement,
-	}}>{children}</DesignerContext.Provider>;
+	}}>
+		{children}
+	</DesignerContext.Provider>;
 };
 
 export default DesignerProvider;

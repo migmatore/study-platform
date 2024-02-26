@@ -11,6 +11,7 @@ import Classrooms from "../pages/Classrooms.tsx";
 import Lessons from "../pages/Lessons.tsx";
 import EditLesson from "../pages/EditLesson.tsx";
 import useAuth from "../hooks/useAuth.tsx";
+import LessonsProvider from "../provider/LessonsProvider.tsx";
 
 const Routes = () => {
 	const {token} = useAuth();
@@ -61,7 +62,7 @@ const Routes = () => {
 									children: [
 										{
 											path: "lessons",
-											element: <Lessons/>,
+											element: <LessonsProvider><Lessons/></LessonsProvider>,
 										},
 										{
 											path: "lessons/:lessonId/edit",
