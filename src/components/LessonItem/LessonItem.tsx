@@ -17,13 +17,23 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 	const {setActiveLesson} = useLessons();
 	const navigate = useNavigate();
 
-	const handlePin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleGoToLesson = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
-		const resp = await lessonService.updateLesson(classroomId, {lessonId: id, active: !active});
+		navigate(`${id}`)
+	}
 
-		if (resp.status === 200) {
-			setActiveLesson(id);
+	const handleTogglePin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+
+		try {
+			const resp = await lessonService.updateLesson(classroomId, {lessonId: id, active: !active});
+
+			if (resp.status === 200) {
+				setActiveLesson(id);
+			}
+		} catch (e) {
+			console.error(e)
 		}
 	};
 
@@ -43,14 +53,12 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 			</div>
 			<div className="flex flex-col justify-center items-center mt-auto">
 				<div className="grid grid-cols-1 gap-3">
-					<Button>
-						<div className="flex gap-2 justify-center">
-							<LogIn size={20}/>
-							<p>Перейти</p>
-						</div>
+					<Button className="gap-2" onClick={handleGoToLesson}>
+						<LogIn size={20}/>
+						<p>Перейти</p>
 					</Button>
 					<div className="grid grid-cols-3 gap-3">
-						<Button variant="primary_outline" onClick={handlePin}>
+						<Button variant="primary_outline" onClick={handleTogglePin}>
 							{active
 							 ? <PinOff size={20}/>
 							 : <Pin size={20}/>}

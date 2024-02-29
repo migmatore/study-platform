@@ -1,6 +1,5 @@
 import AuthProvider from "./provider/AuthProvider.tsx";
 import Routes from "./routes";
-import DesignerProvider from "./provider/DesignerProvider.tsx";
 import {ThemeProvider} from "./provider/ThemeProvider.tsx";
 
 const App = () => {
@@ -8,9 +7,7 @@ const App = () => {
 		<main className="flex">
 			<ThemeProvider>
 				<AuthProvider>
-					<DesignerProvider>
-						<Routes/>
-					</DesignerProvider>
+					<Routes/>
 				</AuthProvider>
 			</ThemeProvider>
 		</main>

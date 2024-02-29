@@ -12,6 +12,7 @@ import Lessons from "../pages/Lessons.tsx";
 import EditLesson from "../pages/EditLesson.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 import LessonsProvider from "../provider/LessonsProvider.tsx";
+import Lesson from "../pages/Lesson.tsx";
 
 const Routes = () => {
 	const {token} = useAuth();
@@ -23,7 +24,7 @@ const Routes = () => {
 			children: [
 				{
 					path: "/",
-					element: <SidebarLayout/>,
+					element: <LessonsProvider><SidebarLayout/></LessonsProvider>,
 					children: [
 						{
 							path: "/",
@@ -44,6 +45,10 @@ const Routes = () => {
 									],
 								},
 								{
+									path: "/classrooms/:classroomId/lessons/:lessonId",
+									element: <Lesson/>,
+								},
+								{
 									path: "/logout",
 									element: <Logout/>,
 								},
@@ -62,7 +67,7 @@ const Routes = () => {
 									children: [
 										{
 											path: "lessons",
-											element: <LessonsProvider><Lessons/></LessonsProvider>,
+											element: <Lessons/>,
 										},
 										{
 											path: "lessons/:lessonId/edit",

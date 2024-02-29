@@ -1,4 +1,4 @@
-import {ArrowLeft, ArrowRight, LogOut, Moon, Sun} from "lucide-react";
+import {ChevronFirst, ChevronLast, LogOut, Moon, Sun} from "lucide-react";
 import {PropsWithChildren, useState} from "react";
 import {SidebarContext} from "./SidebarContext.ts";
 import {useNavigate} from "react-router-dom";
@@ -23,7 +23,8 @@ const Sidebar = ({children}: PropsWithChildren) => {
 					<button onClick={() => setExpanded(curr => !curr)}
 							className="p-1.5 rounded-lg transition-all bg-gray-100 hover:bg-gray-200 text-foreground
 								dark:bg-gray-800 dark:hover:bg-gray-900">
-						{expanded ? <ArrowLeft size={20}/> : <ArrowRight size={20}/>}
+						{/*{expanded ? <ArrowLeft size={20}/> : <ArrowRight size={20}/>}*/}
+						{expanded ? <ChevronFirst size={20}/> : <ChevronLast size={20}/>}
 					</button>
 				</div>
 

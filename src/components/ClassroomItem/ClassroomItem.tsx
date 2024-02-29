@@ -12,7 +12,7 @@ interface Props {
 const ClassroomItem = ({id, title, description}: Props) => {
 	const navigate = useNavigate();
 
-	const handleInside = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleGoToClassroom = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
 		navigate(`${id}/lessons`);
@@ -25,7 +25,7 @@ const ClassroomItem = ({id, title, description}: Props) => {
 				{description && <p className="mt-2.5 text-foreground">{description}</p>}
 			</div>
 			<div className="flex justify-center items-center gap-3">
-				<Button onClick={handleInside}>
+				<Button onClick={handleGoToClassroom}>
 					<div className="flex gap-2">
 						<LogIn size={20}/>
 						<p>Перейти</p>

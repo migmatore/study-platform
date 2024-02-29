@@ -1,18 +1,42 @@
 import {createContext, Dispatch, PropsWithChildren, SetStateAction, useMemo, useState} from "react";
 import {LessonType} from "../types/lesson.ts";
+import classroomService from "../services/classroom.service.ts";
 
 type LessonsContextType = {
 	lessons: LessonType[];
+	fetchLessons: (classroomId: number | string) => Promise<void>;
 	setLessons: Dispatch<SetStateAction<LessonType[]>>;
 	appendLesson: (lesson: LessonType) => void;
-	updateLesson: (id: number, lesson: LessonType) => void
+	updateLesson: (id: number, lesson: LessonType) => void;
 	setActiveLesson: (id: number) => void;
+	getLesson: (id: number) => LessonType | undefined;
 }
 
 export const LessonsContext = createContext<LessonsContextType | null>(null);
 
 const LessonsProvider = ({children}: PropsWithChildren) => {
 	const [lessons, setLessons] = useState<LessonType[]>([]);
+
+	const fetchLessons = async (classroomId: number | string) => {
+		console.log("fetch lessons")
+
+		try {
+			const resp = await classroomService.getLessons(classroomId);
+			console.log(resp.data);
+
+			setLessons(resp.data.map(el => {
+				return {
+					id: el.id,
+					title: el.title,
+					classroomId: el.classroomId,
+					content: el.content,
+					active: el.active,
+				};
+			}));
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const appendLesson = (lesson: LessonType) => {
 		setLessons(prev => [...prev, lesson]);
@@ -46,15 +70,21 @@ const LessonsProvider = ({children}: PropsWithChildren) => {
 		setLessons(newLessons);
 	};
 
+	const getLesson = (id: number): LessonType | undefined => {
+		return lessons.find(lesson => lesson.id === id);
+	};
+
 	const contextValue = useMemo(
 		() => ({
 			lessons,
+			fetchLessons,
 			setLessons,
 			appendLesson,
 			updateLesson,
 			setActiveLesson,
+			getLesson,
 		}),
-		[lessons, updateLesson, setActiveLesson],
+		[lessons],
 	);
 
 	return <LessonsContext.Provider value={contextValue}>

@@ -24,7 +24,7 @@ const Designer = () => {
 
 	useDndMonitor({
 		onDragEnd(event: DragEndEvent) {
-			console.log(elements)
+			console.log(elements);
 			// LessonService.updateLessonContent("1", {lessonId: 1, content: elements}).then(resp => console.log(resp))
 
 			const {active, over} = event;
@@ -145,7 +145,7 @@ const Designer = () => {
 					)}
 				</div>
 			</div>
-			<DesignerSidebar/>
+			{/*<DesignerSidebar/>*/}
 		</div>
 	);
 };

@@ -13,10 +13,10 @@ const PropertiesFormSidebar = () => {
 	return (
 		<div className="flex flex-col p-2">
 			<div className="flex justify-between items-center mb-4">
-				<div className="flex justify-center items-center text-base">
+				<div className="flex justify-center items-center text-lg text-foreground">
 					Свойства элемента
 				</div>
-				<button className="inline-flex items-center justify-center"
+				<button className="inline-flex items-center justify-center text-foreground"
 						onClick={() => setSelectedElement(null)}
 				>
 					<X size={20}/>
