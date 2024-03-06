@@ -1,7 +1,18 @@
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {LogIn, Trash2} from "lucide-react";
 import {Button} from "../ui/Button/Button.tsx";
+import useAuth from "../../hooks/useAuth.tsx";
+import {Roles} from "../../types/roles.ts";
+import lessonService from "../../services/lesson.service.ts";
+import {
+	AlertDialog, AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription, AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from "../ui/AlertDialog/AlertDialog.tsx";
+import {AxiosError} from "axios";
 
 interface Props {
 	id: number;
@@ -11,11 +22,29 @@ interface Props {
 
 const ClassroomItem = ({id, title, description}: Props) => {
 	const navigate = useNavigate();
+	const {role} = useAuth();
+	const [currentLessonError, setCurrentLessonError] = useState<boolean>(false);
 
-	const handleGoToClassroom = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleGoToClassroom = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
-		navigate(`${id}/lessons`);
+		if (role === Roles.Teacher || role === Roles.Admin) {
+			navigate(`${id}/lessons`);
+		} else {
+			try {
+				const resp = await lessonService.getCurrentLesson(id);
+
+				if (resp.status === 200) {
+					navigate(`${id}/lessons/${resp.data.id}`);
+				}
+			} catch (err) {
+				const error = err as AxiosError;
+
+				if (error.response?.status === 204 || error.response?.status === 403) {
+					setCurrentLessonError(true)
+				}
+			}
+		}
 	};
 
 	return (
@@ -35,6 +64,19 @@ const ClassroomItem = ({id, title, description}: Props) => {
 					<Trash2 size={20}/>
 				</Button>
 			</div>
+			<AlertDialog open={currentLessonError} onOpenChange={setCurrentLessonError}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>
+							Ошибка
+						</AlertDialogTitle>
+					</AlertDialogHeader>
+					<div><p>К сожалению в этом классе нет активных уроков :(</p></div>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Понятно</AlertDialogCancel>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	);
 };

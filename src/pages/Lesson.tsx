@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import useLessons from "../hooks/useLessons.tsx";
 import {LessonElements} from "../components/LessonElements/LessonElements.tsx";
 import BackBtn from "../components/BackBtn/BackBtn.tsx";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 
 type Params = {
 	classroomId: string;
@@ -16,9 +16,11 @@ const Lesson = () => {
 
 	useEffect(() => {
 		fetchLessons(classroomId!).catch(console.error);
-	}, []);
+	}, [classroomId]);
 
 	const lesson = getLesson(Number(lessonId));
+
+	const ref = useRef<HTMLDivElement>(null);
 
 	return (
 		<div className="w-full flex flex-col">
@@ -46,11 +48,36 @@ const Lesson = () => {
 					p-4 overflow-y-auto">
 						<div className="max-w-[920px] flex flex-col gap-4 flex-grow bg-background border w-full rounded-lg p-8
 						overflow-y-auto">
-							{lesson?.content?.map(element => {
-								const LessonComponent = LessonElements[element.type].lessonComponent;
+							<button onClick={() => {
+								if (!ref.current) return;
 
-								return <LessonComponent key={element.id} elementInstance={element}/>;
-							})}
+								ref.current.scrollIntoView({ behavior: 'smooth', block: "center" });
+								ref.current.style.borderColor = "#ff0000";
+								ref.current.style.animation = "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite";
+
+								setTimeout(() => {
+									ref.current.style.borderColor = "hsl(var(--border))";
+									ref.current.style.animation = "none";
+								}, 3000)
+							}}>
+								go to
+							</button>
+							{lesson && lesson.content
+							 ? lesson.content.map(element => {
+									const LessonComponent = LessonElements[element.type].lessonComponent;
+
+									return <LessonComponent key={element.id} elementInstance={element}/>;
+								})
+							 : <div>Error fetching lesson content</div>}
+							<div className="w-full p-8 border flex flex-col">text element
+								<div>test</div>
+							</div>
+							<div className="w-full p-8 border">text element</div>
+							<div className="w-full p-8 border">text element</div>
+							<div ref={ref} className="w-full p-8 border">text element</div>
+							<div className="w-full p-8 border">text element</div>
+							<div className="w-full p-8 border">text element</div>
+							<div className="w-full p-8 border">text element</div>
 						</div>
 					</div>
 				</div>

@@ -6,13 +6,14 @@ import SidebarLayout from "../components/Sidebar/SidebarLayout.tsx";
 import Auth from "./Auth.tsx";
 import {Roles} from "../types/roles.ts";
 import Logout from "../pages/Logout.tsx";
-import Home from "../pages/Home.tsx";
 import Classrooms from "../pages/Classrooms.tsx";
 import Lessons from "../pages/Lessons.tsx";
 import EditLesson from "../pages/EditLesson.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 import LessonsProvider from "../provider/LessonsProvider.tsx";
 import Lesson from "../pages/Lesson.tsx";
+import Students from "../pages/Students.tsx";
+import Profile from "../pages/Profile.tsx";
 
 const Routes = () => {
 	const {token} = useAuth();
@@ -32,7 +33,7 @@ const Routes = () => {
 							children: [
 								{
 									path: "/profile",
-									element: <Home/>,
+									element: <Profile/>,
 								},
 								{
 									path: "/classrooms",
@@ -60,7 +61,7 @@ const Routes = () => {
 							children: [
 								{
 									path: "/students",
-									element: <h1>Students</h1>,
+									element: <Students/>,
 								},
 								{
 									path: "/classrooms/:classroomId",

@@ -9,6 +9,10 @@ class LessonService {
 	async updateLesson(classroomId: string, req: IUpdateLesson) {
 		return await apiClient.put(`/classrooms/${classroomId}/lessons`, req)
 	}
+
+	async getCurrentLesson(classroomId: string | number) {
+		return await apiClient.get<ILessonsResp>(`/classrooms/${classroomId}/lessons/current`)
+	}
 }
 
 export default new LessonService();
