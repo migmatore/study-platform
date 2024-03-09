@@ -8,6 +8,9 @@ import useLessons from "../hooks/useLessons.tsx";
 import BackBtn from "../components/BackBtn/BackBtn.tsx";
 import DesignerProvider from "../provider/DesignerProvider.tsx";
 import DesignerSidebar from "../components/DesignerSidebar/DesignerSidebar.tsx";
+import {useEffect, useRef} from "react";
+import {AxiosError} from "axios";
+import LessonService from "../services/lesson.service.ts";
 
 type Params = {
 	lessonId: string;
@@ -24,12 +27,42 @@ const EditLesson = () => {
 	});
 	const sensors = useSensors(mouseSensor);
 
-	const {getLesson} = useLessons();
+	const {setLessons, lessons, getLesson} = useLessons();
 
 	const lesson = getLesson(Number(lessonId));
 
+	const dataFetchRef = useRef<boolean>(false);
+
+	useEffect(() => {
+		if (dataFetchRef.current) return;
+		dataFetchRef.current = true;
+
+		const getLesson = async () => {
+			if (classroomId !== undefined && lessonId !== undefined) {
+				try {
+					const resp = await LessonService.getLesson(lessonId);
+
+					if (resp && resp.status === 200) {
+						setLessons(prev => [...prev, {
+							id: resp.data.id,
+							title: resp.data.title,
+							classroomId: resp.data.classroomId,
+							content: resp.data.content,
+							active: resp.data.active,
+						}]);
+					}
+				} catch (e) {
+					const error = e as AxiosError;
+					console.log(error);
+				}
+			}
+		};
+
+		getLesson().catch(console.error);
+	}, []);
+
 	return (
-		<DesignerProvider>
+		<DesignerProvider lessonContent={lesson?.content}>
 			<DndContext sensors={sensors}>
 				<div className="w-full h-full flex flex-col">
 					<div className="flex p-4 border-b items-center gap-4 bg-background sticky top-0 z-50">

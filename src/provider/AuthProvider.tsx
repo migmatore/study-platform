@@ -1,9 +1,11 @@
-import {createContext, PropsWithChildren, SetStateAction, useEffect, useMemo, useState} from "react";
+import {createContext, PropsWithChildren, SetStateAction, useCallback, useEffect, useMemo, useState} from "react";
 import {enumFromValue, Roles} from "../types/roles.ts";
 
 interface IAuthContext {
 	token: string | null;
 	setToken?: (newToken: SetStateAction<string | null>) => void;
+	wsToken: string | null;
+	setWsToken?: (newToken: SetStateAction<string | null>) => void;
 	refreshToken: string | null;
 	setRefreshToken?: (newToken: SetStateAction<string | null>) => void;
 	role: Roles;
@@ -12,6 +14,7 @@ interface IAuthContext {
 
 const defaultState: IAuthContext = {
 	token: null,
+	wsToken: null,
 	refreshToken: null,
 	role: Roles.Student,
 };
@@ -20,6 +23,7 @@ export const AuthContext = createContext<IAuthContext>(defaultState);
 
 const AuthProvider = ({children}: PropsWithChildren) => {
 	const [token, setToken_] = useState(localStorage.getItem("token"));
+	const [wsToken, setWsToken_] = useState(localStorage.getItem("wsToken"));
 	const [
 		refreshToken,
 		setRefreshToken_,
@@ -32,6 +36,10 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 		setToken_(newToken);
 	};
 
+	const setWsToken = (newToken: SetStateAction<string | null>) => {
+		setWsToken_(newToken);
+	};
+
 	const setRefreshToken = (newToken: SetStateAction<string | null>) => {
 		setRefreshToken_(newToken);
 	};
@@ -41,24 +49,27 @@ const AuthProvider = ({children}: PropsWithChildren) => {
 	};
 
 	useEffect(() => {
-		if (token && refreshToken && role) {
+		if (token && wsToken && refreshToken && role) {
 			localStorage.setItem("token", token);
+			localStorage.setItem("wsToken", wsToken);
 			localStorage.setItem("refreshToken", refreshToken);
 			localStorage.setItem("role", role.toString());
 		} else {
 			localStorage.removeItem("token");
+			localStorage.removeItem("wsToken");
 			localStorage.removeItem("refreshToken");
 			localStorage.removeItem("role");
 		}
-	}, [token, refreshToken, role]);
+	}, [token, wsToken, refreshToken, role]);
 
 	const contextValue = useMemo(
 		() => ({
 			token, setToken,
+			wsToken, setWsToken,
 			refreshToken, setRefreshToken,
 			role, setRole,
 		}),
-		[token, refreshToken, role],
+		[token, wsToken, refreshToken, role],
 	);
 
 	return (

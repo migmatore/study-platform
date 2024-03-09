@@ -22,9 +22,9 @@ const SidebarBtnElement = ({lessonElement}: Props) => {
 			variant="outline"
 			ref={draggable.setNodeRef}
 			className={cn(
-				"border transition-all duration-300 rounded-xl px-5 py-2.5 text-center text-sm " +
+				"border transition-all duration-300 rounded-xl md:px-3 md:py-2 xl:px-5 xl:py-2.5 text-center text-sm " +
 				"font-medium flex flex-col justify-center items-center gap-2 " +
-				"h-[120px] w-[120px] cursor-grab",
+				"md:h-[90px] md:w-[90px] lg:h-[90px] lg:w-[90px] xl:h-[120px] xl:w-[120px] cursor-grab",
 				draggable.isDragging && "ring-1 ring-blue-500",
 			)}
 			{...draggable.listeners}

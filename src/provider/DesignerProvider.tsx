@@ -1,8 +1,9 @@
 import {LessonElementInstance} from "../components/LessonElements/LessonElements.tsx";
-import {createContext, Dispatch, PropsWithChildren, SetStateAction, useState} from "react";
+import {createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useState} from "react";
 
 type DesignerContextType = {
 	elements: LessonElementInstance[];
+	setElements: Dispatch<SetStateAction<LessonElementInstance[]>>
 	addElement: (index: number, element: LessonElementInstance) => void;
 	removeElement: (id: string) => void;
 
@@ -14,9 +15,18 @@ type DesignerContextType = {
 
 export const DesignerContext = createContext<DesignerContextType | null>(null);
 
-const DesignerProvider = ({children}: PropsWithChildren) => {
+const DesignerProvider = ({children, lessonContent}: PropsWithChildren & {
+	lessonContent?: LessonElementInstance[] | undefined | null
+}) => {
 	const [elements, setElements] = useState<LessonElementInstance[]>([]);
 	const [selectedElement, setSelectedElement] = useState<LessonElementInstance | null>(null);
+	//const dataFetchRef = useRef<boolean>(false);
+
+	useEffect(() => {
+		if (lessonContent === undefined || !lessonContent) return;
+
+		setElements(lessonContent);
+	}, [lessonContent]);
 
 	const addElement = (index: number, element: LessonElementInstance) => {
 		setElements(prev => {
@@ -43,6 +53,7 @@ const DesignerProvider = ({children}: PropsWithChildren) => {
 
 	return <DesignerContext.Provider value={{
 		elements,
+		setElements,
 		addElement,
 		removeElement,
 		selectedElement,

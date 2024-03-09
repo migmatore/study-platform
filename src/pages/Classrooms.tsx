@@ -39,7 +39,7 @@ const Classrooms = () => {
 				<p className="text-muted-foreground">Количество: {classrooms?.length ?? 0}</p>
 			</div>
 			<div className="flex flex-col space-y-4">
-				{role === Roles.Teacher ?? <CreateClassroomDialogBtn/>}
+				{role === Roles.Teacher ? <CreateClassroomDialogBtn/> : null}
 				{classrooms?.map(classroom =>
 					<ClassroomItem key={classroom.id}
 								   id={classroom.id}

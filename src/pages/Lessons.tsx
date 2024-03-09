@@ -48,7 +48,7 @@ const Lessons = () => {
 
 	useEffect(() => {
 		fetchLessons(classroomId!).catch(console.error)
-	}, []);
+	}, [classroomId]);
 
 	return (
 		<div className="w-full h-full m-4">

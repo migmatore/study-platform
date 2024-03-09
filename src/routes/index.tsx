@@ -38,12 +38,6 @@ const Routes = () => {
 								{
 									path: "/classrooms",
 									element: <Classrooms/>,
-									children: [
-										{
-											path: ":classroomId",
-											element: <div>Classroom inside</div>,
-										},
-									],
 								},
 								{
 									path: "/classrooms/:classroomId/lessons/:lessonId",

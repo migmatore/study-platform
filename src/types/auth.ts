@@ -1,5 +1,6 @@
 export interface IAuthResp {
 	token: string;
+	wsToken: string;
 	refreshToken: string;
 	role: string;
 }

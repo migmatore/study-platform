@@ -8,6 +8,7 @@ import useAuth from "../hooks/useAuth.tsx";
 const Login = () => {
 	const {
 		setToken,
+		setWsToken,
 		setRole,
 		setRefreshToken,
 	} = useAuth();
@@ -33,12 +34,16 @@ const Login = () => {
 				password: credentials.password,
 			});
 
-			const {token, refreshToken, role} = resp.data;
+			const {token, wsToken, refreshToken, role} = resp.data;
 
 			console.log(resp.data);
 
 			if (setToken) {
 				setToken(token);
+			}
+
+			if (setWsToken) {
+				setWsToken(wsToken)
 			}
 
 			if (setRole) {

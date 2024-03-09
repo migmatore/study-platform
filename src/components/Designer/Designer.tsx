@@ -1,4 +1,3 @@
-import DesignerSidebar from "../DesignerSidebar/DesignerSidebar.tsx";
 import {DragEndEvent, useDndMonitor, useDroppable} from "@dnd-kit/core";
 import {cn} from "../../utils";
 import useDesigner from "../../hooks/useDesigner.tsx";

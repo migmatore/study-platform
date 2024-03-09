@@ -13,6 +13,10 @@ class LessonService {
 	async getCurrentLesson(classroomId: string | number) {
 		return await apiClient.get<ILessonsResp>(`/classrooms/${classroomId}/lessons/current`)
 	}
+
+	async getLesson(lessonId: string | number) {
+		return await apiClient.get<ILessonsResp>(`/lessons/${lessonId}`)
+	}
 }
 
 export default new LessonService();

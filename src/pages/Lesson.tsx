@@ -1,8 +1,14 @@
-import {useNavigate, useParams} from "react-router-dom";
-import useLessons from "../hooks/useLessons.tsx";
+import {useParams} from "react-router-dom";
 import {LessonElements} from "../components/LessonElements/LessonElements.tsx";
 import BackBtn from "../components/BackBtn/BackBtn.tsx";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
+import useAuth from "../hooks/useAuth.tsx";
+import LessonContentItem from "../components/LessonContentItem/LessonContentItem.tsx";
+import useWebSocket, {ReadyState} from "react-use-websocket";
+import {Roles} from "../types/roles.ts";
+import {ILessonsResp, LessonType} from "../types/lesson.ts";
+import LessonService from "../services/lesson.service.ts";
+import {AxiosError, AxiosResponse} from "axios";
 
 type Params = {
 	classroomId: string;
@@ -10,17 +16,90 @@ type Params = {
 }
 
 const Lesson = () => {
-	const navigate = useNavigate();
+	const {role, wsToken} = useAuth();
 	const {classroomId, lessonId} = useParams<Params>();
-	const {getLesson, fetchLessons} = useLessons();
+	const [lesson, setLesson] = useState<LessonType | null>(null);
+
+	const dataFetchRef = useRef<boolean>(false);
+
+	const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
+
+	const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket<{
+		type: number,
+		classroom_id: number,
+		element_id: string
+	}>("ws://localhost:8082/ws", {
+		shouldReconnect: () => !didUnmount.current,
+		reconnectAttempts: 5,
+		reconnectInterval: 1000,
+	});
+	const didUnmount = useRef(false);
 
 	useEffect(() => {
-		fetchLessons(classroomId!).catch(console.error);
-	}, [classroomId]);
+		if (role === Roles.Student) {
+			itemsRef.current = itemsRef.current.slice(0, lesson?.content?.length);
+		}
 
-	const lesson = getLesson(Number(lessonId));
+		if (dataFetchRef.current) return;
+		dataFetchRef.current = true;
 
-	const ref = useRef<HTMLDivElement>(null);
+		const getLesson = async () => {
+			if (!lesson && classroomId !== undefined && lessonId !== undefined) {
+				try {
+					let resp: AxiosResponse<ILessonsResp, any> | null = null;
+
+					if (role === Roles.Student) {
+						resp = await LessonService.getCurrentLesson(classroomId);
+					} else if (role === Roles.Teacher) {
+						resp = await LessonService.getLesson(lessonId);
+					}
+
+					if (resp && resp.status === 200) {
+						setLesson({
+							id: resp.data.id,
+							title: resp.data.title,
+							classroomId: resp.data.classroomId,
+							content: resp.data.content,
+							active: resp.data.active,
+						});
+					}
+				} catch (e) {
+					const error = e as AxiosError;
+					console.log(error);
+				}
+			}
+		};
+
+		getLesson().catch(console.error);
+	}, []);
+
+	useEffect(() => {
+		if (readyState === ReadyState.OPEN) {
+			sendJsonMessage({
+				type: 1,
+				token: wsToken,
+			});
+		}
+	}, [readyState]);
+
+	useEffect(() => {
+		if (role === Roles.Student && lastJsonMessage) {
+			const index = lesson?.content?.findIndex(el => el.id === lastJsonMessage.element_id);
+
+			const basicClassName = itemsRef.current[index!]!.className;
+
+			itemsRef.current[index!]!.className = "rounded-lg bg-blue-200 text-blue-500 p-3 ring-0";
+			itemsRef.current[index!]!.scrollIntoView({behavior: "smooth", block: "center"});
+
+			setTimeout(() => {
+				itemsRef.current[index!]!.className = basicClassName;
+			}, 3000);
+		}
+
+		return () => {
+			didUnmount.current = false;
+		};
+	}, [lastJsonMessage]);
 
 	return (
 		<div className="w-full flex flex-col">
@@ -48,36 +127,19 @@ const Lesson = () => {
 					p-4 overflow-y-auto">
 						<div className="max-w-[920px] flex flex-col gap-4 flex-grow bg-background border w-full rounded-lg p-8
 						overflow-y-auto">
-							<button onClick={() => {
-								if (!ref.current) return;
-
-								ref.current.scrollIntoView({ behavior: 'smooth', block: "center" });
-								ref.current.style.borderColor = "#ff0000";
-								ref.current.style.animation = "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite";
-
-								setTimeout(() => {
-									ref.current.style.borderColor = "hsl(var(--border))";
-									ref.current.style.animation = "none";
-								}, 3000)
-							}}>
-								go to
-							</button>
 							{lesson && lesson.content
-							 ? lesson.content.map(element => {
+							 ? lesson.content.map((element, i) => {
 									const LessonComponent = LessonElements[element.type].lessonComponent;
 
-									return <LessonComponent key={element.id} elementInstance={element}/>;
+									return <LessonContentItem key={element.id}
+															  send={sendJsonMessage}
+															  classroomId={Number(classroomId)}
+															  elementId={element.id}
+															  ref={el => itemsRef.current[i] = el}>
+										<LessonComponent elementInstance={element}/>
+									</LessonContentItem>;
 								})
 							 : <div>Error fetching lesson content</div>}
-							<div className="w-full p-8 border flex flex-col">text element
-								<div>test</div>
-							</div>
-							<div className="w-full p-8 border">text element</div>
-							<div className="w-full p-8 border">text element</div>
-							<div ref={ref} className="w-full p-8 border">text element</div>
-							<div className="w-full p-8 border">text element</div>
-							<div className="w-full p-8 border">text element</div>
-							<div className="w-full p-8 border">text element</div>
 						</div>
 					</div>
 				</div>
