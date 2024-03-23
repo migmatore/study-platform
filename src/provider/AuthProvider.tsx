@@ -1,4 +1,4 @@
-import {createContext, PropsWithChildren, SetStateAction, useCallback, useEffect, useMemo, useState} from "react";
+import {createContext, PropsWithChildren, SetStateAction, useEffect, useMemo, useState} from "react";
 import {enumFromValue, Roles} from "../types/roles.ts";
 
 interface IAuthContext {

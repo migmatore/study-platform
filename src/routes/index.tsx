@@ -14,6 +14,7 @@ import LessonsProvider from "../provider/LessonsProvider.tsx";
 import Lesson from "../pages/Lesson.tsx";
 import Students from "../pages/Students.tsx";
 import Profile from "../pages/Profile.tsx";
+import ClassroomsProvider from "../provider/ClassroomsProvider.tsx";
 
 const Routes = () => {
 	const {token} = useAuth();
@@ -37,7 +38,7 @@ const Routes = () => {
 								},
 								{
 									path: "/classrooms",
-									element: <Classrooms/>,
+									element: <ClassroomsProvider><Classrooms/></ClassroomsProvider>,
 								},
 								{
 									path: "/classrooms/:classroomId/lessons/:lessonId",

@@ -16,6 +16,9 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "..
 import {Input} from "../ui/Input/Input.tsx";
 import {TextArea} from "../ui/TextArea/TextArea.tsx";
 import {ImSpinner2} from "react-icons/im";
+import useClassrooms from "../../hooks/useClassrooms.tsx";
+import {AxiosError} from "axios";
+import {useState} from "react";
 
 const classroomSchema = z.object({
 	title: z.string({required_error: "Это поле является обязательным"}).min(1).max(100),
@@ -26,6 +29,11 @@ const classroomSchema = z.object({
 type classroomSchemaType = z.infer<typeof classroomSchema>;
 
 const CreateClassroomDialogBtn = () => {
+	const {createClassroom} = useClassrooms();
+	const [open, setOpen] = useState<boolean>(false);
+	const [isError, setIsError] = useState<boolean>(false);
+	const [error, setError] = useState<string>("");
+
 	const form = useForm<classroomSchemaType>({
 		resolver: zodResolver(classroomSchema),
 		mode: "onSubmit",
@@ -34,12 +42,45 @@ const CreateClassroomDialogBtn = () => {
 		},
 	});
 
-	function createClassroom(values: classroomSchemaType) {
-		console.log(values);
-	}
+	const handleCreateClassroom = async (values: classroomSchemaType) => {
+		try {
+			await createClassroom({
+				title: values.title,
+				description: values.description,
+				maxStudents: values.maxStudents,
+			});
+
+			setOpen(false);
+		} catch (e) {
+			const error = e as AxiosError;
+
+			if (error.response == undefined) return;
+
+			switch (error.response.status) {
+				case 400:
+					setIsError(true);
+					setError("Проверьте правильность введенных данных");
+					break;
+				case 401:
+					setIsError(true);
+					setError("Доступ запрещен");
+					break;
+				case 500:
+					setIsError(true);
+					setError("Внутренняя ошибка сервера");
+					break;
+				default:
+					setIsError(true);
+					setError("Неизвестная ошибка");
+					break;
+			}
+
+			console.log(error);
+		}
+	};
 
 	return (
-		<Dialog>
+		<Dialog open={open} onOpenChange={setOpen}>
 			<DialogTrigger asChild>
 				<Button variant="outline" className="py-5 h-[78px] gap-2 border-2 border-dashed">
 					<Plus className="w-8 h-8"/>
@@ -56,7 +97,7 @@ const CreateClassroomDialogBtn = () => {
 					</DialogDescription>
 				</DialogHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(createClassroom)} className="space-y-3">
+					<form onSubmit={form.handleSubmit(handleCreateClassroom)} className="space-y-3">
 						<FormField control={form.control}
 								   name="title"
 								   defaultValue=""
@@ -89,7 +130,7 @@ const CreateClassroomDialogBtn = () => {
 									   <FormItem>
 										   <FormLabel>Максимальное количество учеников</FormLabel>
 										   <FormControl>
-											   <Input  type="number" {...field}/>
+											   <Input type="number" {...field}/>
 										   </FormControl>
 										   <FormMessage/>
 									   </FormItem>
@@ -97,8 +138,14 @@ const CreateClassroomDialogBtn = () => {
 						/>
 					</form>
 				</Form>
+				{isError &&
+                    <div className="flex flex-col bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
+                        <h3 className="text-lg">Ошибка создания урока</h3>
+                        <p>{error}</p>
+                    </div>
+				}
 				<DialogFooter>
-					<Button onClick={form.handleSubmit(createClassroom)}
+					<Button onClick={form.handleSubmit(handleCreateClassroom)}
 							className="w-full mt-4">
 						{!form.formState.isSubmitting && <span>Создать</span>}
 						{form.formState.isSubmitting && (

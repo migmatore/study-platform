@@ -4,6 +4,7 @@ import styles from "./Pages.module.css";
 import authService from "../services/auth.service.ts";
 import {enumFromValue, Roles} from "../types/roles.ts";
 import useAuth from "../hooks/useAuth.tsx";
+import {AxiosError} from "axios";
 
 const Login = () => {
 	const {
@@ -17,6 +18,7 @@ const Login = () => {
 		email: "",
 		password: "",
 	});
+	const [error, setError] = useState<String | null>(null);
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setCredentials({
@@ -43,7 +45,7 @@ const Login = () => {
 			}
 
 			if (setWsToken) {
-				setWsToken(wsToken)
+				setWsToken(wsToken);
 			}
 
 			if (setRole) {
@@ -57,7 +59,17 @@ const Login = () => {
 			//localStorage.setItem('refreshToken', refreshToken)
 
 			navigate("/", {replace: true});
-		} catch (error) {
+		} catch (e) {
+			const error = e as AxiosError;
+
+			if (error.response) {
+				if (error.response.status === 401) {
+					setError("Неверный логин или пароль");
+				} else if (error.response.status === 500) {
+					setError("Внутренняя ошибка сервера");
+				}
+			}
+
 			console.log(error);
 		}
 	};
@@ -89,6 +101,11 @@ const Login = () => {
 								   onChange={handleChange}
 								   className={styles.input}/>
 						</div>
+						{error &&
+                            <div className="flex bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
+                                <p>{error}</p>
+                            </div>
+						}
 						<div className="space-y-4 flex flex-col px-7">
 							<button className={styles.btn} onClick={handleLogin}>
 								Войти

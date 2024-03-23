@@ -1,8 +1,12 @@
 import apiClient from "../api.ts";
-import {IClassroomResp} from "../types/classroom.ts";
+import {IClassroomResp, ICreateClassroomReq} from "../types/classroom.ts";
 import {ILessonsResp} from "../types/lesson.ts";
 
 class ClassroomService {
+	async createClassroom(req: ICreateClassroomReq) {
+		return await apiClient.post<IClassroomResp>("/classrooms", req);
+	}
+
 	async getClassrooms() {
 		return await apiClient.get<IClassroomResp[]>("/classrooms");
 	}

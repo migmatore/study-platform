@@ -33,7 +33,7 @@ const buttonVariants = cva(
 			variant: {
 				default: "bg-primary text-primary-foreground hover:bg-primary-hover",
 				destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-				outline: "border border-input bg-transparent text-muted-foreground hover:bg-gray-50 hover:text-foreground dark:hover:bg-gray-800",
+				outline: "border border-input bg-transparent text-muted-foreground hover:bg-gray-200 hover:text-foreground dark:hover:bg-gray-800",
 				primary_outline: "border border-primary bg-transparent text-primary hover:bg-primary-hover hover:text-primary-foreground",
 				secondary: "bg-secondary text-secondary-foreground hover:bg-secondary-hover",
 				danger: "bg-danger text-danger-foreground hover:bg-danger-hover",

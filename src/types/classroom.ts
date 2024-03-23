@@ -5,3 +5,9 @@ export interface IClassroomResp {
 	teacherId: number;
 	maxStudents: number;
 }
+
+export interface ICreateClassroomReq {
+	title: string;
+	description?: string | null;
+	maxStudents: number;
+}

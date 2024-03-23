@@ -1,36 +1,35 @@
-import classroomService from "../services/classroom.service.ts";
-import {useEffect, useState} from "react";
-import {IClassroomResp} from "../types/classroom.ts";
 import ClassroomItem from "../components/ClassroomItem/ClassroomItem.tsx";
 import CreateClassroomDialogBtn from "../components/CreateClassroomDialogBtn/CreateClassroomDialogBtn.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 import {Roles} from "../types/roles.ts";
+import useClassrooms from "../hooks/useClassrooms.tsx";
 
 const Classrooms = () => {
 	const {role} = useAuth();
-	const [classrooms, setClassrooms] = useState<IClassroomResp[]>();
-
-	useEffect(() => {
-		const getClassrooms = async () => {
-			try {
-				const resp = await classroomService.getClassrooms();
-				console.log(resp.data);
-				if (!ignore) {
-					setClassrooms(resp.data);
-				}
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
-		let ignore = false;
-
-		getClassrooms().catch(console.error);
-
-		return () => {
-			ignore = true;
-		};
-	}, []);
+	//const [classrooms, setClassrooms] = useState<IClassroomResp[]>();
+	//
+	// useEffect(() => {
+	// 	const getClassrooms = async () => {
+	// 		try {
+	// 			const resp = await classroomService.getClassrooms();
+	// 			console.log(resp.data);
+	// 			if (!ignore) {
+	// 				setClassrooms(resp.data);
+	// 			}
+	// 		} catch (error) {
+	// 			console.log(error);
+	// 		}
+	// 	};
+	//
+	// 	let ignore = false;
+	//
+	// 	getClassrooms().catch(console.error);
+	//
+	// 	return () => {
+	// 		ignore = true;
+	// 	};
+	// }, []);
+	const {classrooms} = useClassrooms();
 
 	return (
 		<div className="w-full h-full m-4">
