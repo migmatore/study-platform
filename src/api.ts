@@ -72,6 +72,7 @@ apiClient.interceptors.response.use(
 	(response) => {
 		if (response.data && response.headers["content-type"] === "application/json") {
 			response.data = camelizeKeys(response.data);
+			console.log("response interceptor ", response.data)
 		}
 
 		return response;
@@ -96,7 +97,10 @@ apiClient.interceptors.response.use(
 
 				// Retry the original request with the new token
 				originalRequest.headers.Authorization = `Bearer ${token}`;
-				return axios(originalRequest);
+				const resp = axios(originalRequest);
+				resp.then(resp => resp.data = camelizeKeys(resp.data));
+				console.log("retry response ", resp)
+				return resp
 			} catch (error) {
 				// Handle refresh token error or redirect to login
 			}

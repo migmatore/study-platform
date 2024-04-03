@@ -1,9 +1,13 @@
-import {createContext, Dispatch, PropsWithChildren, SetStateAction, useMemo, useState} from "react";
+import {createContext, Dispatch, PropsWithChildren, SetStateAction, useEffect, useMemo, useRef, useState} from "react";
 import {LessonType} from "../types/lesson.ts";
 import classroomService from "../services/classroom.service.ts";
+import {useParams} from "react-router-dom";
+import {AxiosError} from "axios";
 
 type LessonsContextType = {
 	lessons: LessonType[];
+	fetchError: string | null;
+	isLoading: boolean;
 	fetchLessons: (classroomId: number | string) => Promise<void>;
 	setLessons: Dispatch<SetStateAction<LessonType[]>>;
 	appendLesson: (lesson: LessonType) => void;
@@ -14,8 +18,47 @@ type LessonsContextType = {
 
 export const LessonsContext = createContext<LessonsContextType | null>(null);
 
+type Params = {
+	classroomId: string;
+}
+
 const LessonsProvider = ({children}: PropsWithChildren) => {
+	const {classroomId} = useParams<Params>();
 	const [lessons, setLessons] = useState<LessonType[]>([]);
+	const [fetchError, setFetchError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const dataFetchRef = useRef<boolean>(false);
+
+	useEffect(() => {
+		if (dataFetchRef.current) return;
+		dataFetchRef.current = true;
+
+		const getLessons = async () => {
+			if (classroomId === undefined) return;
+
+			try {
+				const resp = await classroomService.getLessons(classroomId);
+
+				setIsLoading(false);
+				setLessons(resp.data.map(el => {
+					return {
+						id: el.id,
+						title: el.title,
+						classroomId: el.classroomId,
+						content: el.content,
+						active: el.active,
+					};
+				}));
+			} catch (e) {
+				const error = e as AxiosError;
+				setIsLoading(false);
+				setFetchError("Ошибка получения уроков");
+				console.log(error);
+			}
+		}
+
+		getLessons().catch(console.error);
+	}, [classroomId]);
 
 	const fetchLessons = async (classroomId: number | string) => {
 		console.log("fetch lessons")
@@ -77,6 +120,8 @@ const LessonsProvider = ({children}: PropsWithChildren) => {
 	const contextValue = useMemo(
 		() => ({
 			lessons,
+			fetchError,
+			isLoading,
 			fetchLessons,
 			setLessons,
 			appendLesson,
@@ -84,7 +129,7 @@ const LessonsProvider = ({children}: PropsWithChildren) => {
 			setActiveLesson,
 			getLesson,
 		}),
-		[lessons],
+		[lessons, fetchError, isLoading],
 	);
 
 	return <LessonsContext.Provider value={contextValue}>

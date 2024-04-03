@@ -3,6 +3,7 @@ import CreateClassroomDialogBtn from "../components/CreateClassroomDialogBtn/Cre
 import useAuth from "../hooks/useAuth.tsx";
 import {Roles} from "../types/roles.ts";
 import useClassrooms from "../hooks/useClassrooms.tsx";
+import {ImSpinner2} from "react-icons/im";
 
 const Classrooms = () => {
 	const {role} = useAuth();
@@ -29,7 +30,7 @@ const Classrooms = () => {
 	// 		ignore = true;
 	// 	};
 	// }, []);
-	const {classrooms} = useClassrooms();
+	const {classrooms, isLoading, fetchError} = useClassrooms();
 
 	return (
 		<div className="w-full h-full m-4">
@@ -38,12 +39,28 @@ const Classrooms = () => {
 				<p className="text-muted-foreground">Количество: {classrooms?.length ?? 0}</p>
 			</div>
 			<div className="flex flex-col space-y-4">
-				{role === Roles.Teacher ? <CreateClassroomDialogBtn/> : null}
-				{classrooms?.map(classroom =>
-					<ClassroomItem key={classroom.id}
-								   id={classroom.id}
-								   title={classroom.title}
-								   description={classroom.description}/>)}
+				{isLoading ? (
+					<div className="w-full h-full flex justify-center items-center">
+						<ImSpinner2 className="text-muted-foreground w-8 h-8 animate-spin"/>
+					</div>
+				) : <>
+					 {fetchError ? (
+						 <div className="flex flex-col w-full bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
+							 <h3 className="text-lg">Ошибка</h3>
+							 <p>{fetchError}</p>
+						 </div>
+					 ) : (
+						  <>
+							  {role === Roles.Teacher ? <CreateClassroomDialogBtn/> : null}
+							  {classrooms?.map(classroom =>
+								  <ClassroomItem key={classroom.id}
+												 id={classroom.id}
+												 title={classroom.title}
+												 description={classroom.description}/>)}
+						  </>
+					  )}
+				 </>
+				}
 			</div>
 		</div>
 	);

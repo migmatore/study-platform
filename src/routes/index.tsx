@@ -26,7 +26,7 @@ const Routes = () => {
 			children: [
 				{
 					path: "/",
-					element: <LessonsProvider><SidebarLayout/></LessonsProvider>,
+					element: <SidebarLayout/>,
 					children: [
 						{
 							path: "/",
@@ -63,7 +63,7 @@ const Routes = () => {
 									children: [
 										{
 											path: "lessons",
-											element: <Lessons/>,
+											element: <LessonsProvider><Lessons/></LessonsProvider>,
 										},
 										{
 											path: "lessons/:lessonId/edit",

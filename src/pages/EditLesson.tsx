@@ -4,13 +4,14 @@ import {DndContext, MouseSensor, useSensor, useSensors} from "@dnd-kit/core";
 import DragOverlayWrapper from "../components/DragOverlayWrapper/DragOverlayWrapper.tsx";
 import PreviewDialogBtn from "../components/PreviewDialogBtn/PreviewDialogBtn.tsx";
 import SaveLessonBtn from "../components/SaveLessonBtn/SaveLessonBtn.tsx";
-import useLessons from "../hooks/useLessons.tsx";
 import BackBtn from "../components/BackBtn/BackBtn.tsx";
 import DesignerProvider from "../provider/DesignerProvider.tsx";
 import DesignerSidebar from "../components/DesignerSidebar/DesignerSidebar.tsx";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {AxiosError} from "axios";
 import LessonService from "../services/lesson.service.ts";
+import {ILessonsResp} from "../types/lesson.ts";
+import {ImSpinner2} from "react-icons/im";
 
 type Params = {
 	lessonId: string;
@@ -27,10 +28,9 @@ const EditLesson = () => {
 	});
 	const sensors = useSensors(mouseSensor);
 
-	const {setLessons, lessons, getLesson} = useLessons();
-
-	const lesson = getLesson(Number(lessonId));
-
+	const [lesson, setLesson] = useState<ILessonsResp | null>(null);
+	const [fetchError, setFetchError] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const dataFetchRef = useRef<boolean>(false);
 
 	useEffect(() => {
@@ -38,28 +38,25 @@ const EditLesson = () => {
 		dataFetchRef.current = true;
 
 		const getLesson = async () => {
-			if (classroomId !== undefined && lessonId !== undefined) {
+			if (lessonId !== undefined) {
 				try {
 					const resp = await LessonService.getLesson(lessonId);
 
 					if (resp && resp.status === 200) {
-						setLessons(prev => [...prev, {
-							id: resp.data.id,
-							title: resp.data.title,
-							classroomId: resp.data.classroomId,
-							content: resp.data.content,
-							active: resp.data.active,
-						}]);
+						setIsLoading(false);
+						setLesson(resp.data);
 					}
 				} catch (e) {
 					const error = e as AxiosError;
+					setIsLoading(false);
+					setFetchError("Ошибка получения урока");
 					console.log(error);
 				}
 			}
 		};
 
 		getLesson().catch(console.error);
-	}, []);
+	}, [lessonId]);
 
 	return (
 		<DesignerProvider lessonContent={lesson?.content}>
@@ -74,23 +71,43 @@ const EditLesson = () => {
 							<div className="flex justify-between items-center">
 								<p className="text-muted-foreground">Урок: {lesson?.title}</p>
 								<div className="flex gap-2">
-									<PreviewDialogBtn/>
-									<SaveLessonBtn lessonId={lessonId!} classroomId={classroomId!}/>
+									{!isLoading && !fetchError ? (
+										<>
+											<PreviewDialogBtn/>
+											<SaveLessonBtn lessonId={lessonId!} classroomId={classroomId!}/>
+										</>) : null}
 								</div>
 							</div>
 						</div>
 					</div>
 					<div className="flex w-full">
-						<div className="w-full">
-							<div
-								className="w-full h-full flex flex-col flex-grow items-center justify-center bg-background
-					overflow-y-auto bg-[url(/graph-paper.svg)] dark:bg-[url(/graph-paper-dark.svg)]">
-								<Designer/>
+						{isLoading ? (
+							<div className="w-full h-screen flex justify-center items-center">
+								<ImSpinner2 className="text-muted-foreground w-8 h-8 animate-spin"/>
 							</div>
-						</div>
-						<div className="h-[calc(100vh-101px)] w-[400px] sticky top-[101px] overflow-y-scroll">
-							<DesignerSidebar/>
-						</div>
+						) : (
+							 <>
+								 {fetchError ? (
+									 <div className="flex m-4 flex-col w-full bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
+										 <h3 className="text-lg">Ошибка</h3>
+										 <p>{fetchError}</p>
+									 </div>
+								 ) : (
+									  <>
+										  <div className="w-full">
+											  <div className="w-full h-full flex flex-col flex-grow items-center justify-center
+										 	bg-background overflow-y-auto bg-[url(/graph-paper.svg)]
+										 	dark:bg-[url(/graph-paper-dark.svg)]">
+												  <Designer/>
+											  </div>
+										  </div>
+										  <div className="h-[calc(100vh-101px)] w-[400px] sticky top-[101px] overflow-y-scroll">
+											  <DesignerSidebar/>
+										  </div>
+									  </>
+								  )}
+							 </>
+						 )}
 					</div>
 				</div>
 				<DragOverlayWrapper/>

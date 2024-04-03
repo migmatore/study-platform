@@ -5,6 +5,8 @@ import classroomService from "../services/classroom.service.ts";
 
 type ClassroomsContextType = {
 	classrooms: IClassroomResp[];
+	fetchError: string | null;
+	isLoading: boolean;
 	createClassroom: (req: ICreateClassroomReq) => Promise<void>;
 }
 
@@ -12,6 +14,8 @@ export const ClassroomsContext = createContext<ClassroomsContextType | null>(nul
 
 const ClassroomsProvider = ({children}: PropsWithChildren) => {
 	const [classrooms, setClassrooms] = useState<IClassroomResp[]>([]);
+	const [fetchError, setFetchError] = useState<string | null>(null)
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const dataFetchRef = useRef<boolean>(false);
 
 	useEffect(() => {
@@ -23,10 +27,13 @@ const ClassroomsProvider = ({children}: PropsWithChildren) => {
 				const resp = await classroomService.getClassrooms();
 
 				if (resp.status === 200) {
+					setIsLoading(false);
 					setClassrooms(resp.data);
 				}
 			} catch (e) {
 				const error = e as AxiosError;
+				setIsLoading(false);
+				setFetchError("Ошибка получения классов");
 				console.log(error);
 			}
 		};
@@ -53,8 +60,10 @@ const ClassroomsProvider = ({children}: PropsWithChildren) => {
 
 	const contextValue = useMemo(() => ({
 		classrooms,
+		fetchError,
+		isLoading,
 		createClassroom,
-	}), [classrooms]);
+	}), [classrooms, fetchError, isLoading]);
 
 	return <ClassroomsContext.Provider value={contextValue}>
 		{children}
