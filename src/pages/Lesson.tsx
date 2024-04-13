@@ -10,7 +10,8 @@ import {ILessonsResp, LessonType} from "../types/lesson.ts";
 import LessonService from "../services/lesson.service.ts";
 import {AxiosError, AxiosResponse} from "axios";
 import {ImSpinner2} from "react-icons/im";
-import MakeCallDialogBtn from "../components/MakeCallDialogBtn/MakeCallDialogBtn.tsx";
+import {MessageType, RealtimeMsg} from "../types/realTime.ts";
+import CallDialogBtn from "../components/CallDialogBtn/CallDialogBtn.tsx";
 
 type Params = {
 	classroomId: string;
@@ -26,19 +27,18 @@ const Lesson = () => {
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const dataFetchRef = useRef<boolean>(false);
 
+	const [isCall, setIsCall] = useState<boolean>(false);
+
 	const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
 
-	const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket<{
-		type: number,
-		classroom_id: number,
-		element_id: string
-	}>("ws://localhost:8082/ws", {
+	const didUnmount = useRef(false);
+
+	const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket<RealtimeMsg>("ws://localhost:8082/ws", {
 		//share: true,
-		shouldReconnect: () => didUnmount.current === false,
+		shouldReconnect: () => !didUnmount.current,
 		reconnectAttempts: 5,
 		reconnectInterval: 1000,
 	});
-	const didUnmount = useRef(false);
 
 	useEffect(() => {
 		if (dataFetchRef.current) return;
@@ -108,25 +108,29 @@ const Lesson = () => {
 	}, [readyState]);
 
 	useEffect(() => {
-		if (lastJsonMessage) {
-			const index = lesson?.content?.findIndex(el => el.id === lastJsonMessage.element_id);
+		if (role === Roles.Student && lastJsonMessage) {
+			switch (lastJsonMessage.type) {
+				case MessageType.VirtualPointer:
+					const index = lesson?.content?.findIndex(el => el.id === lastJsonMessage.element_id);
 
-			const basicClassName = itemsRef.current[index!]!.className;
+					const basicClassName = itemsRef.current[index!]!.className;
 
-			itemsRef.current[index!]!.className = "rounded-lg bg-blue-200 text-blue-500 p-3 ring-0";
-			itemsRef.current[index!]!.scrollIntoView({behavior: "smooth", block: "center"});
+					itemsRef.current[index!]!.className = "rounded-lg bg-blue-200 text-blue-500 p-3 ring-0";
+					itemsRef.current[index!]!.scrollIntoView({behavior: "smooth", block: "center"});
 
-			setTimeout(() => {
-				itemsRef.current[index!]!.className = basicClassName;
-			}, 3000);
+					setTimeout(() => {
+						itemsRef.current[index!]!.className = basicClassName;
+					}, 3000);
+					break;
+				case MessageType.Call:
+					setIsCall(true);
+			}
 		}
-	}, [lastJsonMessage]);
 
-	useEffect(() => {
 		return () => {
 			didUnmount.current = true;
 		};
-	}, []);
+	}, [lastJsonMessage]);
 
 	return (
 		<div className="w-full flex flex-col">
@@ -173,12 +177,22 @@ const Lesson = () => {
 						 </>
 					 )}
 				</div>
-				<div className="h-[calc(100vh-81px)] min-w-fit sticky top-[81px] mr-4 overflow-y-scroll">
-					{/*<PreJoin/>*/}
-					<div className="w-full flex flex-col items-center justify-center border rounded-lg p-4">
-							<MakeCallDialogBtn/>
+				{role === Roles.Teacher ? (
+					<div className="h-[calc(100vh-81px)] min-w-fit sticky top-[81px] mr-4 overflow-y-scroll">
+						<div className="w-full flex flex-col items-center justify-center border rounded-lg p-4">
+							<CallDialogBtn classroomId={Number(classroomId)}
+										   open={isCall}
+										   onOpenChange={setIsCall}
+										   sendJsonMessage={sendJsonMessage}/>
+						</div>
 					</div>
-				</div>
+				) : null}
+				{role === Roles.Student ? (
+					<CallDialogBtn classroomId={Number(classroomId)}
+								   open={isCall}
+								   onOpenChange={setIsCall}
+								   sendJsonMessage={sendJsonMessage}/>
+				) : null}
 			</div>
 		</div>
 	);
