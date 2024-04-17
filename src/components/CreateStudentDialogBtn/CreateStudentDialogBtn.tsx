@@ -86,7 +86,7 @@ const CreateStudentDialogBtn = () => {
 								   defaultValue=""
 								   render={({field}) => (
 									   <FormItem>
-										   <FormLabel>Email</FormLabel>
+										   <FormLabel>Адрес электронной почты</FormLabel>
 										   <FormControl>
 											   <Input type="email" {...field}/>
 										   </FormControl>

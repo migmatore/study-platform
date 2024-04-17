@@ -58,7 +58,7 @@ const ClassroomsProvider = ({children}: PropsWithChildren) => {
 		}
 	};
 
-	const contextValue = useMemo(() => ({
+	const contextValue: ClassroomsContextType | null = useMemo(() => ({
 		classrooms,
 		fetchError,
 		isLoading,

@@ -68,18 +68,17 @@ const Login = () => {
 				setRefreshToken(refreshToken);
 			}
 
-			//localStorage.setItem('refreshToken', refreshToken)
-
 			navigate("/", {replace: true});
 		} catch (e) {
 			const error = e as AxiosError;
 
-			if (error.response) {
-				if (error.response.status === 401) {
+			switch (error.response?.status) {
+				case 401:
 					setError("Неверный логин или пароль");
-				} else if (error.response.status === 500) {
+					break;
+				case 500:
 					setError("Внутренняя ошибка сервера");
-				}
+					break;
 			}
 
 			console.log(error);
@@ -99,38 +98,6 @@ const Login = () => {
 					<div className="flex items-center justify-center">
 						<p className="font-medium text-2xl">Вход</p>
 					</div>
-					{/*<form className="space-y-7">*/}
-					{/*	<div className="space-y-4">*/}
-					{/*		<label className="block">Email</label>*/}
-					{/*		<input type="text"*/}
-					{/*			   name="email"*/}
-					{/*			   placeholder="Email"*/}
-					{/*			   value={credentials.email}*/}
-					{/*			   onChange={handleChange}*/}
-					{/*			   className={styles.input}/>*/}
-					{/*		<label className="block">Пароль</label>*/}
-					{/*		<input type="text"*/}
-					{/*			   name="password"*/}
-					{/*			   placeholder="Пароль"*/}
-					{/*			   value={credentials.password}*/}
-					{/*			   onChange={handleChange}*/}
-					{/*			   className={styles.input}/>*/}
-					{/*	</div>*/}
-					{/*	{error &&*/}
-                    {/*        <div className="flex bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">*/}
-                    {/*            <p>{error}</p>*/}
-                    {/*        </div>*/}
-					{/*	}*/}
-					{/*	<div className="space-y-4 flex flex-col px-7">*/}
-					{/*		<button className={styles.btn} onClick={handleLogin}>*/}
-					{/*			Войти*/}
-					{/*		</button>*/}
-					{/*		<button onClick={handleSignup}*/}
-					{/*				className={styles.btn}>*/}
-					{/*			Зарегистрироваться*/}
-					{/*		</button>*/}
-					{/*	</div>*/}
-					{/*</form>*/}
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(handleLogin)} className="space-y-3">
 							<FormField control={form.control}
@@ -159,6 +126,12 @@ const Login = () => {
 										   </FormItem>
 									   )}
 							/>
+							{error &&
+                                <div className="flex flex-col bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
+                                    <h3 className="text-lg">Ошибка входа</h3>
+                                    <p>{error}</p>
+                                </div>
+							}
 							<div className="pt-4 px-5 space-y-3">
 								<Button onClick={form.handleSubmit(handleLogin)} className="w-full">
 									{!form.formState.isSubmitting && <span>Войти</span>}

@@ -140,7 +140,7 @@ const CreateClassroomDialogBtn = () => {
 				</Form>
 				{isError &&
                     <div className="flex flex-col bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
-                        <h3 className="text-lg">Ошибка создания урока</h3>
+                        <h3 className="text-lg">Ошибка создания класса</h3>
                         <p>{error}</p>
                     </div>
 				}

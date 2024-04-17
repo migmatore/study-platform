@@ -1,5 +1,3 @@
-import React, {useState} from "react";
-import styles from "./Pages.module.css";
 import authService from "../services/auth.service.ts";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "../components/ui/Form/Form.tsx";
 import {z} from "zod";
@@ -14,125 +12,113 @@ import {
 	SelectValue,
 } from "../components/ui/Select/Select.tsx";
 import {Input} from "../components/ui/Input/Input.tsx";
+import {Button} from "../components/ui/Button/Button.tsx";
+import {ImSpinner2} from "react-icons/im";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {AxiosError} from "axios";
+import {enumFromValue, Roles} from "../types/roles.ts";
+import useAuth from "../hooks/useAuth.tsx";
 
-const roles = z.enum(["admin", "teacher"])
+const roles = z.enum(["admin", "teacher"]);
 
 const adminSchema = z.object({
 	role: z.literal(roles.enum.admin),
-	institutionName: z.string().min(5).max(200),
+	institutionName: z.string({required_error: "Это поле обязательно"})
+		.min(5, "Количество символов в названии должно быть минимум 5")
+		.max(200, "Количество символов в названии не должно превышать 200"),
 	fullName: z.string({required_error: "Это поле обязательно"})
 		.min(5, "Количество символов в ФИО должно быть минимум 5")
-		.max(
-			100,
-			"Количество символов в ФИО не должно превышать 100",
-		),
-	email: z.string().email("Неверный формат email").max(
-		50,
-		"Количество символов в email не должно превышать 50",
-	),
-	password: z.string().min(8, "Количество символов в пароле должно быть минимум 8").max(
-		100,
-		"Количество символов в пароле не должно превышать 100",
-	),
-})
+		.max(100, "Количество символов в ФИО не должно превышать 100"),
+	email: z.string({required_error: "Это поле обязательно"})
+		.email("Неверный формат email")
+		.max(50, "Количество символов в email не должно превышать 50"),
+	password: z.string({required_error: "Это поле обязательно"})
+		.min(8, "Количество символов в пароле должно быть минимум 8")
+		.max(100, "Количество символов в пароле не должно превышать 100"),
+});
 
 const teacherSchema = z.object({
 	role: z.literal(roles.enum.teacher),
-	institutionName: z.string().max(200).optional(),
 	fullName: z.string({required_error: "Это поле обязательно"})
 		.min(5, "Количество символов в ФИО должно быть минимум 5")
-		.max(
-		100,
-		"Количество символов в ФИО не должно превышать 100",
-	),
-	email: z.string().email("Неверный формат email").max(
-		50,
-		"Количество символов в email не должно превышать 50",
-	),
-	password: z.string().min(8, "Количество символов в пароле должно быть минимум 8").max(
-		100,
-		"Количество символов в пароле не должно превышать 100",
-	),
-})
-
-const signupSchema = z.object({
-	role: z.string(),
-	institutionName: z.string().min(5).max(200).optional().or(z.literal("")),
-	// fullName: z.string({required_error: "Это поле обязательно"})
-	// 	//.min(5, "Количество символов в ФИО должно быть минимум 5")
-	// 	.max(
-	// 	100,
-	// 	"Количество символов в ФИО не должно превышать 100",
-	// ),
-	// email: z.string().email("Неверный формат email").max(
-	// 	50,
-	// 	"Количество символов в email не должно превышать 50",
-	// ),
-	// password: z.string().min(8, "Количество символов в пароле должно быть минимум 8").max(
-	// 	100,
-	// 	"Количество символов в пароле не должно превышать 100",
-	// ),
-}).refine(input => {
-
-	// allows bar to be optional only when foo is 'foo'
-	return !(input.role !== "teacher" && input.institutionName === undefined);
+		.max(100, "Количество символов в ФИО не должно превышать 100"),
+	email: z.string({required_error: "Это поле обязательно"})
+		.email("Неверный формат email")
+		.max(50, "Количество символов в email не должно превышать 50"),
+	password: z.string({required_error: "Это поле обязательно"})
+		.min(8, "Количество символов в пароле должно быть минимум 8")
+		.max(100, "Количество символов в пароле не должно превышать 100"),
 });
 
-const schema = z.discriminatedUnion("role", [adminSchema, teacherSchema])
+const signupSchema = z.discriminatedUnion("role", [adminSchema, teacherSchema]);
 
 type signupSchemaType = z.infer<typeof signupSchema>;
-type schemaType = z.infer<typeof schema>;
 
 const Signup = () => {
-	const [credentials, setCredentials] = useState({
-		email: "",
-		password: "",
-		fullName: "",
-		institutionName: "",
-		role: "",
+	const navigate = useNavigate();
+	const {
+		setToken,
+		setWsToken,
+		setRole,
+		setRefreshToken,
+	} = useAuth();
+	const [error, setError] = useState<string | null>(null);
+	const form = useForm<signupSchemaType>({
+		resolver: zodResolver(signupSchema),
+		mode: "onSubmit",
+		reValidateMode: "onChange",
+		defaultValues: {
+			role: roles.enum.teacher,
+			fullName: "",
+			email: "",
+			password: "",
+		},
 	});
-
-
-	const form = useForm<schemaType>({
-		resolver: zodResolver(schema),
-		mode: "onBlur",
-	});
-
-	// try {
-	// 	const p = schema.parse({
-	// 		role: "teacher",
-	// 		//institutionName: "123123123",
-	// 		fullName: "123123",
-	// 		password: "123123123123",
-	// 		email: "test@gmail.com",
-	// 	})
-	//
-	// 	console.log(p)
-	// } catch (e) {
-	// 	console.log(e)
-	// }
 
 	const isAdmin = form.watch("role", "teacher") === "admin";
 
-	const handleSignup = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-		e.preventDefault();
-
+	const handleSignup = async (values: signupSchemaType) => {
 		try {
-			const resp = await authService.signup(credentials);
-			const {token, refreshToken, role} = resp.data;
+			const resp = await authService.signup({...values});
+			const {token, refreshToken, wsToken, role} = resp.data;
 
-			console.log(resp.data);
+			if (resp.status === 201) {
+				if (setToken) {
+					setToken(token);
+				}
 
-			localStorage.setItem("token", token);
-			localStorage.setItem("refreshToken", refreshToken);
-			localStorage.setItem("role", role);
-		} catch (error) {
+				if (setWsToken) {
+					setWsToken(wsToken);
+				}
+
+				if (setRole) {
+					setRole(enumFromValue(role, Roles));
+				}
+
+				if (setRefreshToken) {
+					setRefreshToken(refreshToken);
+				}
+
+				navigate("/", {replace: true});
+			}
+		} catch (e) {
+			const error = e as AxiosError;
+
+			switch (error.response?.status) {
+				case 400:
+					setError("Данные введены неверно");
+					break;
+				case 409:
+					setError("Пользователь с такими данными уже существует");
+					break;
+				case 500:
+					setError("Внутренняя ошибка сервера");
+					break;
+			}
+
 			console.log(error);
 		}
-	};
-
-	const t = (values: schemaType) => {
-		console.log(values);
 	};
 
 	return (
@@ -142,83 +128,11 @@ const Signup = () => {
 					<div className="flex items-center justify-center">
 						<p className="font-medium text-2xl">Регистрация</p>
 					</div>
-					<form className="space-y-7">
-						<div className="space-y-4">
-							{/*<label className="block">*/}
-							{/*	Выберите роль*/}
-							{/*</label>*/}
-							{/*<select id="countries"*/}
-							{/*		className={styles.select}*/}
-							{/*		onChange={OnSelect}*/}
-							{/*		defaultValue={credentials.role || "teacher"}>*/}
-							{/*	<option value="teacher">Учитель</option>*/}
-							{/*	<option value="admin">Администратор учебного заведения</option>*/}
-							{/*</select>*/}
-							{/*{admin ? (*/}
-							{/*	<div className="space-y-4">*/}
-							{/*		<label className="block">Название учебного заведения</label>*/}
-							{/*		<input type="text" name="institutionName" placeholder="Название"*/}
-							{/*			   className={styles.input} value={credentials.institutionName}*/}
-							{/*			   onChange={handleChange}/>*/}
-							{/*		<label className="block">ФИО</label>*/}
-							{/*		<input type="text"*/}
-							{/*			   name="fullName"*/}
-							{/*			   placeholder="ФИО"*/}
-							{/*			   className={styles.input}*/}
-							{/*			   value={credentials.fullName}*/}
-							{/*			   onChange={handleChange}/>*/}
-							{/*		<label className="block">Email</label>*/}
-							{/*		<input type="text"*/}
-							{/*			   name="email"*/}
-							{/*			   placeholder="Email"*/}
-							{/*			   className={styles.input}*/}
-							{/*			   value={credentials.email}*/}
-							{/*			   onChange={handleChange}/>*/}
-							{/*		<label className="block">Пароль</label>*/}
-							{/*		<input type="text"*/}
-							{/*			   name="password"*/}
-							{/*			   placeholder="Пароль"*/}
-							{/*			   className={styles.input}*/}
-							{/*			   value={credentials.password}*/}
-							{/*			   onChange={handleChange}/>*/}
-							{/*	</div>*/}
-							{/*) : (*/}
-							{/*	 <div className="space-y-4">*/}
-							{/*		 <label className="block">ФИО</label>*/}
-							{/*		 <input type="text"*/}
-							{/*				name="fullName"*/}
-							{/*				placeholder="ФИО"*/}
-							{/*				className={styles.input}*/}
-							{/*				value={credentials.fullName}*/}
-							{/*				onChange={handleChange}/>*/}
-							{/*		 <label className="block">Email</label>*/}
-							{/*		 <input type="text"*/}
-							{/*				name="email"*/}
-							{/*				placeholder="Email"*/}
-							{/*				className={styles.input}*/}
-							{/*				value={credentials.email}*/}
-							{/*				onChange={handleChange}/>*/}
-							{/*		 <label className="block">Пароль</label>*/}
-							{/*		 <input type="text"*/}
-							{/*				name="password"*/}
-							{/*				placeholder="Пароль"*/}
-							{/*				className={styles.input}*/}
-							{/*				value={credentials.password}*/}
-							{/*				onChange={handleChange}/>*/}
-							{/*	 </div>*/}
-							{/* )}*/}
-						</div>
-						<div className="space-y-4 flex flex-col px-7">
-							<button className={styles.btn} onClick={handleSignup}>
-								Зарегистрироваться
-							</button>
-						</div>
-					</form>
 					<Form {...form}>
-						<form onBlur={form.handleSubmit(t)} className="space-y-3">
+						<form onSubmit={form.handleSubmit(handleSignup)} className="space-y-3">
 							<FormField control={form.control}
 									   name="role"
-									   //defaultValue="teacher"
+								// defaultValue="teacher"
 									   render={({field}) => (
 										   <FormItem>
 											   <FormLabel>Роль</FormLabel>
@@ -296,6 +210,20 @@ const Signup = () => {
 									   )}
 							/>
 						</form>
+						{error &&
+                            <div className="flex flex-col bg-red-100 border border-destructive rounded-lg text-destructive p-5 justify-center items-center">
+                                <h3 className="text-lg">Ошибка регистрации</h3>
+                                <p>{error}</p>
+                            </div>
+						}
+						<div className="pt-4 px-5 space-y-3">
+							<Button onClick={form.handleSubmit(handleSignup)} className="w-full">
+								{!form.formState.isSubmitting && <span>Зарегистрироваться</span>}
+								{form.formState.isSubmitting && (
+									<ImSpinner2 className="animate-spin"/>
+								)}
+							</Button>
+						</div>
 					</Form>
 				</div>
 			</div>
