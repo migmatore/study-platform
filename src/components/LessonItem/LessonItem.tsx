@@ -1,10 +1,11 @@
 import {cn} from "../../utils";
-import {LogIn, Pencil, Pin, PinOff, Trash2} from "lucide-react";
+import {LogIn, Pencil, Pin, PinOff} from "lucide-react";
 import React from "react";
 import {useNavigate} from "react-router-dom";
 import {Button} from "../ui/Button/Button.tsx";
 import useLessons from "../../hooks/useLessons.tsx";
 import lessonService from "../../services/lesson.service.ts";
+import DeleteConfirmDialogBtn from "../DeleteConfirmDialogBtn/DeleteConfirmDialogBtn.tsx";
 
 interface Props {
 	id: number;
@@ -20,8 +21,8 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 	const handleGoToLesson = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
 
-		navigate(`${id}`)
-	}
+		navigate(`${id}`);
+	};
 
 	const handleTogglePin = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
@@ -33,7 +34,7 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 				setActiveLesson(id);
 			}
 		} catch (e) {
-			console.error(e)
+			console.error(e);
 		}
 	};
 
@@ -67,9 +68,9 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 								variant="primary_outline">
 							<Pencil size={20}/>
 						</Button>
-						<Button variant="danger_outline">
-							<Trash2 size={20}/>
-						</Button>
+						<DeleteConfirmDialogBtn title="Удаление урока"
+												description={`Вы точно хотите удалить урок ${title}?`}
+						/>
 					</div>
 				</div>
 			</div>

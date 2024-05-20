@@ -10,8 +10,12 @@ import {ILessonsResp, LessonType} from "../types/lesson.ts";
 import LessonService from "../services/lesson.service.ts";
 import {AxiosError, AxiosResponse} from "axios";
 import {ImSpinner2} from "react-icons/im";
-import {MessageType, RealtimeMsg} from "../types/realTime.ts";
+import {ErrorType, MessageType, RealtimeMsg} from "../types/realTime.ts";
 import CallDialogBtn from "../components/CallDialogBtn/CallDialogBtn.tsx";
+import {Menu} from "lucide-react";
+import {Button} from "../components/ui/Button/Button.tsx";
+import useSidebar from "../hooks/useSidebar.tsx";
+import authService from "../services/auth.service.ts";
 
 type Params = {
 	classroomId: string;
@@ -19,8 +23,16 @@ type Params = {
 }
 
 const Lesson = () => {
-	const {role, wsToken} = useAuth();
+	const {
+		role,
+		wsToken,
+		refreshToken,
+		setToken,
+		setRefreshToken,
+		setWsToken
+	} = useAuth();
 	const {classroomId, lessonId} = useParams<Params>();
+	const {toggleMobileExpanded} = useSidebar();
 
 	const [lesson, setLesson] = useState<LessonType | null>(null);
 	const [fetchError, setFetchError] = useState<string | null>(null);
@@ -96,19 +108,46 @@ const Lesson = () => {
 		};
 
 		getLesson().catch(console.error);
+
+		return () => {
+			didUnmount.current = true;
+		};
 	}, [lessonId, classroomId, role, lesson]);
 
 	useEffect(() => {
-		if (readyState === ReadyState.OPEN) {
-			sendJsonMessage({
-				type: 1,
-				token: wsToken,
-			});
+		switch (readyState) {
+			case ReadyState.OPEN:
+				sendJsonMessage({
+					type: 1,
+					token: wsToken,
+				});
 		}
 	}, [readyState]);
 
 	useEffect(() => {
-		if (role === Roles.Student && lastJsonMessage) {
+		if (!lastJsonMessage) return;
+
+		if (lastJsonMessage.type === MessageType.Error && lastJsonMessage.ErrorType === ErrorType.ExpiredToken) {
+			authService.refreshToken(refreshToken!)
+				.then(resp => {
+					if (resp && resp.status === 200) {
+						if (setToken) {
+							setToken(resp.data.token);
+						}
+
+						if (setWsToken) {
+							setWsToken(resp.data.wsToken);
+						}
+
+						if (setRefreshToken) {
+							setRefreshToken(resp.data.refreshToken);
+						}
+					}
+				})
+				.catch(console.error);
+		}
+
+		if (role === Roles.Student) {
 			switch (lastJsonMessage.type) {
 				case MessageType.VirtualPointer:
 					const index = lesson?.content?.findIndex(el => el.id === lastJsonMessage.element_id);
@@ -126,20 +165,19 @@ const Lesson = () => {
 					setIsCall(true);
 			}
 		}
-
-		return () => {
-			didUnmount.current = true;
-		};
 	}, [lastJsonMessage]);
 
 	return (
 		<div className="w-full flex flex-col">
-			<div className="flex bg-background  p-4 border-b gap-4 items-center sticky top-0 z-50">
+			<div className="flex bg-background  p-4 border-b gap-4 items-center sticky top-0 z-[49]">
+				<Button className="sm:hidden" variant="outline" size="icon" onClick={toggleMobileExpanded}>
+					<Menu size={20}/>
+				</Button>
 				<BackBtn/>
 				<h1 className="text-2xl">Урок: {lesson?.title}</h1>
 			</div>
 			<div
-				className="w-full h-full flex flex-grow justify-center bg-background">
+				className="w-full h-full flex flex-grow sm:flex-row flex-col-reverse gap-4 justify-center p-4 bg-background">
 				<div className="w-full overflow-y-auto">
 					{isLoading ? (
 						<div className="w-full h-screen flex justify-center items-center">
@@ -155,7 +193,7 @@ const Lesson = () => {
 								 </div>
 							 ) : (
 								  <div className="bg-background flex flex-col flex-grow items-center justify-center
-								  	p-4 overflow-y-auto">
+								  	overflow-y-auto">
 									  <div className="max-w-[920px] flex flex-col gap-4 flex-grow bg-background border
 									  	w-full rounded-lg p-8 overflow-y-auto">
 										  {lesson && lesson.content
@@ -178,7 +216,7 @@ const Lesson = () => {
 					 )}
 				</div>
 				{role === Roles.Teacher ? (
-					<div className="h-[calc(100vh-81px)] min-w-fit sticky top-[81px] mr-4 overflow-y-scroll">
+					<div className="sm:h-[calc(100vh-81px)] sm:min-w-fit sm:sticky sm:top-[81px] sm:mr-4 sm:overflow-y-hidden">
 						<div className="w-full flex flex-col items-center justify-center border rounded-lg p-4">
 							<CallDialogBtn classroomId={Number(classroomId)}
 										   open={isCall}

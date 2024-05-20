@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {LogIn, Trash2} from "lucide-react";
+import {LogIn} from "lucide-react";
 import {Button} from "../ui/Button/Button.tsx";
 import useAuth from "../../hooks/useAuth.tsx";
 import {Roles} from "../../types/roles.ts";
@@ -14,6 +14,7 @@ import {
 	AlertDialogTitle,
 } from "../ui/AlertDialog/AlertDialog.tsx";
 import {AxiosError} from "axios";
+import DeleteConfirmDialogBtn from "../DeleteConfirmDialogBtn/DeleteConfirmDialogBtn.tsx";
 
 interface Props {
 	id: number;
@@ -62,9 +63,9 @@ const ClassroomItem = ({id, title, description}: Props) => {
 					</div>
 				</Button>
 				{role === Roles.Teacher ?
-				<Button variant="danger_outline">
-					<Trash2 size={20}/>
-				</Button> : null}
+				 <DeleteConfirmDialogBtn title="Удаление класса"
+										 description={`Вы точно хотите удалить класс ${title}?`}
+				 /> : null}
 			</div>
 			<AlertDialog open={currentLessonError} onOpenChange={setCurrentLessonError}>
 				<AlertDialogContent>

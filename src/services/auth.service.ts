@@ -9,6 +9,10 @@ class AuthService {
 	async signup(req: ISignupReq) {
 		return await authApiClient.post<IAuthResp>("/auth/signup", req);
 	}
+
+	async refreshToken(refreshToken: string) {
+		return await authApiClient.post<IAuthResp>("/auth/refresh", refreshToken);
+	}
 }
 
 export default new AuthService();

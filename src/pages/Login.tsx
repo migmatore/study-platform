@@ -37,7 +37,8 @@ const Login = () => {
 
 	const form = useForm<loginSchemaType>({
 		resolver: zodResolver(loginSchema),
-		mode: "onBlur",
+		mode: "onSubmit",
+		reValidateMode: "onChange",
 		defaultValues: {},
 	});
 
@@ -68,7 +69,7 @@ const Login = () => {
 				setRefreshToken(refreshToken);
 			}
 
-			navigate("/", {replace: true});
+			navigate("/profile", {replace: true});
 		} catch (e) {
 			const error = e as AxiosError;
 

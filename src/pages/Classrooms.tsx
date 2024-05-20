@@ -4,38 +4,24 @@ import useAuth from "../hooks/useAuth.tsx";
 import {Roles} from "../types/roles.ts";
 import useClassrooms from "../hooks/useClassrooms.tsx";
 import {ImSpinner2} from "react-icons/im";
+import {Menu} from "lucide-react";
+import {Button} from "../components/ui/Button/Button.tsx";
+import useSidebar from "../hooks/useSidebar.tsx";
 
 const Classrooms = () => {
 	const {role} = useAuth();
-	//const [classrooms, setClassrooms] = useState<IClassroomResp[]>();
-	//
-	// useEffect(() => {
-	// 	const getClassrooms = async () => {
-	// 		try {
-	// 			const resp = await classroomService.getClassrooms();
-	// 			console.log(resp.data);
-	// 			if (!ignore) {
-	// 				setClassrooms(resp.data);
-	// 			}
-	// 		} catch (error) {
-	// 			console.log(error);
-	// 		}
-	// 	};
-	//
-	// 	let ignore = false;
-	//
-	// 	getClassrooms().catch(console.error);
-	//
-	// 	return () => {
-	// 		ignore = true;
-	// 	};
-	// }, []);
+	const {toggleMobileExpanded} = useSidebar();
 	const {classrooms, isLoading, fetchError} = useClassrooms();
 
 	return (
 		<div className="w-full h-full m-4">
 			<div className="flex flex-col mb-4 gap-2">
-				<h1 className="text-2xl text-foreground">Список классов</h1>
+				<div className="flex gap-4 items-center">
+					<Button className="sm:hidden" variant="outline" size="icon" onClick={toggleMobileExpanded}>
+						<Menu size={20}/>
+					</Button>
+					<h1 className="text-2xl text-foreground">Список классов</h1>
+				</div>
 				<p className="text-muted-foreground">Количество: {classrooms?.length ?? 0}</p>
 			</div>
 			<div className="flex flex-col space-y-4">

@@ -4,7 +4,7 @@ import {ThemeProvider} from "./provider/ThemeProvider.tsx";
 
 const App = () => {
 	return (
-		<main className="flex">
+		<main className="flex h-full">
 			<ThemeProvider>
 				<AuthProvider>
 					<Routes/>

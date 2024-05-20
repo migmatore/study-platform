@@ -100,7 +100,7 @@ const Signup = () => {
 					setRefreshToken(refreshToken);
 				}
 
-				navigate("/", {replace: true});
+				navigate("/profile", {replace: true});
 			}
 		} catch (e) {
 			const error = e as AxiosError;

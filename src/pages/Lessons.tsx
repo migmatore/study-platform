@@ -4,6 +4,9 @@ import CreateLessonDialogBtn from "../components/CreateLessonDialogBtn/CreateLes
 import useLessons from "../hooks/useLessons.tsx";
 import BackBtn from "../components/BackBtn/BackBtn.tsx";
 import {ImSpinner2} from "react-icons/im";
+import {Menu} from "lucide-react";
+import {Button} from "../components/ui/Button/Button.tsx";
+import useSidebar from "../hooks/useSidebar.tsx";
 
 type Params = {
 	classroomId: string;
@@ -11,7 +14,7 @@ type Params = {
 
 const Lessons = () => {
 	const {classroomId} = useParams<Params>();
-
+	const {toggleMobileExpanded} = useSidebar();
 	const {lessons, fetchError, isLoading} = useLessons();
 
 	//const [lessons, setLessons] = useState<ILessonsResp[]>();
@@ -55,6 +58,9 @@ const Lessons = () => {
 			<div className="flex mb-4 gap-4 items-center">
 				<div className="flex flex-col gap-2">
 					<div className="flex gap-4 items-center">
+						<Button className="sm:hidden" variant="outline" size="icon" onClick={toggleMobileExpanded}>
+							<Menu size={20}/>
+						</Button>
 						<BackBtn/>
 						<h1 className="text-2xl text-foreground">Список уроков</h1>
 					</div>

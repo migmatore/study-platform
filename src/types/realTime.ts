@@ -1,7 +1,8 @@
 export enum MessageType {
 	Auth = 1,
 	VirtualPointer,
-	Call
+	Call,
+	Error,
 }
 
 export type AuthMsg = {
@@ -20,4 +21,13 @@ export type CallMsg = {
 	classroomId: number;
 }
 
-export type RealtimeMsg = AuthMsg | VirtualPointerMsg | CallMsg;
+export enum ErrorType {
+	ExpiredToken
+}
+
+export type ErrorMsg = {
+	type: MessageType.Error;
+	ErrorType: ErrorType;
+}
+
+export type RealtimeMsg = AuthMsg | VirtualPointerMsg | CallMsg | ErrorMsg;

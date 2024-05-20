@@ -7,21 +7,28 @@ import {Button} from "../components/ui/Button/Button.tsx";
 import {ImSpinner2} from "react-icons/im";
 import {useState} from "react";
 import useProfile from "../hooks/useProfile.tsx";
+import {Menu} from "lucide-react";
+import useSidebar from "../hooks/useSidebar.tsx";
+import {IProfileResp} from "../types/profile.ts";
+import profileService from "../services/profile.service.ts";
+import {AxiosError} from "axios";
 
 const phoneRegexp = new RegExp(/^((8|\+7)[\-_]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/);
 
 const profileSchema = z.object({
-	fullName: z.string().min(1).max(100).or(z.literal('')),
-	phone: z.string().regex(phoneRegexp).or(z.literal('')),
-	email: z.string().email().max(50).or(z.literal('')),
-	password: z.string().min(8).max(100).or(z.literal('')),
+	fullName: z.string().min(1).max(100).or(z.literal("")),
+	phone: z.string().regex(phoneRegexp).or(z.literal("")),
+	email: z.string().email().max(50).or(z.literal("")),
+	password: z.string().min(8).max(100).or(z.literal("")),
 });
 
 type profileSchemaType = z.infer<typeof profileSchema>;
 
 const Profile = () => {
 	const {profile} = useProfile();
+	const {toggleMobileExpanded} = useSidebar();
 	const [error, setError] = useState<string | null>(null);
+	const [isChanged, setIsChanged] = useState<boolean>(false);
 
 	const form = useForm<profileSchemaType>({
 		resolver: zodResolver(profileSchema),
@@ -30,22 +37,46 @@ const Profile = () => {
 			fullName: profile.fullName,
 			phone: profile.phone,
 			email: profile.email,
-			password: '',
-		}
+			password: "",
+		},
 	});
+
+	const compareProfile = (newProfile: profileSchemaType, oldProfile: IProfileResp): boolean => {
+		return newProfile.fullName !== oldProfile.fullName || newProfile.phone !== oldProfile.phone
+			|| newProfile.email !== oldProfile.email || newProfile.password !== "";
+	};
 
 	const handleSave = (values: profileSchemaType) => {
 		console.log(values);
-	}
+
+		const updateProfile = async () => {
+			try {
+				const resp = await profileService.updateProfile(values);
+				if (resp.status === 200) {
+					console.log("ok")
+				}
+			} catch (e) {
+				const error = e as AxiosError;
+				console.log(error);
+			}
+		}
+
+		updateProfile().catch(console.error);
+	};
 
 	return (
-		<div className="w-full h-full m-4">
-			<div className="flex flex-col mb-4 gap-2">
+		<div className="w-full h-full p-4">
+			<div className="flex mb-4 gap-4">
+				<Button className="sm:hidden" variant="outline" size="icon" onClick={toggleMobileExpanded}>
+					<Menu size={20}/>
+				</Button>
 				<h1 className="text-2xl text-foreground">Профиль</h1>
 			</div>
-			<div className="flex flex-col space-y-4 w-[400px]">
+			<div className="flex flex-col space-y-4 sm:w-[400px]">
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(handleSave)} className="space-y-4">
+					<form onSubmit={form.handleSubmit(handleSave)}
+						  className="space-y-4"
+						  onChange={() => setIsChanged(compareProfile(form.getValues(), profile))}>
 						<FormField control={form.control}
 								   name="fullName"
 								   defaultValue="test"
@@ -89,7 +120,7 @@ const Profile = () => {
 								   name="password"
 								   render={({field}) => (
 									   <FormItem>
-										   <FormLabel>Пароль</FormLabel>
+										   <FormLabel>Новый пароль</FormLabel>
 										   <FormControl>
 											   <Input type="password" {...field}/>
 										   </FormControl>
@@ -106,7 +137,7 @@ const Profile = () => {
                     </div>
 				}
 				<div className="space-y-3">
-					<Button onClick={form.handleSubmit(handleSave)} className="w-full">
+					<Button onClick={form.handleSubmit(handleSave)} className="w-full" disabled={!isChanged}>
 						{!form.formState.isSubmitting && <span>Сохранить</span>}
 						{form.formState.isSubmitting && (
 							<ImSpinner2 className="animate-spin"/>

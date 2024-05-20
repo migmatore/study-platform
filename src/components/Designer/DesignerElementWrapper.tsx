@@ -64,15 +64,16 @@ const DesignerElementWrapper = ({element}: Props) => {
 			)}
 			<div className={cn(
 				"flex w-full h-[120px] items-center bg-white/40 dark:bg-accent rounded-lg px-4 py-2 pointer-events-none opacity-100",
-				mouseIsOver && "opacity-30",
+				!mouseIsOver && "opacity-30",
 			)}>
 				<DesignerElement elementInstance={element}/>
 			</div>
 			{bottomHalf.isOver && (
 				<div className="absolute bottom-0 w-full rounded-lg h-[7px] bg-blue-300 rounded-t-none"/>
 			)}
-			{mouseIsOver && (
-				<>
+			{!mouseIsOver && (
+				// <div className="absolute w-full h-full bg-[linear-gradient(45deg,_#000_25%,_transparent_25%,_transparent_50%,_#000_50%,_#000_75%,_transparent_75%,_#fff)] bg-auto">
+				<div className="absolute w-full h-full">
 					<div className="absolute right-0 h-full">
 						<button className="flex justify-center items-center h-full rounded-lg rounded-l-none bg-red-400
 							hover:bg-red-500 transition-all duration-300 px-5 py-2.5 text-center text-sm font-medium"
@@ -89,7 +90,7 @@ const DesignerElementWrapper = ({element}: Props) => {
 							Нажмите чтобы увидеть настройки элемента или перетяните его
 						</p>
 					</div>
-				</>
+				</div>
 			)}
 		</div>
 	);

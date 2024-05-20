@@ -8,6 +8,7 @@ import {IconContext} from "react-icons";
 import {Roles} from "../../types/roles.ts";
 import SidebarItem from "../SidebarItem/SidebarItem.tsx";
 import useAuth from "../../hooks/useAuth.tsx";
+import SidebarProvider from "../../provider/SidebarProvider.tsx";
 
 interface ISidebarItemProp {
 	to: string;
@@ -99,15 +100,17 @@ const SidebarLayout = () => {
 
 	return (
 		<>
-			<Sidebar>
-				{sidebarItems.filter((item) => item.role == role).map((item) =>
-					item.items.map((roleItem, i) =>
-						<SidebarItem key={i}
-									 to={roleItem.to}
-									 icon={roleItem.icon}
-									 text={roleItem.text}/>))}
-			</Sidebar>
-			<Outlet/>
+			<SidebarProvider>
+				<Sidebar>
+					{sidebarItems.filter((item) => item.role == role).map((item) =>
+						item.items.map((roleItem, i) =>
+							<SidebarItem key={i}
+										 to={roleItem.to}
+										 icon={roleItem.icon}
+										 text={roleItem.text}/>))}
+				</Sidebar>
+				<Outlet/>
+			</SidebarProvider>
 		</>
 	);
 };

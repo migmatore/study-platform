@@ -86,14 +86,16 @@ apiClient.interceptors.response.use(
 			originalRequest._retry = true;
 
 			try {
-				const refreshToken = localStorage.getItem("refreshToken");
+				const oldRefreshToken = localStorage.getItem("refreshToken");
 				const response = await apiClient.post<IAuthResp>(
 					"/auth/refresh",
-					{refreshToken},
+					{refresh_token: oldRefreshToken},
 				);
-				const {token} = response.data;
+				const {token, wsToken, refreshToken} = response.data;
 
 				localStorage.setItem("token", token);
+				localStorage.setItem("refreshToken", refreshToken);
+				localStorage.setItem("wsToken", wsToken);
 
 				// Retry the original request with the new token
 				originalRequest.headers.Authorization = `Bearer ${token}`;
