@@ -41,9 +41,19 @@ const Profile = () => {
 		},
 	});
 
-	const compareProfile = (newProfile: profileSchemaType, oldProfile: IProfileResp): boolean => {
-		return newProfile.fullName !== oldProfile.fullName || newProfile.phone !== oldProfile.phone
-			|| newProfile.email !== oldProfile.email || newProfile.password !== "";
+	const isProfileChanged = (profile: profileSchemaType): boolean => {
+		// return newProfile.fullName !== oldProfile.fullName || newProfile.phone !== oldProfile.phone
+		// 	|| newProfile.email !== oldProfile.email || newProfile.password !== "";
+
+		let property: keyof typeof profile;
+
+		for (property in profile) {
+			if (form.getFieldState(property).isDirty) {
+				return true;
+			}
+		}
+
+		return false;
 	};
 
 	const handleSave = (values: profileSchemaType) => {
@@ -51,7 +61,18 @@ const Profile = () => {
 
 		const updateProfile = async () => {
 			try {
-				const resp = await profileService.updateProfile(values);
+				var newProfileFields: {[k: string]: any} = {};
+
+
+				let property: keyof typeof values;
+
+				for (property in values) {
+					if (form.getFieldState(property).isDirty) {
+						newProfileFields[property] = values[property];
+					}
+				}
+
+				const resp = await profileService.updateProfile(newProfileFields);
 				if (resp.status === 200) {
 					console.log("ok")
 				}
@@ -76,7 +97,7 @@ const Profile = () => {
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(handleSave)}
 						  className="space-y-4"
-						  onChange={() => setIsChanged(compareProfile(form.getValues(), profile))}>
+						  onChange={() => setIsChanged(isProfileChanged(form.getValues()))}>
 						<FormField control={form.control}
 								   name="fullName"
 								   defaultValue="test"
