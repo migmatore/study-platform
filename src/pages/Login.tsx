@@ -97,7 +97,7 @@ const Login = () => {
 			<div className="p-6 py-3 border rounded-lg space-y-4">
 				<div className="p-6 space-y-4">
 					<div className="flex items-center justify-center">
-						<p className="font-medium text-2xl">Вход</p>
+						<p className="font-medium text-3xl">Вход</p>
 					</div>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(handleLogin)} className="space-y-3">

@@ -26,10 +26,10 @@ import {Switch} from "../ui/Switch/Switch.tsx";
 const type: ElementsType = "TextField";
 
 const extraAttributes = {
-	label: "Text field",
-	helperText: "Helper text",
+	label: "Текстовое поле",
+	helperText: "Текст для помощи",
 	required: false,
-	placeHolder: "Value here...",
+	placeHolder: "Значение здесь...",
 };
 
 const propertiesSchema = z.object({
@@ -48,7 +48,7 @@ export const TextFieldLessonElement: LessonElement = {
 	}),
 	designerBtnElement: {
 		icon: MdTextFields,
-		label: "Text field",
+		label: "Текстовое поле",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,

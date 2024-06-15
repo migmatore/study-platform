@@ -7,6 +7,10 @@ class ClassroomService {
 		return await apiClient.post<IClassroomResp>("/classrooms", req);
 	}
 
+	async deleteClassroom(classroomId: string | number) {
+		return await apiClient.delete(`/classrooms/${classroomId}`);
+	}
+
 	async getClassrooms() {
 		return await apiClient.get<IClassroomResp[]>("/classrooms");
 	}

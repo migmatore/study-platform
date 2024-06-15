@@ -2,7 +2,7 @@ import {ToggleSource} from "@livekit/components-core";
 import {useTrackToggle} from "@livekit/components-react";
 import {Button} from "../ui/Button/Button.tsx";
 import {Track} from "livekit-client";
-import {Camera, CameraOff, Mic, MicOff} from "lucide-react";
+import {Camera, CameraOff, Mic, MicOff, ScreenShare, ScreenShareOff} from "lucide-react";
 
 interface Props<T extends ToggleSource> {
 	source: T;
@@ -13,13 +13,15 @@ interface Props<T extends ToggleSource> {
 const getSourceIcon = (source: Track.Source, enabled: boolean) => {
 	switch (source) {
 		case Track.Source.Camera:
-			return enabled ? <Camera size={20}/> : <CameraOff size={20}/>
+			return enabled ? <Camera size={20}/> : <CameraOff size={20}/>;
 		case Track.Source.Microphone:
-			return enabled ? <Mic size={20}/> : <MicOff size={20}/>
+			return enabled ? <Mic size={20}/> : <MicOff size={20}/>;
+		case Track.Source.ScreenShare:
+			return enabled ? <ScreenShare size={20}/> : <ScreenShareOff size={20}/>;
 		default:
 			return undefined;
 	}
-}
+};
 
 const TrackToggle = <T extends ToggleSource>(props: Props<T>) => {
 	const {buttonProps, enabled} = useTrackToggle(props);
@@ -28,7 +30,7 @@ const TrackToggle = <T extends ToggleSource>(props: Props<T>) => {
 		<Button size="icon" variant="primary_outline" {...buttonProps}>
 			{getSourceIcon(props.source, enabled)}
 		</Button>
-	)
+	);
 };
 
 export default TrackToggle;

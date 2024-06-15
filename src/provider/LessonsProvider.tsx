@@ -3,15 +3,16 @@ import {LessonType} from "../types/lesson.ts";
 import classroomService from "../services/classroom.service.ts";
 import {useParams} from "react-router-dom";
 import {AxiosError} from "axios";
+import lessonService from "../services/lesson.service.ts";
 
 type LessonsContextType = {
 	lessons: LessonType[];
 	fetchError: string | null;
 	isLoading: boolean;
-	fetchLessons: (classroomId: number | string) => Promise<void>;
 	setLessons: Dispatch<SetStateAction<LessonType[]>>;
 	appendLesson: (lesson: LessonType) => void;
 	updateLesson: (id: number, lesson: LessonType) => void;
+	deleteLesson: (id: number) => Promise<void>;
 	setActiveLesson: (id: number) => void;
 	getLesson: (id: number) => LessonType | undefined;
 }
@@ -55,31 +56,10 @@ const LessonsProvider = ({children}: PropsWithChildren) => {
 				setFetchError("Ошибка получения уроков");
 				console.log(error);
 			}
-		}
+		};
 
 		getLessons().catch(console.error);
 	}, [classroomId]);
-
-	const fetchLessons = async (classroomId: number | string) => {
-		console.log("fetch lessons")
-
-		try {
-			const resp = await classroomService.getLessons(classroomId);
-			console.log(resp.data);
-
-			setLessons(resp.data.map(el => {
-				return {
-					id: el.id,
-					title: el.title,
-					classroomId: el.classroomId,
-					content: el.content,
-					active: el.active,
-				};
-			}));
-		} catch (error) {
-			console.log(error);
-		}
-	};
 
 	const appendLesson = (lesson: LessonType) => {
 		setLessons(prev => [...prev, lesson]);
@@ -117,15 +97,23 @@ const LessonsProvider = ({children}: PropsWithChildren) => {
 		return lessons.find(lesson => lesson.id === id);
 	};
 
-	const contextValue = useMemo(
+	const deleteLesson = async (lessonId: number) => {
+		const resp = await lessonService.deleteLesson(lessonId);
+
+		if (resp.status === 200) {
+			setLessons(prev => prev.filter((l) => l.id !== lessonId));
+		}
+	};
+
+	const contextValue: LessonsContextType | null = useMemo(
 		() => ({
 			lessons,
 			fetchError,
 			isLoading,
-			fetchLessons,
 			setLessons,
 			appendLesson,
 			updateLesson,
+			deleteLesson,
 			setActiveLesson,
 			getLesson,
 		}),

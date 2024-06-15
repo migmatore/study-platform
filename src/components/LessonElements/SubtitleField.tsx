@@ -18,7 +18,7 @@ import {Label} from "../ui/Label/Label.tsx";
 const type: ElementsType = "SubtitleField";
 
 const extraAttributes = {
-	subtitle: "Subtitle field",
+	subtitle: "Подзаголовок",
 };
 
 const propertiesSchema = z.object({
@@ -34,7 +34,7 @@ export const SubtitleFieldLessonElement: LessonElement = {
 	}),
 	designerBtnElement: {
 		icon: LuHeading2,
-		label: "Subtitle field",
+		label: "Подзаголовок",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
@@ -54,7 +54,7 @@ function DesignerComponent({elementInstance}: IDesignerComponentProps) {
 	return (
 		<div className="flex flex-col gap-2 w-full">
 			<Label className="text-muted-foreground">
-				Subtitle field
+				Подзаголовок
 			</Label>
 			<p className="text-lg">{subtitle}</p>
 		</div>
@@ -100,7 +100,7 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 			  className="space-y-3">
 			<FormField control={form.control} name="subtitle" render={({field}) => (
 				<FormItem>
-					<FormLabel>Subitle</FormLabel>
+					<FormLabel>Подзаголовок</FormLabel>
 					<FormControl>
 						<Input {...field}
 							   onKeyDown={(e) => {

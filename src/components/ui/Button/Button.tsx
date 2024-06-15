@@ -1,33 +1,10 @@
-// import React, {JSX} from "react";
-//
-// interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-// 	children: JSX.Element | JSX.Element[] | React.ReactNode;
-// 	className?: string,
-// 	onClick?:
-// 		| ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-// 		| undefined;
-// 	//ref?: React.LegacyRef<HTMLButtonElement> | undefined;
-// }
-//
-// const Button = ({children, className, ...attributes}: IButtonProps) => {
-// 	return (
-// 		<button
-// 			className={`${className} transition-all duration-300 rounded-xl px-5 py-2.5 text-center text-sm font-medium`}
-// 			{...attributes}>
-// 			{children}
-// 		</button>
-// 	);
-// }
-//
-// export default Button;
-
 import * as React from "react";
 import {Slot} from "@radix-ui/react-slot";
 import {cva, type VariantProps} from "class-variance-authority";
 import {cn} from "../../../utils";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+	"inline-flex items-center justify-center rounded-lg text-lg sm:text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
 	{
 		variants: {
 			variant: {

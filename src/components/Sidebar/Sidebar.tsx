@@ -1,10 +1,11 @@
-import {ChevronFirst, ChevronLast, LogOut, Menu, Moon, Sun} from "lucide-react";
+import {ChevronFirst, ChevronLast, LogOut, Moon, Sun} from "lucide-react";
 import {PropsWithChildren} from "react";
 import {useNavigate} from "react-router-dom";
 import {useTheme} from "../../provider/ThemeProvider.tsx";
 import {cn, formatFullName} from "../../utils";
 import useSidebar from "../../hooks/useSidebar.tsx";
 import useProfile from "../../hooks/useProfile.tsx";
+import logo from "../../assets/logo.svg"
 
 const Sidebar = ({children}: PropsWithChildren) => {
 	const navigate = useNavigate();
@@ -21,9 +22,16 @@ const Sidebar = ({children}: PropsWithChildren) => {
 			<aside className="h-[100svh] sticky left-0 top-0 hidden sm:block">
 				<nav className="h-full flex flex-col bg-background border-r shadow-sm sticky">
 					<div className="p-4 pb-2 flex justify-between items-center">
-						<img src="https://img.logoipsum.com/297.svg"
-							 className={`overflow-hidden transition-all ${expanded ? "w-32" : "w-0"}`}
-							 alt=""/>
+						<div className="flex items-center gap-2 pl-2">
+							<img //src="https://img.logoipsum.com/297.svg"
+								src={logo}
+								className={`overflow-hidden transition-all h-8 ${expanded ? "w-8" : "w-0"}`}
+								alt=""/>
+							<span className={`text-2xl text-[#338fff] font-bold transition-all ${expanded ? "w-fit" : "w-0 hidden"}`}>
+								LearnFlow
+							</span>
+						</div>
+
 						<button onClick={toggleExpanded}
 								className="p-1.5 rounded-lg transition-all bg-gray-100 hover:bg-gray-200 text-foreground
 								dark:bg-gray-800 dark:hover:bg-gray-900">
@@ -96,9 +104,16 @@ const Sidebar = ({children}: PropsWithChildren) => {
 				)}>
 					<nav className="h-full flex flex-col bg-background border-r shadow-sm sticky">
 						<div className="p-4 pb-2 flex justify-between items-center">
-							<img src="https://img.logoipsum.com/297.svg"
-								 className={`overflow-hidden transition-all ${mobileExpanded ? "w-32" : "w-0"}`}
-								 alt=""/>
+							<div className="flex items-center gap-2 pl-2">
+								<img //src="https://img.logoipsum.com/297.svg"
+									src={logo}
+									className={`overflow-hidden transition-all h-8 ${mobileExpanded ? "w-8" : "w-0"}`}
+									alt=""/>
+								<span className={`text-2xl text-[#338fff] font-bold transition-all ${mobileExpanded ? "w-fit"
+																											  : "w-0 hidden"}`}>
+									LearnFlow
+								</span>
+							</div>
 							<button onClick={toggleMobileExpanded}
 									className="p-1.5 rounded-lg transition-all bg-gray-100 hover:bg-gray-200 text-foreground
 								dark:bg-gray-800 dark:hover:bg-gray-900">

@@ -21,9 +21,10 @@ interface Props {
 	open?: boolean;
 	onOpenChange?: (open: boolean) => void;
 	sendJsonMessage?: SendJsonMessage;
+	answer?: () => void;
 }
 
-const CallDialogBtn = ({classroomId, open, onOpenChange, sendJsonMessage}: Props) => {
+const CallDialogBtn = ({classroomId, open, onOpenChange, sendJsonMessage, answer}: Props) => {
 	const {role} = useAuth();
 
 	return (
@@ -33,8 +34,8 @@ const CallDialogBtn = ({classroomId, open, onOpenChange, sendJsonMessage}: Props
 					<Button className="gap-2 flex">
 						<PhoneOutgoing size={20}/>
 						<span className="flex-grow">
-						Сделать звонок
-					</span>
+							Сделать звонок
+						</span>
 					</Button>
 				</DialogTrigger>
 			) : null}
@@ -57,13 +58,14 @@ const CallDialogBtn = ({classroomId, open, onOpenChange, sendJsonMessage}: Props
 						<Button className="w-full mt-4" onClick={() => {
 							if (sendJsonMessage) {
 								sendJsonMessage({type: MessageType.Call, classroom_id: classroomId});
+								sendJsonMessage({type: MessageType.NewRoom, classroom_id: classroomId});
 							}
 						}}>
 							Сделать звонок
 						</Button>
 					) : null}
 					{role === Roles.Student ? (
-						<Button className="w-full mt-4">
+						<Button className="w-full mt-4" onClick={answer}>
 							Ответить
 						</Button>
 					) : null}

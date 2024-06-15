@@ -7,20 +7,20 @@ const LessonElementsSidebar = () => {
 		<div className="p-2">
 			<p className="text-lg mb-4">Элементы</p>
 			<Separator className="my-2"/>
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center">
+			<div className="grid grid-cols-1 md:grid-cols-2 gap-2 place-items-center flex-shrink">
 				<p className="text-sm col-span-1 md:col-span-2 my-2 place-self-start">
-					Layout elements
+					Элементы макета
 				</p>
-				<SidebarBtnElement lessonElement={LessonElements.TitleField}/>
-				<SidebarBtnElement lessonElement={LessonElements.SubtitleField}/>
-				<SidebarBtnElement lessonElement={LessonElements.ParagraphField}/>
 				<SidebarBtnElement lessonElement={LessonElements.SeparatorField}/>
 				<SidebarBtnElement lessonElement={LessonElements.SpacerField}/>
 
 				<p className="text-sm col-span-1 md:col-span-2 my-2 place-self-start">
-					Lesson elements
+					Элементы урока
 				</p>
-				<SidebarBtnElement lessonElement={LessonElements.TextField}/>
+				<SidebarBtnElement lessonElement={LessonElements.TitleField}/>
+				<SidebarBtnElement lessonElement={LessonElements.SubtitleField}/>
+				<SidebarBtnElement lessonElement={LessonElements.ParagraphField}/>
+				{/*<SidebarBtnElement lessonElement={LessonElements.TextField}/>*/}
 			</div>
 		</div>
 	);

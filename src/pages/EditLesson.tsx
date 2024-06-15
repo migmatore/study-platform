@@ -70,7 +70,12 @@ const EditLesson = () => {
 								<h1 className="text-2xl">Конструктор уроков</h1>
 							</div>
 							<div className="flex justify-between items-center">
-								<p className="text-muted-foreground">Урок: {lesson?.title}</p>
+								<div className="flex gap-4 items-center">
+									<p className="text-muted-foreground">Урок: {lesson?.title}</p>
+									{/*<Button variant="primary_outline" size="icon">*/}
+									{/*	<Pencil size={16} />*/}
+									{/*</Button>*/}
+								</div>
 								<div className="flex gap-2">
 									{!isLoading && !fetchError && !isMobile ? (
 										<>

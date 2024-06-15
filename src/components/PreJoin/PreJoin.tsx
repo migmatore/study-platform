@@ -18,7 +18,7 @@ interface Props {
 }
 
 const PreJoin = ({defaults = {}, persistUserChoices = true, onError}: Props) => {
-	const [userChoices, setUserChoices] = useState(defaultUserChoices);
+	const [_userChoices, setUserChoices] = useState(defaultUserChoices);
 
 	const partialDefaults: Partial<LocalUserChoices> = {
 		...(defaults.audioDeviceId !== undefined && {audioDeviceId: defaults.audioDeviceId}),
@@ -34,7 +34,6 @@ const PreJoin = ({defaults = {}, persistUserChoices = true, onError}: Props) => 
 		saveAudioInputEnabled,
 		saveVideoInputDeviceId,
 		saveVideoInputEnabled,
-		saveUsername,
 	} = usePersistentUserChoices({
 		defaults: partialDefaults,
 		preventSave: !persistUserChoices,
@@ -49,7 +48,6 @@ const PreJoin = ({defaults = {}, persistUserChoices = true, onError}: Props) => 
 	const [videoDeviceId, setVideoDeviceId] = useState<string>(
 		initialUserChoices.videoDeviceId,
 	);
-	const [username, setUsername] = useState(initialUserChoices.username);
 
 	useEffect(() => {
 		saveAudioInputEnabled(audioEnabled);
@@ -61,12 +59,8 @@ const PreJoin = ({defaults = {}, persistUserChoices = true, onError}: Props) => 
 		saveAudioInputDeviceId(audioDeviceId);
 	}, [audioDeviceId, saveAudioInputDeviceId]);
 	useEffect(() => {
-		console.log("setVideoDeviceId " + videoDeviceId);
 		saveVideoInputDeviceId(videoDeviceId);
 	}, [videoDeviceId, saveVideoInputDeviceId]);
-	useEffect(() => {
-		saveUsername(username);
-	}, [username, saveUsername]);
 
 	const tracks = usePreviewTracks(
 		{
@@ -108,37 +102,22 @@ const PreJoin = ({defaults = {}, persistUserChoices = true, onError}: Props) => 
 		};
 	}, [videoTrack]);
 
-
-	// const [isValid, setIsValid] = useState<boolean>();
-	//
-	// const handleValidation = useCallback(
-	// 	(values: LocalUserChoices) => {
-	// 		if (typeof onValidate === 'function') {
-	// 			return onValidate(values);
-	// 		} else {
-	// 			return values.username !== '';
-	// 		}
-	// 	},
-	// 	[onValidate],
-	// );
-
 	useEffect(() => {
 		const newUserChoices = {
-			username,
+			username: "",
 			videoEnabled,
 			videoDeviceId,
 			audioEnabled,
 			audioDeviceId,
 		};
 		setUserChoices(newUserChoices);
-		//setIsValid(handleValidation(newUserChoices));
-	}, [username, videoEnabled, audioEnabled, audioDeviceId, videoDeviceId]);
+	}, [videoEnabled, audioEnabled, audioDeviceId, videoDeviceId]);
 
 	return (
 		<div className="w-full flex flex-col">
-			<div className="w-full h-full flex">
+			<div className="w-full h-full flex items-center justify-center">
 				{(videoTrack && videoEnabled) &&(
-					<video className="mb-4" ref={videoEl} width="1280" height="720" data-lk-facing-mode={facingMode}/>
+					<video className="mb-4 w-[150px] h-[150px] sm:w-full sm:h-full" ref={videoEl} width="1280" height="720" data-lk-facing-mode={facingMode}/>
 				)}
 			</div>
 			<div className="w-full h-full flex gap-3">

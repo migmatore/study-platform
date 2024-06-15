@@ -11,8 +11,15 @@ interface Props {
 	requestPermissions?: boolean;
 }
 
-const MediaDeviceMenu = ({kind, disable = false, initialSelection, onActiveDeviceChange, tracks, requestPermissions = false}: Props) => {
-	const [devices, setDevices] = useState<MediaDeviceInfo[]>([]);
+const MediaDeviceMenu = ({
+	kind,
+	disable = false,
+	initialSelection,
+	onActiveDeviceChange,
+	tracks,
+	requestPermissions = false,
+}: Props) => {
+	const [_devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 
 	const handleActiveDeviceChange = (kind: MediaDeviceKind, deviceId: string) => {
 		console.log("handle device change " + deviceId);
@@ -21,12 +28,17 @@ const MediaDeviceMenu = ({kind, disable = false, initialSelection, onActiveDevic
 
 	return (
 		<MediaDeviceSelect initialSelection={initialSelection}
-						   onActiveDeviceChange={(deviceId) => {handleActiveDeviceChange(kind, deviceId); console.log("onActiveDeviceChange " + deviceId)}}
+						   onActiveDeviceChange={(deviceId) => {
+							   handleActiveDeviceChange(kind!, deviceId);
+							   console.log("onActiveDeviceChange " + deviceId);
+						   }}
 						   onDeviceListChange={setDevices}
-						   kind={kind}
+						   kind={kind!}
 						   disable={disable}
-						   track={tracks?.[kind]}
-						   requestPermissions={requestPermissions} onError={e => console.error(e)} onDeviceSelectError={e => console.error(e)}/>
+						   track={tracks?.[kind!]}
+						   requestPermissions={requestPermissions}
+						   onError={e => console.error(e)}
+						   onDeviceSelectError={e => console.error(e)}/>
 	);
 };
 

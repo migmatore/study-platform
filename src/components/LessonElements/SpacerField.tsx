@@ -11,7 +11,6 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect} from "react";
 import useDesigner from "../../hooks/useDesigner.tsx";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "../ui/Form/Form.tsx";
-import {Input} from "../ui/Input/Input.tsx";
 import {LuSeparatorHorizontal} from "react-icons/lu";
 import {Label} from "../ui/Label/Label.tsx";
 import {Slider} from "../ui/Slider/Slider.tsx";
@@ -35,7 +34,7 @@ export const SpacerFieldLessonElement: LessonElement = {
 	}),
 	designerBtnElement: {
 		icon: LuSeparatorHorizontal,
-		label: "Spacer field",
+		label: "Отступ",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
@@ -55,7 +54,7 @@ function DesignerComponent({elementInstance}: IDesignerComponentProps) {
 	return (
 		<div className="flex flex-col gap-2 w-full items-center">
 			<Label className="text-muted-foreground">
-				Spacer field: {height} px
+				Отступ: {height} пикселей
 			</Label>
 			<LuSeparatorHorizontal className="h-8 w-8"/>
 		</div>
@@ -101,7 +100,7 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 			  className="space-y-3">
 			<FormField control={form.control} name="height" render={({field}) => (
 				<FormItem>
-					<FormLabel>Height (px): {form.watch("height")}</FormLabel>
+					<FormLabel>Высота (пикселей): {form.watch("height")}</FormLabel>
 					<FormControl>
 						<Slider defaultValue={[field.value]} min={5} max={200} step={1} onValueChange={value => {
 							field.onChange(value[0]);

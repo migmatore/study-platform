@@ -1,15 +1,7 @@
 import {
 	ElementsType,
-	IDesignerComponentProps,
-	IPropertiesComponentProps,
 	LessonElement,
 } from "./LessonElements.tsx";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useEffect} from "react";
-import useDesigner from "../../hooks/useDesigner.tsx";
-import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "../ui/Form/Form.tsx";
-import {Input} from "../ui/Input/Input.tsx";
 import {Label} from "../ui/Label/Label.tsx";
 import {RiSeparator} from "react-icons/ri";
 import {Separator} from "../ui/Separator/Separator.tsx";
@@ -24,28 +16,28 @@ export const SeparatorFieldLessonElement: LessonElement = {
 	}),
 	designerBtnElement: {
 		icon: RiSeparator,
-		label: "Separator field",
+		label: "Разделитель",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
 	propertiesComponent: PropertiesComponent,
 };
 
-function DesignerComponent({elementInstance}: IDesignerComponentProps) {
+function DesignerComponent() {
 	return (
 		<div className="flex flex-col gap-2 w-full">
 			<Label className="text-muted-foreground">
-				Separator field
+				Разделитель
 			</Label>
 			<Separator/>
 		</div>
 	);
 }
 
-function LessonComponent({elementInstance}: IDesignerComponentProps) {
+function LessonComponent() {
 	return <Separator/>;
 }
 
-function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
-	return <p>No properties for this element</p>;
+function PropertiesComponent() {
+	return <p>Нет свойств для этого элемента</p>;
 }

@@ -22,7 +22,7 @@ const Classrooms = () => {
 					</Button>
 					<h1 className="text-2xl text-foreground">Список классов</h1>
 				</div>
-				<p className="text-muted-foreground">Количество: {classrooms?.length ?? 0}</p>
+				<p className="text-muted-foreground">Количество: {classrooms.length ?? 0}</p>
 			</div>
 			<div className="flex flex-col space-y-4">
 				{isLoading ? (

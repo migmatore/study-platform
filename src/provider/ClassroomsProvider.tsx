@@ -8,13 +8,15 @@ type ClassroomsContextType = {
 	fetchError: string | null;
 	isLoading: boolean;
 	createClassroom: (req: ICreateClassroomReq) => Promise<void>;
+	deleteClassroom: (classroomId: number) => Promise<void>;
+	getClassrooms: () => IClassroomResp[];
 }
 
 export const ClassroomsContext = createContext<ClassroomsContextType | null>(null);
 
 const ClassroomsProvider = ({children}: PropsWithChildren) => {
 	const [classrooms, setClassrooms] = useState<IClassroomResp[]>([]);
-	const [fetchError, setFetchError] = useState<string | null>(null)
+	const [fetchError, setFetchError] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const dataFetchRef = useRef<boolean>(false);
 
@@ -58,11 +60,25 @@ const ClassroomsProvider = ({children}: PropsWithChildren) => {
 		}
 	};
 
+	const deleteClassroom = async (classroomId: number) => {
+		const resp = await classroomService.deleteClassroom(classroomId);
+
+		if (resp.status === 200) {
+			setClassrooms(prev => prev.filter((c) => c.id !== classroomId));
+		}
+	};
+
+	const getClassrooms = () => {
+		return classrooms;
+	}
+
 	const contextValue: ClassroomsContextType | null = useMemo(() => ({
 		classrooms,
 		fetchError,
 		isLoading,
 		createClassroom,
+		deleteClassroom,
+		getClassrooms,
 	}), [classrooms, fetchError, isLoading]);
 
 	return <ClassroomsContext.Provider value={contextValue}>

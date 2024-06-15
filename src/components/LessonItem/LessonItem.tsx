@@ -1,11 +1,12 @@
 import {cn} from "../../utils";
 import {LogIn, Pencil, Pin, PinOff} from "lucide-react";
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {Button} from "../ui/Button/Button.tsx";
 import useLessons from "../../hooks/useLessons.tsx";
 import lessonService from "../../services/lesson.service.ts";
 import DeleteConfirmDialogBtn from "../DeleteConfirmDialogBtn/DeleteConfirmDialogBtn.tsx";
+import {AxiosError} from "axios";
 
 interface Props {
 	id: number;
@@ -15,8 +16,9 @@ interface Props {
 }
 
 const LessonItem = ({id, classroomId, title, active}: Props) => {
-	const {setActiveLesson} = useLessons();
+	const {setActiveLesson, deleteLesson} = useLessons();
 	const navigate = useNavigate();
+	const [deleteError, setDeleteError] = useState<string | null>(null);
 
 	const handleGoToLesson = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 		e.preventDefault();
@@ -42,6 +44,26 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 		e.preventDefault();
 
 		navigate(`${id}/edit`);
+	};
+
+	const handleDeleteLesson = async () => {
+		try {
+			await deleteLesson(id);
+		} catch (e) {
+			const error = e as AxiosError;
+
+			switch (error.response?.status) {
+				case 400:
+					setDeleteError("Неверные данные");
+					break;
+				case 401:
+					setDeleteError("Доступ запрещен или такого класса не существует");
+					break;
+				case 500:
+					setDeleteError("Внутренняя ошибка сервера");
+					break;
+			}
+		}
 	};
 
 	return (
@@ -70,6 +92,9 @@ const LessonItem = ({id, classroomId, title, active}: Props) => {
 						</Button>
 						<DeleteConfirmDialogBtn title="Удаление урока"
 												description={`Вы точно хотите удалить урок ${title}?`}
+												error={deleteError}
+												onCancel={() => setDeleteError(null)}
+												onDelete={handleDeleteLesson}
 						/>
 					</div>
 				</div>

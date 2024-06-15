@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {LessonElements} from "../components/LessonElements/LessonElements.tsx";
 import BackBtn from "../components/BackBtn/BackBtn.tsx";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useMemo, useRef, useState} from "react";
 import useAuth from "../hooks/useAuth.tsx";
 import LessonContentItem from "../components/LessonContentItem/LessonContentItem.tsx";
 import useWebSocket, {ReadyState} from "react-use-websocket";
@@ -16,6 +16,12 @@ import {Menu} from "lucide-react";
 import {Button} from "../components/ui/Button/Button.tsx";
 import useSidebar from "../hooks/useSidebar.tsx";
 import authService from "../services/auth.service.ts";
+import {camelizeKeys} from "humps";
+import {LiveKitRoom, RoomAudioRenderer, useTracks} from "@livekit/components-react";
+import {Track} from "livekit-client";
+//import "@livekit/components-styles";
+import ControlBar from "../components/ControlBar/ControlBar.tsx";
+import {ParticipantTile} from "../components/ParticipantTile/ParticipanTile.tsx";
 
 type Params = {
 	classroomId: string;
@@ -29,7 +35,7 @@ const Lesson = () => {
 		refreshToken,
 		setToken,
 		setRefreshToken,
-		setWsToken
+		setWsToken,
 	} = useAuth();
 	const {classroomId, lessonId} = useParams<Params>();
 	const {toggleMobileExpanded} = useSidebar();
@@ -40,17 +46,23 @@ const Lesson = () => {
 	const dataFetchRef = useRef<boolean>(false);
 
 	const [isCall, setIsCall] = useState<boolean>(false);
+	const [isAnswered, setIsAnswered] = useState<boolean>(false);
+
+	const [lkToken, setLKToken] = useState<string | null>(null);
 
 	const itemsRef = useRef<Array<HTMLDivElement | null>>([]);
 
 	const didUnmount = useRef(false);
 
-	const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket<RealtimeMsg>("ws://localhost:8082/ws", {
-		//share: true,
-		shouldReconnect: () => !didUnmount.current,
-		reconnectAttempts: 5,
-		reconnectInterval: 1000,
-	});
+	const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket<RealtimeMsg>(
+		"https://d88d-85-172-92-2.ngrok-free.app/ws",
+		{
+			//share: true,
+			shouldReconnect: () => !didUnmount.current,
+			reconnectAttempts: 5,
+			reconnectInterval: 1000,
+		},
+	);
 
 	useEffect(() => {
 		if (dataFetchRef.current) return;
@@ -127,7 +139,9 @@ const Lesson = () => {
 	useEffect(() => {
 		if (!lastJsonMessage) return;
 
-		if (lastJsonMessage.type === MessageType.Error && lastJsonMessage.ErrorType === ErrorType.ExpiredToken) {
+		const msg = camelizeKeys<RealtimeMsg>(lastJsonMessage);
+
+		if (msg.type === MessageType.Error && msg.ErrorType === ErrorType.ExpiredToken) {
 			authService.refreshToken(refreshToken!)
 				.then(resp => {
 					if (resp && resp.status === 200) {
@@ -148,9 +162,11 @@ const Lesson = () => {
 		}
 
 		if (role === Roles.Student) {
-			switch (lastJsonMessage.type) {
-				case MessageType.VirtualPointer:
-					const index = lesson?.content?.findIndex(el => el.id === lastJsonMessage.element_id);
+			switch (msg.type) {
+				case MessageType.VirtualPointer: {
+					const {elementId} = msg;
+
+					const index = lesson?.content?.findIndex(el => el.id === elementId);
 
 					const basicClassName = itemsRef.current[index!]!.className;
 
@@ -161,11 +177,25 @@ const Lesson = () => {
 						itemsRef.current[index!]!.className = basicClassName;
 					}, 3000);
 					break;
+				}
 				case MessageType.Call:
 					setIsCall(true);
 			}
 		}
+
+		if (msg.type === MessageType.NewRoom && msg.joinToken) {
+			if (role === Roles.Teacher) {
+				setIsAnswered(true);
+			}
+
+			setLKToken(msg.joinToken);
+		}
 	}, [lastJsonMessage]);
+
+	const handleCallAnswer = () => {
+		setIsCall(false);
+		setIsAnswered(true);
+	};
 
 	return (
 		<div className="w-full flex flex-col">
@@ -186,7 +216,7 @@ const Lesson = () => {
 					) : (
 						 <>
 							 {fetchError ? (
-								 <div className="flex m-4 flex-col bg-red-100 border border-destructive
+								 <div className="flex m-4 mt-0 flex-col bg-red-100 border border-destructive
 								 	rounded-lg text-destructive p-5 justify-center items-center">
 									 <h3 className="text-lg">Ошибка</h3>
 									 <p>{fetchError}</p>
@@ -218,20 +248,76 @@ const Lesson = () => {
 				{role === Roles.Teacher ? (
 					<div className="sm:h-[calc(100vh-81px)] sm:min-w-fit sm:sticky sm:top-[81px] sm:mr-4 sm:overflow-y-hidden">
 						<div className="w-full flex flex-col items-center justify-center border rounded-lg p-4">
-							<CallDialogBtn classroomId={Number(classroomId)}
-										   open={isCall}
-										   onOpenChange={setIsCall}
-										   sendJsonMessage={sendJsonMessage}/>
+							{!isAnswered ? (
+								<CallDialogBtn classroomId={Number(classroomId)}
+											   open={isCall}
+											   onOpenChange={setIsCall}
+											   sendJsonMessage={sendJsonMessage}/>
+							) : (
+								 <LiveKitRoom serverUrl="wss://learnflow-2d97d3r0.livekit.cloud"
+											  token={lkToken!}
+											  video={true}
+											  audio={true}
+											  className="flex flex-col w-full gap-3">
+									 <MyVideoConference/>
+
+									 <RoomAudioRenderer/>
+									 <ControlBar onDisconnecting={() => {
+										 setIsAnswered(false);
+										 setIsCall(false);
+									 }}/>
+								 </LiveKitRoom>
+							 )}
 						</div>
 					</div>
 				) : null}
 				{role === Roles.Student ? (
-					<CallDialogBtn classroomId={Number(classroomId)}
-								   open={isCall}
-								   onOpenChange={setIsCall}
-								   sendJsonMessage={sendJsonMessage}/>
+					!isAnswered ? (
+						<CallDialogBtn classroomId={Number(classroomId)}
+									   open={isCall}
+									   onOpenChange={setIsCall}
+									   sendJsonMessage={sendJsonMessage}
+									   answer={handleCallAnswer}/>
+					) : (
+						<div>
+							<LiveKitRoom serverUrl="wss://learnflow-2d97d3r0.livekit.cloud"
+										 token={lkToken!}
+										 video={true}
+										 audio={true}>
+								<MyVideoConference/>
+
+								<RoomAudioRenderer/>
+								<ControlBar onDisconnecting={() => setIsAnswered(false)}/>
+							</LiveKitRoom>
+						</div>
+					)
 				) : null}
 			</div>
+		</div>
+	);
+};
+
+const MyVideoConference = () => {
+	const tracks = useTracks(
+		[
+			{source: Track.Source.Camera, withPlaceholder: true},
+			{source: Track.Source.ScreenShare, withPlaceholder: false},
+		],
+		{onlySubscribed: false},
+	);
+
+	//const track = useTrackByName(Track.Source.Camera)
+
+	const teacherTracks = useMemo(
+		() => tracks.filter((v) => v.participant.identity.includes("Учитель")),
+		[tracks],
+	);
+
+	return (
+		<div className="flex items-center justify-center">
+			{teacherTracks.map((v) => (
+				<ParticipantTile trackRef={v}/>
+			))}
 		</div>
 	);
 };

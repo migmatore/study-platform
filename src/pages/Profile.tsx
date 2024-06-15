@@ -9,7 +9,6 @@ import {useState} from "react";
 import useProfile from "../hooks/useProfile.tsx";
 import {Menu} from "lucide-react";
 import useSidebar from "../hooks/useSidebar.tsx";
-import {IProfileResp} from "../types/profile.ts";
 import profileService from "../services/profile.service.ts";
 import {AxiosError} from "axios";
 
@@ -25,7 +24,7 @@ const profileSchema = z.object({
 type profileSchemaType = z.infer<typeof profileSchema>;
 
 const Profile = () => {
-	const {profile} = useProfile();
+	const {profile, updateProfile} = useProfile();
 	const {toggleMobileExpanded} = useSidebar();
 	const [error, setError] = useState<string | null>(null);
 	const [isChanged, setIsChanged] = useState<boolean>(false);
@@ -59,10 +58,9 @@ const Profile = () => {
 	const handleSave = (values: profileSchemaType) => {
 		console.log(values);
 
-		const updateProfile = async () => {
+		const update = async () => {
 			try {
-				var newProfileFields: {[k: string]: any} = {};
-
+				const newProfileFields: {[k: string]: any} = {};
 
 				let property: keyof typeof values;
 
@@ -74,15 +72,28 @@ const Profile = () => {
 
 				const resp = await profileService.updateProfile(newProfileFields);
 				if (resp.status === 200) {
-					console.log("ok")
+					console.log(resp.data);
+					updateProfile(resp.data)
 				}
 			} catch (e) {
 				const error = e as AxiosError;
-				console.log(error);
+				switch (error.response?.status) {
+					case 404:
+						setError("Пользователь не найден")
+						break;
+
+					case 409:
+						setError("Такой адрес электронной почты уже существует")
+						break;
+
+					case 500:
+						setError("Внутренняя ошибка сервера")
+						break;
+				}
 			}
 		}
 
-		updateProfile().catch(console.error);
+		update().catch(console.error);
 	};
 
 	return (

@@ -16,6 +16,7 @@ import Students from "../pages/Students.tsx";
 import Profile from "../pages/Profile.tsx";
 import ClassroomsProvider from "../provider/ClassroomsProvider.tsx";
 import ProfileProvider from "../provider/ProfileProvider.tsx";
+import StudentsProvider from "../provider/StudentsProvider.tsx";
 
 const Routes = () => {
 	const {token} = useAuth();
@@ -57,7 +58,7 @@ const Routes = () => {
 							children: [
 								{
 									path: "/students",
-									element: <Students/>,
+									element: <StudentsProvider><Students/></StudentsProvider>,
 								},
 								{
 									path: "/classrooms/:classroomId",

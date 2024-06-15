@@ -18,7 +18,7 @@ import {TextArea} from "../ui/TextArea/TextArea.tsx";
 const type: ElementsType = "ParagraphField";
 
 const extraAttributes = {
-	text: "Text here",
+	text: "Текст здесь",
 };
 
 const propertiesSchema = z.object({
@@ -34,7 +34,7 @@ export const ParagraphFieldLessonElement: LessonElement = {
 	}),
 	designerBtnElement: {
 		icon: BsTextParagraph,
-		label: "Paragraph field",
+		label: "Параграф",
 	},
 	designerComponent: DesignerComponent,
 	lessonComponent: LessonComponent,
@@ -54,7 +54,7 @@ function DesignerComponent({elementInstance}: IDesignerComponentProps) {
 	return (
 		<div className="flex flex-col gap-2 w-full">
 			<Label className="text-muted-foreground">
-				Paragraph field
+				Параграф
 			</Label>
 			<p>{text}</p>
 		</div>
@@ -100,7 +100,7 @@ function PropertiesComponent({elementInstance}: IPropertiesComponentProps) {
 			  className="space-y-3">
 			<FormField control={form.control} name="text" render={({field}) => (
 				<FormItem>
-					<FormLabel>Text</FormLabel>
+					<FormLabel>Текст</FormLabel>
 					<FormControl>
 						<TextArea {...field}
 								  rows={5}

@@ -2,6 +2,7 @@ export enum MessageType {
 	Auth = 1,
 	VirtualPointer,
 	Call,
+	NewRoom,
 	Error,
 }
 
@@ -21,6 +22,12 @@ export type CallMsg = {
 	classroomId: number;
 }
 
+export type NewRoomMsg = {
+	type: MessageType.NewRoom;
+	classroomId?: number | null;
+	joinToken?: string | null;
+}
+
 export enum ErrorType {
 	ExpiredToken
 }
@@ -30,4 +37,4 @@ export type ErrorMsg = {
 	ErrorType: ErrorType;
 }
 
-export type RealtimeMsg = AuthMsg | VirtualPointerMsg | CallMsg | ErrorMsg;
+export type RealtimeMsg = AuthMsg | VirtualPointerMsg | CallMsg | NewRoomMsg | ErrorMsg;

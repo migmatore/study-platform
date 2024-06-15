@@ -10,6 +10,10 @@ class LessonService {
 		return await apiClient.put(`/classrooms/${classroomId}/lessons`, req)
 	}
 
+	async deleteLesson(lessonId: number) {
+		return await apiClient.delete(`/lessons/${lessonId}`);
+	}
+
 	async getCurrentLesson(classroomId: string | number) {
 		return await apiClient.get<ILessonsResp>(`/classrooms/${classroomId}/lessons/current`)
 	}

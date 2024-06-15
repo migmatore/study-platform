@@ -1,10 +1,11 @@
-import {createContext, PropsWithChildren, useEffect, useMemo, useRef, useState} from "react";
+import {createContext, PropsWithChildren, SetStateAction, useEffect, useMemo, useRef, useState} from "react";
 import {IProfileResp} from "../types/profile.ts";
 import {AxiosError} from "axios";
 import profileService from "../services/profile.service.ts";
 
 type ProfileContextType = {
 	profile: IProfileResp;
+	updateProfile: (profile: SetStateAction<IProfileResp>) => void;
 	fetchError: string | null;
 	isLoading: boolean;
 }
@@ -46,8 +47,13 @@ export const ProfileProvider = ({children}: PropsWithChildren) => {
 		getProfile().catch(console.error);
 	}, []);
 
+	const updateProfile = (profile: SetStateAction<IProfileResp>) => {
+		setProfile(profile);
+	};
+
 	const contextValue: ProfileContextType | null = useMemo(() => ({
 		profile,
+		updateProfile,
 		fetchError,
 		isLoading,
 	}), [profile, fetchError, fetchError]);

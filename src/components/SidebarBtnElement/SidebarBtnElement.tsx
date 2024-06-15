@@ -24,7 +24,7 @@ const SidebarBtnElement = ({lessonElement}: Props) => {
 			className={cn(
 				"border transition-all duration-300 rounded-xl md:px-3 md:py-2 xl:px-5 xl:py-2.5 text-center text-sm " +
 				"font-medium flex flex-col justify-center items-center gap-2 " +
-				"md:h-[90px] md:w-[90px] lg:h-[90px] lg:w-[90px] xl:h-[120px] xl:w-[120px] cursor-grab",
+				"md:h-[100px] md:w-[100px] lg:h-[100px] lg:w-[100px] xl:h-[120px] xl:w-[120px] cursor-grab",
 				draggable.isDragging && "ring-1 ring-blue-500",
 			)}
 			{...draggable.listeners}
