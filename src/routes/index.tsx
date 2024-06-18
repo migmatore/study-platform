@@ -96,7 +96,8 @@ const Routes = () => {
 			],
 		},
 		{
-			path: "*",
+			path: "/",
+			index: true,
 			element: <Navigate to="/profile"/>,
 		},
 	];
