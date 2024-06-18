@@ -55,7 +55,7 @@ const Lesson = () => {
 	const didUnmount = useRef(false);
 
 	const {sendJsonMessage, lastJsonMessage, readyState} = useWebSocket<RealtimeMsg>(
-		"https://d88d-85-172-92-2.ngrok-free.app/ws",
+		"wss://wss.learnflow.ru/ws/",
 		{
 			//share: true,
 			shouldReconnect: () => !didUnmount.current,

@@ -1,6 +1,6 @@
 import Sidebar from "./Sidebar.tsx";
 import {Outlet} from "react-router-dom";
-import {Hotel, UserCircle, Users} from "lucide-react";
+import {UserCircle, Users} from "lucide-react";
 import {JSX} from "react";
 import {PiUsersThreeBold} from "react-icons/pi";
 import {FaUsersRectangle} from "react-icons/fa6";
@@ -9,6 +9,7 @@ import {Roles} from "../../types/roles.ts";
 import SidebarItem from "../SidebarItem/SidebarItem.tsx";
 import useAuth from "../../hooks/useAuth.tsx";
 import SidebarProvider from "../../provider/SidebarProvider.tsx";
+import SidebarBackground from "./SidebarBackground.tsx";
 
 interface ISidebarItemProp {
 	to: string;
@@ -22,21 +23,21 @@ const adminItems: ISidebarItemProp[] = [
 		icon: <UserCircle size={20}/>,
 		text: "Профиль",
 	},
-	{
-		to: "/institution",
-		icon: <Hotel size={20}/>,
-		text: "Учебное заведение",
-	},
+	// {
+	// 	to: "/institution",
+	// 	icon: <Hotel size={20}/>,
+	// 	text: "Учебное заведение",
+	// },
 	{
 		to: "/teachers",
 		icon: <Users size={20}/>,
 		text: "Учителя",
 	},
-	{
-		to: "/classrooms",
-		icon: <IconContext.Provider value={{size: "20px"}}><FaUsersRectangle/></IconContext.Provider>,
-		text: "Классы",
-	},
+	// {
+	// 	to: "/classrooms",
+	// 	icon: <IconContext.Provider value={{size: "20px"}}><FaUsersRectangle/></IconContext.Provider>,
+	// 	text: "Классы",
+	// },
 	{
 		to: "/students",
 		icon: <IconContext.Provider value={{size: "20px"}}><PiUsersThreeBold/></IconContext.Provider>,
@@ -101,6 +102,7 @@ const SidebarLayout = () => {
 	return (
 		<>
 			<SidebarProvider>
+				<SidebarBackground/>
 				<Sidebar>
 					{sidebarItems.filter((item) => item.role == role).map((item) =>
 						item.items.map((roleItem, i) =>
@@ -110,6 +112,7 @@ const SidebarLayout = () => {
 										 text={roleItem.text}/>))}
 				</Sidebar>
 				<Outlet/>
+
 			</SidebarProvider>
 		</>
 	);

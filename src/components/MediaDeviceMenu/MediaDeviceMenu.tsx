@@ -17,7 +17,7 @@ const MediaDeviceMenu = ({
 	initialSelection,
 	onActiveDeviceChange,
 	tracks,
-	requestPermissions = false,
+	requestPermissions = true,
 }: Props) => {
 	const [_devices, setDevices] = useState<MediaDeviceInfo[]>([]);
 

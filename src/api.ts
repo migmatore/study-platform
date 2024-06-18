@@ -2,7 +2,8 @@ import axios, {AxiosInstance} from "axios";
 import {camelizeKeys, decamelizeKeys} from "humps";
 import {IAuthResp} from "./types/auth.ts";
 
-const baseURL = "http://localhost:8081/api/v1";
+//const baseURL = "https://api.learnflow.ru/api/v1";
+const baseURL = "http://127.0.0.1:8081/api/v1";
 
 export const authApiClient: AxiosInstance = axios.create({
 	baseURL: baseURL,

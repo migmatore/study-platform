@@ -17,6 +17,8 @@ import Profile from "../pages/Profile.tsx";
 import ClassroomsProvider from "../provider/ClassroomsProvider.tsx";
 import ProfileProvider from "../provider/ProfileProvider.tsx";
 import StudentsProvider from "../provider/StudentsProvider.tsx";
+import TeacherProvider from "../provider/TeacherProvider.tsx";
+import Teachers from "../pages/Teachers.tsx";
 
 const Routes = () => {
 	const {token} = useAuth();
@@ -79,13 +81,13 @@ const Routes = () => {
 							path: "/",
 							element: <Auth allowedRoles={[Roles.Admin]}/>,
 							children: [
-								{
-									path: "/institution",
-									element: <h1>Institution</h1>,
-								},
+								// {
+								// 	path: "/institution",
+								// 	element: <h1>Institution</h1>,
+								// },
 								{
 									path: "/teachers",
-									element: <h1>Teachers</h1>,
+									element: <TeacherProvider><Teachers/></TeacherProvider>,
 								},
 							],
 						},

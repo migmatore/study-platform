@@ -16,7 +16,7 @@ const SidebarItem = ({icon, text, to}: SidebarItemProps) => {
 	return (
 		<NavLink to={to}
 				 className={({isActive}) => cn(
-					 "relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors",
+					 "relative flex items-center py-2 px-3 my-1 font-medium rounded-md cursor-pointer transition-colors whitespace-nowrap",
 					 isActive
 					 ? "bg-blue-200 text-blue-800 dark:bg-blue-800 dark:text-blue-200"
 					 : "hover:bg-blue-100 dark:text-neutral-300 dark:hover:bg-blue-800",
